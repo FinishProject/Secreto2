@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<UniSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<info>
+		<name>라나</name>
+		<context>잠깐 거기 너!</context>
+		<type>0</type>
+		<speaker>1</speaker>
+		<questType>HUNT</questType>
+		<targetName>Slug</targetName>
+		<completeNum>2</completeNum>
+	</info>
+	<info>
+		<name>라나</name>
+		<context>너말이야 너 나 좀 도와주면 안될까?</context>
+		<type>0</type>
+		<speaker>1</speaker>
+	</info>
+	<info>
+		<name>라나</name>
+		<context>무슨 일이야?</context>
+		<type>0</type>
+		<speaker>0</speaker>
+	</info>
+	<info>
+		<name>라나</name>
+		<context>저 길을 지나가야하는데…</context>
+		<type>0</type>
+		<speaker>1</speaker>
+	</info>
+	<info>
+		<name>라나</name>
+		<context>몬스터가 있어서 못 가겠어</context>
+		<type>0</type>
+		<speaker>1</speaker>
+	</info>
+	<info>
+		<name>라나</name>
+		<context>점프해서 가면 되지 않아? 개구리인데?</context>
+		<type>0</type>
+		<speaker>0</speaker>
+	</info>
+	<info>
+		<name>라나</name>
+		<context>모든 개구리가 다 점프를 잘 하는 건 아니라구!</context>
+		<type>0</type>
+		<speaker>1</speaker>
+	</info>
+	<info>
+		<name>라나</name>
+		<context>난 다리가 짧…짧…</context>
+		<type>0</type>
+		<speaker>1</speaker>
+	</info>
+	<info>
+		<name>라나</name>
+		<context>크흠 어쨌든 도와줄 거지?</context>
+		<type>0</type>
+		<speaker>1</speaker>
+	</info>
+	<info>
+		<name>라나</name>
+		<context>우와! 고마워 누나!</context>
+		<type>0</type>
+		<speaker>1</speaker>
+	</info>
+	<info>
+		<name>라나</name>
+		<context>왜 이렇게 늦었어! 어쨌든...고마워 예쁜 누나!</context>
+		<type>1</type>
+		<speaker>1</speaker>
+	</info>
+	<info>
+		<name>라나</name>
+		<context>아 참 이건 내 선물이야!</context>
+		<type>1</type>
+		<speaker>1</speaker>
+	</info>
+</UniSet>

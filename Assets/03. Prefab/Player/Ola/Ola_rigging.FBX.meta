@@ -1,0 +1,215 @@
+fileFormatVersion: 2
+guid: b6d0b0960c6c0bc4a96ef1a2eb9d9aec
+timeCreated: 1464058834
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Body_01
+    100002: Body_02
+    100004: Body_03
+    100006: Fin L_01
+    100008: Fin L_02
+    100010: Fin R_01
+    100012: Fin R_02
+    100014: Ola
+    100016: //RootNode
+    100018: Tail_01
+    100020: Tail_02
+    400000: Body_01
+    400002: Body_02
+    400004: Body_03
+    400006: Fin L_01
+    400008: Fin L_02
+    400010: Fin R_01
+    400012: Fin R_02
+    400014: Ola
+    400016: //RootNode
+    400018: Tail_01
+    400020: Tail_02
+    4300000: Ola
+    9500000: //RootNode
+    13700000: Ola
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human:
+    - boneName: Body_02
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Fin L_01
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Fin R_01
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Fin L_02
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Fin R_02
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Body_03
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tail_01
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tail_02
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: Ola_rigging(Clone)
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Ola
+      position: {x: 0.000000016135914, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Body_01
+      position: {x: 0.000000019073486, y: 0.09222718, z: 0.34018746}
+      rotation: {x: 0.7070823, y: 0.0058919573, z: 0.7070822, w: 0.005891949}
+      scale: {x: 1, y: 0.9999998, z: 1}
+      transformModified: 1
+    - name: Body_02
+      position: {x: -0.15917826, y: 0.0000016021728, z: -0.000000014305112}
+      rotation: {x: 6.9644557e-10, y: -0.000000029802322, z: 0.008335014, w: 0.9999653}
+      scale: {x: 0.99999994, y: 1.0000001, z: 0.99999994}
+      transformModified: 1
+    - name: Fin R_01
+      position: {x: -0.08876852, y: 0.10893924, z: 0.20225412}
+      rotation: {x: -0.43584386, y: 0.44931352, z: -0.45610878, w: 0.6325522}
+      scale: {x: 1, y: 1.0000004, z: 1.0000002}
+      transformModified: 1
+    - name: Fin R_02
+      position: {x: -0.12179949, y: 0.000000028610229, z: 0.000000028610229}
+      rotation: {x: -0.00000031292439, y: -0.000000029802322, z: -0.02379248, w: 0.999717}
+      scale: {x: 1.0000005, y: 1.0000001, z: 1.0000001}
+      transformModified: 1
+    - name: Body_03
+      position: {x: -0.3182933, y: -0.000000085830685, z: 0.000000010181081}
+      rotation: {x: 0, y: -0.00000005960463, z: 0.53335613, w: 0.8458908}
+      scale: {x: 1.0000004, y: 1.0000004, z: 1.0000002}
+      transformModified: 1
+    - name: Tail_01
+      position: {x: -0.2188531, y: 0.000000009536743, z: 0.0000000070309585}
+      rotation: {x: -0.0000000014435813, y: -0.00000014901161, z: -0.00606021, w: 0.99998164}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999998}
+      transformModified: 1
+    - name: Tail_02
+      position: {x: -0.08222805, y: -0.0000019359588, z: 0.0000000026301046}
+      rotation: {x: -0.0000000013969839, y: 0.00000014901161, z: -0.006671088, w: 0.9999778}
+      scale: {x: 1.0000005, y: 1.0000002, z: 1.0000002}
+      transformModified: 1
+    - name: Fin L_01
+      position: {x: -0.08876862, y: 0.10893922, z: -0.20199998}
+      rotation: {x: -0.6325523, y: 0.45610896, z: -0.44931358, w: 0.4358436}
+      scale: {x: 0.99999976, y: 1.0000001, z: 1.0000005}
+      transformModified: 1
+    - name: Fin L_02
+      position: {x: -0.121799506, y: -0.000000009536743, z: 0}
+      rotation: {x: 0.00000040233135, y: -0.00000020116568, z: 0.023792278, w: 0.999717}
+      scale: {x: 0.9999999, y: 1.0000002, z: 1.0000002}
+      transformModified: 1
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 3
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
