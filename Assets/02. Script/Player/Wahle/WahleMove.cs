@@ -7,8 +7,12 @@ public class WahleMove : WahleCtrl
 {
 
     public float stateChangeTime = 8f;
+    public float slerpSpeed = 0.5f;
+    public float lookSpeed = 5f;
     private float changeTime = 0f;
     private float focusDir = 1f; // 봐라보고 있는 방향 오른쪽 : 1, 왼쪽 : -1
+
+    private float startTime = Time.time;
 
     protected override IEnumerator CurStateUpdate()
     {
@@ -52,15 +56,36 @@ public class WahleMove : WahleCtrl
         // 플레이어 추격
         transform.position = Vector3.Lerp(transform.position, playerTr.position - (playerTr.forward),
                      initSpeed * Time.deltaTime);
-        
+
+        //initSpeed = IncrementSpeed(initSpeed, maxSpeed, accel); // 이동속도 가속도     
+        //// 플레이어를 봐라봄
+        //transform.localRotation = Quaternion.Slerp(transform.localRotation,
+        //    lookRot, lookSpeed * Time.deltaTime);
+
+        //if (!PlayerCtrl.controller.isGrounded)
+        //{
+        //    Vector3 center = (transform.position + playerTr.position) * 0.1F;
+        //    center -= new Vector3(0, 1, 0);
+        //    Vector3 riseRelCenter = transform.position - center;
+        //    Vector3 setRelCenter = playerTr.position - center;
+        //    transform.position = Vector3.Slerp(riseRelCenter, setRelCenter, slerpSpeed * Time.deltaTime);
+        //    transform.position += center;
+        //}
+        //// 플레이어 추격
+        //transform.position = Vector3.Lerp(transform.position, playerTr.position - (playerTr.forward),
+        //           initSpeed * Time.deltaTime);
+
+
     }
 
     // 플레이어 주위를 회전
     private void TurningPlayer()
     {
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, lookRot, 
-            0.5f * Time.deltaTime);
-        transform.Translate(Vector3.forward * 1f * Time.deltaTime);
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, lookRot,
+            initSpeed * Time.deltaTime);
+        transform.Translate(Vector3.forward * 0.5f * Time.deltaTime);
+
+        initSpeed = base.DecreaseSpeed(initSpeed, 0.5f, 2f);
 
         changeTime += Time.deltaTime;
 

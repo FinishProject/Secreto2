@@ -16,11 +16,11 @@ public class WahleAttack : WahleCtrl {
         while (true)
         {
             // 화면 밖으로 나가거나 타겟이 사라졌을 시 이동으로 전환
-            if (CheckOutCamera() || targetObj.GetComponent<FSMBase>().isDeath)
-            {
-                isSearch = false;
-                ChangeState(WahleState.MOVE);
-            }
+            //if (CheckOutCamera() || targetObj.GetComponent<FSMBase>().isDeath)
+            //{
+            //    isSearch = false;
+            //    ChangeState(WahleState.MOVE);
+            //}
 
             Vector3 enemyRelativePos = targetObj.transform.position - transform.position;
             lookRot = Quaternion.LookRotation(enemyRelativePos);

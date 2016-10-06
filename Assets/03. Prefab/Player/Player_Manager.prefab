@@ -3580,7 +3580,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013005527414}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.5400014, y: -0.019999743, z: 0.100000024}
+  m_LocalPosition: {x: 458.5, y: -0.019999743, z: 0.100000024}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -5454,6 +5454,8 @@ MonoBehaviour:
   maxSpeed: 10
   accel: 2
   stateChangeTime: 50
+  slerpSpeed: 1
+  lookSpeed: 2
 --- !u!114 &114000013536431522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5468,6 +5470,7 @@ MonoBehaviour:
   maxSpeed: 0.6
   accel: 5
   lookSpeed: 0.3
+  changeMoveDis: 15
   targetPoint: {fileID: 4000012793609020}
 --- !u!124 &124000012308283816
 Behaviour:
@@ -5802,8 +5805,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0.00000011920929, y: 0.28594702, z: 0.7690996}
-    m_Extent: {x: 0.59446216, y: 0.23917331, z: 0.40319943}
+    m_Center: {x: 0.00000011920929, y: 0.2859497, z: 0.7690996}
+    m_Extent: {x: 0.59446216, y: 0.2391663, z: 0.40319943}
   m_DirtyAABB: 0
 --- !u!143 &143000011924206494
 CharacterController:
@@ -5819,7 +5822,7 @@ CharacterController:
   m_Radius: 0.25
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.02
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.91, z: -0.01}
 --- !u!183 &183000011250500852
