@@ -83,7 +83,7 @@ public class CameraCtrl_8 : MonoBehaviour {
 
         
 //        if(Physics.Raycast(playerTr.position, -Vector3.up, out hit,  0.1f))
-    if(PlayerCtrl.controller.isGrounded)
+         if(PlayerCtrl.controller.isGrounded)
         {
             tempPos = camParent_Tr.position;
             tempPos.y -= (box_Up_Tr.position.y - (box_Up_Tr.lossyScale.y * 0.5f)) - playerRect.buttom;
@@ -116,7 +116,7 @@ public class CameraCtrl_8 : MonoBehaviour {
             
             tempPos = camParent_Tr.position;
             tempPos.y += playerRect.top - boxRect.top;
-            camParent_Tr.position = Vector3.Lerp(camParent_Tr.position, tempPos, 10 * Time.smoothDeltaTime);
+            camParent_Tr.position = Vector3.Lerp(camParent_Tr.position, tempPos, 3.8f * Time.smoothDeltaTime);
         }
         // 플레이어가 하단선을 넘었을 때
         else if (playerRect.buttom < boxRect.buttom)

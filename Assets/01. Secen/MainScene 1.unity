@@ -1662,7 +1662,7 @@ RectTransform:
   m_GameObject: {fileID: 797893228}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.10993139}
-  m_LocalScale: {x: 2.088108, y: 0.78003436, z: 1.0176005}
+  m_LocalScale: {x: 2.088108, y: 0.78003424, z: 1.0176007}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1125024592}
@@ -1670,7 +1670,7 @@ RectTransform:
   m_RootOrder: 15
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -14.563317, y: -62.19598}
+  m_AnchoredPosition: {x: -14.563318, y: -62.195972}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &797893237
@@ -6367,7 +6367,7 @@ MonoBehaviour:
   pressAnyKey: {fileID: 797893229}
   selectButton: {fileID: 797893228}
   menu: {fileID: 797893227}
-  menuFadeSpeed: 0.1
+  menuFadeSpeed: 0.55
   pressKeyFadeSpeed: 1
 --- !u!224 &1675559821
 RectTransform:

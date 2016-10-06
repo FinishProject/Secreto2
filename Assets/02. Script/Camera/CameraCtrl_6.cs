@@ -60,7 +60,6 @@ public class CameraCtrl_6 : MonoBehaviour
         rayBox_Ln_addpos = rayBox_Ln.position - playerTr.position;
         rayBox_Ln_addpos.z = 0;
 
-
         baseCamPos = tr.position - playerTr.position;
         baseCamPos_Left = baseCamPos;
         baseCamPos_Left.x = playerTr.position.x - tr.position.x;
@@ -99,7 +98,7 @@ public class CameraCtrl_6 : MonoBehaviour
     {
         if (curSpeed_X < speed_X_Max)
         {
-            curSpeed_X += 5 * Time.smoothDeltaTime;
+            curSpeed_X += 5 * Time.deltaTime;
         }
     }
 
@@ -154,7 +153,7 @@ public class CameraCtrl_6 : MonoBehaviour
         else
             temp = Vector3.Lerp(tr.position, new Vector3(playerTr.position.x, 0, playerTr.position.z) + baseCamPos_Left, curSpeed_X * Time.deltaTime);
 
-        temp.y = Mathf.Lerp(tr.position.y, baseCamPos.y + groundPos_Player.y + correctionValue, speed_Y * Time.smoothDeltaTime);
+        temp.y = Mathf.Lerp(tr.position.y, baseCamPos.y + groundPos_Player.y + correctionValue, speed_Y * Time.deltaTime);
 
         if (!teleportTrigger)
             tr.position = temp;
@@ -185,6 +184,8 @@ public class CameraCtrl_6 : MonoBehaviour
 
             if (hit.transform.CompareTag("Land"))
             {
+                if(objTr.name == "Luna")
+                    Debug.Log("땅땅");
                 tempPosY[idx++] = hit.point.y;
                 posY = hit.point.y;
             }
