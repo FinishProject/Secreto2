@@ -82,7 +82,8 @@ public class CameraCtrl_8 : MonoBehaviour {
         playerRect.buttom = box_Player_Tr.position.y - playerRect.half_height;
 
         
-        if(Physics.Raycast(playerTr.position, -Vector3.up, out hit,  0.1f))
+//        if(Physics.Raycast(playerTr.position, -Vector3.up, out hit,  0.1f))
+    if(PlayerCtrl.controller.isGrounded)
         {
             tempPos = camParent_Tr.position;
             tempPos.y -= (box_Up_Tr.position.y - (box_Up_Tr.lossyScale.y * 0.5f)) - playerRect.buttom;

@@ -12,7 +12,7 @@ public class WahleMove : WahleCtrl
     private float changeTime = 0f;
     private float focusDir = 1f; // 봐라보고 있는 방향 오른쪽 : 1, 왼쪽 : -1
 
-    private float startTime = Time.time;
+//    private float startTime = Time.time;
 
     protected override IEnumerator CurStateUpdate()
     {
