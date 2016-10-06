@@ -193,6 +193,7 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (coll.CompareTag("DeadLine"))
         {
+            Debug.Log(coll.name);
             PlayerDie();
         }
 
