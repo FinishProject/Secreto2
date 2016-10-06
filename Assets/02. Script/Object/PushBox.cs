@@ -18,11 +18,11 @@ public class PushBox : MonoBehaviour {
             StartCoroutine(Push(playerTr));
     }
 
-    void OnTriggerStay(Collider col)
+    void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("Player"))
         {
-            ShowUI.instanace.OnImage(1);
+            ShowUI.instanace.OnImage(true);
             ShowUI.instanace.SetPosition(this.transform, uiPosY);
         }
     }
@@ -31,15 +31,16 @@ public class PushBox : MonoBehaviour {
     {
         if (col.CompareTag("Player"))
         {
-            ShowUI.instanace.OnImage(-1);
+            ShowUI.instanace.OnImage(false);
         }
     }
 
     IEnumerator Push(Transform playerTr)
     {
         PlayerCtrl.instance.SetPushAnim(true);
+        ShowUI.instanace.OnImage(false);
         isActive = true;
-        
+
         while (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
                 Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
         {
@@ -58,6 +59,8 @@ public class PushBox : MonoBehaviour {
         }
         SoundMgr.instance.PushObject(false);
         PlayerCtrl.instance.SetPushAnim(false);
+        ShowUI.instanace.OnImage(true);
+        ShowUI.instanace.SetPosition(this.transform, uiPosY);
         isActive = false;
     }
 }

@@ -98,7 +98,7 @@ public class PlayerCtrl : MonoBehaviour
         // 지상에 있을 시
         if (controller.isGrounded)
         {
-            //curGravity = 50f;
+            curGravity = 50f;
             anim.SetBool("Jump", false);
             anim.SetBool("Dash", false);
             anim.SetBool("Idle", false);
