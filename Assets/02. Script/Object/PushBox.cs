@@ -20,7 +20,7 @@ public class PushBox : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        Debug.Log(col.name);
+
         if (col.CompareTag("Player"))
         {
             ShowUI.instanace.OnImage(true);
