@@ -89,6 +89,7 @@ Shader "Custom/SurfaceWindShader" {
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;
 			o.Alpha = c.a;
+			o.Albedo = c.rgb;
 		}
 		ENDCG
 	}
