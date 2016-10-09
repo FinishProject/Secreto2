@@ -21,6 +21,8 @@ public class TeleportGate : MonoBehaviour {
     private bool isBox = false;
     private float focusDir = 1;
 
+    private bool isTurn = true;
+
     void Start()
     {
         exitTelpo = exitGate.GetComponent<TeleportGate>();
@@ -34,7 +36,6 @@ public class TeleportGate : MonoBehaviour {
         // 플레이어 체크
         if (col.CompareTag("Player"))
         {
-            
             FadeInOut.instance.StartFadeInOut(1f, 1.8f, 1f);
             StartCoroutine(MoveGate());
         }
@@ -70,7 +71,9 @@ public class TeleportGate : MonoBehaviour {
         }
         // 플레이어 이동
         PlayerCtrl.instance.transform.position = exitPoint;
-        PlayerCtrl.instance.TurnPlayer();
+        PlayerCtrl.inputAxis = 0f;
+        if(!isRight)
+            PlayerCtrl.instance.TurnPlayer();
     }
 
     IEnumerator Movement()
