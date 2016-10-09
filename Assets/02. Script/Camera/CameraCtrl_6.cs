@@ -1,6 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/**************************************** 사용 방법 ********************************************
+
+    캐릭터 좌우측 떨어진 곳에 레이 박스를 배치하여 앞에 있는 지형의 높이를 받아와
+    미리 카메라의 높이를 높여준다
+    
+    ※ 사용 방법
+    1. 오브젝트 구조
+    MainCamera              <- 스크립트 추가
+        └ ReyCube_R        <- 우측 방향으로
+        └ ReyCube_L        <- 상단 판정 영역, (좌우 판정)
+        └ ReyCube_Wall     <- 스크립트 추가
+    
+    2. 바닥에 "Land" 태그를 붙여야 카메라 위치를 미리 옮겨 줄 수 있다
+
+    3. 공중에 떠 있는 발판의 경우( 아래 떨어지는 부분 )에는 보이지 않는 콜리더를 따로 박은 후
+       위와 같이 "Land" 태그를 붙여주자, 자연스럽게 움직인다
+       ( 발판에 "Land" 태그를 붙일 경우 다음 발판과의 갑작스러운 높이차이 때문에 끊기는 느낌이 있을것임 )
+
+    4. 위 3번 콜리더 약간 밑에 "ChaseLine"태그를 가진 콜리더를 추가 해주자
+       (3번 콜리더를 복사를 해서 1.3정도 아래에 배치)
+       이는 떨어질때 카메라가 빨리 쫓아 가도록 해준다.
+
+************************************************************************************************/
 
 // 카메라 16_10_09
 public class CameraCtrl_6 : MonoBehaviour
@@ -9,34 +32,24 @@ public class CameraCtrl_6 : MonoBehaviour
     public float speed_X_Max = 5f;  // X축 최대 추적 속도
     public float speed_Y_1 = 0.5f;  // Y축 범위 밖 추적 속도
     public float speed_Y_2 = 3f;    // Y축 범위 안 추적 속도
-    public float speed_Y_3 = 3f;    // Y축 범위 안 추적 속도
-    public float fallStandardRange = 7f;
-    public float rayRange = 20f;
+    public float rayRange = 20f;    // 좌우 레이의 길이
     float curSpeed_X;               // 현재 카메라의 x축 속도
     float wall_L_Pos_X;             // 오른쪽에 위치한 벽의 x 좌표
     float wall_R_Pos_X;             // 왼쪽에 위치한 벽의 x 좌표
 
     Transform tr, playerTr;         // 카메라, 플레이어의  transfrom
-    public Transform rayBox_R;      // 레이 박스 Transform
-    public Transform rayBox_L;
-    public Transform rayBox_Rn;
-    public Transform rayBox_Ln;
-    public Transform rayBox_Wall;
-     
-    // 캐릭터 위치에 비례한 레이 박스의 위치 값
-    Vector3 rayBox_R_addpos;        
-    Vector3 rayBox_L_addpos;
-    Vector3 rayBox_Rn_addpos;
-    Vector3 rayBox_Ln_addpos;
+    public Transform rayBox_R;      // 오른쪽 레이 박스 Transform
+    public Transform rayBox_L;      //   왼쪽 레이 박스 Transform
+    public Transform rayBox_Wall;   // 벽체크 레이 박스 Transform
 
-    Vector3 wallCheckCenterPos;     // 레이를 쏠 위치값
 
-    // 레이 박스 위에 있는 땅 pos
-    Vector3 groundPos_Box_R;        
-    Vector3 groundPos_Box_L;
-    Vector3 groundPos_Box_Rn;
-    Vector3 groundPos_Box_Ln;
+    Vector3 rayBox_R_addpos;        // 캐릭터 위치에 비례한 레이 박스의 위치 값 ( 오른쪽 )
+    Vector3 rayBox_L_addpos;        // 캐릭터 위치에 비례한 레이 박스의 위치 값 ( 왼쪽 )
+
+    Vector3 groundPos_Box_R;        // 오른쪽 레이 박스 위에 있는 땅 pos
+    Vector3 groundPos_Box_L;        //   왼쪽 레이 박스 위에 있는 땅 pos
     Vector3 groundPos_Player;       // 플레이어가 위에 있는 땅 pos
+    Vector3 wallCheckCenterPos;     // 벽을 체크할 레이를 쏠 위치값
 
     Vector3 baseCamPos;             // 카메라의 기본 위치 (x,z값은 유지, y 값은 지형 높이에 따라 변화 줌)
     Vector3 baseCamPos_Left;        // 왼쪽 방향 카메라 위치
@@ -44,7 +57,7 @@ public class CameraCtrl_6 : MonoBehaviour
     RaycastHit hit;                 // 충돌된 레이
 
     float correctionValue;          // 보정 수치 ( 레이 박스와 카메라간의 보정 수치 값)
-    float wallRayToCamgap;          // 벽과 카메라의 거리차이
+    float wallRayToCamGap;          // 벽과 카메라의 거리차이
     float groundToCamYgap;          // 땅과 카메라의 거리차이
 
     bool isFalling_Before;          // 떨어지기 직전
@@ -67,12 +80,8 @@ public class CameraCtrl_6 : MonoBehaviour
         rayBox_R_addpos.z = 0;
         rayBox_L_addpos = rayBox_L.position - playerTr.position;
         rayBox_L_addpos.z = 0;
-        rayBox_Rn_addpos = rayBox_Rn.position - playerTr.position;
-        rayBox_Rn_addpos.z = 0;
-        rayBox_Ln_addpos = rayBox_Ln.position - playerTr.position;
-        rayBox_Ln_addpos.z = 0;
 
-        wallRayToCamgap = Mathf.Abs(tr.position.x - rayBox_Wall.position.x);
+        wallRayToCamGap = Mathf.Abs(tr.position.x - rayBox_Wall.position.x);
 
         // 카메라 기본위치 저장
         baseCamPos = tr.position - playerTr.position;
@@ -84,18 +93,15 @@ public class CameraCtrl_6 : MonoBehaviour
 
         teleportTrigger = false;
     }
-    
+
 
 
     #region Update 함수
 
     void FixedUpdate()
     {
-        rayBox_R.position  = playerTr.position + rayBox_R_addpos;
-        rayBox_L.position  = playerTr.position + rayBox_L_addpos;
-        rayBox_Rn.position = playerTr.position + rayBox_Rn_addpos;
-        rayBox_Ln.position = playerTr.position + rayBox_Ln_addpos;
-        
+        rayBox_R.position = playerTr.position + rayBox_R_addpos;
+        rayBox_L.position = playerTr.position + rayBox_L_addpos;
     }
 
     void Update()
@@ -106,21 +112,19 @@ public class CameraCtrl_6 : MonoBehaviour
         // 레이 체크
         ChackGround_ByRay(playerTr, ref groundPos_Player.y);
         if (isFocusRight)
-        {
             ChackGround_ByRay(rayBox_R, ref groundPos_Box_R.y);
-            ChackGround_ByRay(rayBox_Rn, ref groundPos_Box_Rn.y);
-        }
         else
-        {
             ChackGround_ByRay(rayBox_L, ref groundPos_Box_L.y);
-            ChackGround_ByRay(rayBox_Ln, ref groundPos_Box_Ln.y);
-        }
-        ChackWall_ByRay();
 
-        Debug.Log(isNeerWall_Left + " : " + isNeerWall_Right);
-        CamCorrectionValue();
+        if(!teleportTrigger)
+            ChackWall_ByRay();          // 주변에 벽이 있는지 체크
 
+        CamCorrectionValue();       // 지형 보정값
 
+        ChackChaseLine_ByRay();     // 하단 추락시 추적할 레이
+
+        if (PlayerCtrl.controller.isGrounded)
+            isFalling = false;
     }
 
     void LateUpdate()
@@ -134,9 +138,10 @@ public class CameraCtrl_6 : MonoBehaviour
 
         // 우측에 벽이 있으면 ( else if는 좌측에 벽이 있으면 )
         if (isNeerWall_Right && isFocusRight)
-            temp.x = wall_R_Pos_X - wallRayToCamgap;
+            temp.x = wall_R_Pos_X - wallRayToCamGap;
         else if (isNeerWall_Left && !isFocusRight)
-            temp.x = wall_L_Pos_X - wallRayToCamgap;
+            temp.x = wall_L_Pos_X + wallRayToCamGap;
+
 
         // 카메라의 y 좌표 움직임
         // 플레이어 위치 > 추격할 거리 + 땅과의 거리
@@ -145,13 +150,11 @@ public class CameraCtrl_6 : MonoBehaviour
 
         //추락할 때
         else if (isFalling)
-            temp.y = Mathf.Lerp(tr.position.y, baseCamPos.y + playerTr.position.y, speed_Y_3 - Vector3.Distance(playerTr.position, tr.position) * Time.deltaTime);
+            temp.y = Mathf.Lerp(tr.position.y, baseCamPos.y + playerTr.position.y, Vector3.Distance(playerTr.position, tr.position) * Time.deltaTime);
 
         //그 외
         else
-            temp.y = Mathf.Lerp(tr.position.y, baseCamPos.y + groundPos_Player.y + correctionValue, (isFalling_Before ? speed_Y_3 : speed_Y_2) * Time.deltaTime);
-        //플레이어가 하단선을 넘었을 때
-
+            temp.y = Mathf.Lerp(tr.position.y, baseCamPos.y + groundPos_Player.y + correctionValue, speed_Y_2 * Time.deltaTime);
 
         // 텔레포트를 이용 할 때
         if (!teleportTrigger)
@@ -185,64 +188,22 @@ public class CameraCtrl_6 : MonoBehaviour
     }
 
 
-    float tempRangeR;
-    float tempRangeRn;
-    float tempRangeL;
-    float tempRangeLn;
+    // 지형 높이 보정을 해준다
     void CamCorrectionValue()
     {
-        tempRangeR = Mathf.Abs(groundPos_Box_R.y - groundPos_Player.y);
-        tempRangeRn = Mathf.Abs(groundPos_Box_Rn.y - groundPos_Player.y);
-        tempRangeL = Mathf.Abs(groundPos_Box_L.y - groundPos_Player.y);
-        tempRangeLn = Mathf.Abs(groundPos_Box_Ln.y - groundPos_Player.y);
-
         if (isFocusRight)
-        {
-            if (tempRangeR < fallStandardRange)  // 추락 기준값과 비교, 일반 추적
-            {
-                isFalling_Before = false;
-                correctionValue = (groundPos_Box_R.y - groundPos_Player.y) * 0.5f;
-            }
-            else if (tempRangeRn > fallStandardRange)
-            {
-                isFalling_Before = true;
-                correctionValue = (groundPos_Box_Rn.y - groundPos_Player.y) * 0.5f;
-            }
-            else
-                isFalling_Before = false;
-        }
+            correctionValue = (groundPos_Box_R.y - groundPos_Player.y) * 0.5f;
         else
-        {
-            if (tempRangeL < fallStandardRange)  // 추락 기준값과 비교, 일반 추적
-            {
-                isFalling_Before = false;
-                correctionValue = (groundPos_Box_L.y - groundPos_Player.y) * 0.3f;
-            }
-            else if (tempRangeLn > fallStandardRange)
-            {
-                isFalling_Before = true;
-                correctionValue = (groundPos_Box_Ln.y - groundPos_Player.y) * 0.2f;
-            }
-            else
-                isFalling_Before = false;
-        }
-
-
-        // 플레이어와 땅의 거리를 비교, 추락할 위치 인지 체크
-        if (Mathf.Abs(playerTr.position.y - groundPos_Player.y) > fallStandardRange)
-            isFalling = true;
-        else if (PlayerCtrl.controller.isGrounded)
-            isFalling = false;
-
+            correctionValue = (groundPos_Box_L.y - groundPos_Player.y) * 0.5f;
     }
     #endregion
 
 
 
 
-
     #region 레이 캐스트
     RaycastHit[] hits;
+    // 기준 위치에서 레이를 쏴서 충동한 바닥의 위치를 알기위한 함수
     void ChackGround_ByRay(Transform objTr, ref float posY)
     {
         Debug.DrawRay(objTr.position, -Vector3.up * rayRange, Color.yellow);
@@ -285,15 +246,36 @@ public class CameraCtrl_6 : MonoBehaviour
 
     }
 
+
+    // 추락시 카메라 추적할 때 필요한 콜리더 체크 ( 기본적으로 지형의 높이에 따른 카메라라서 빠르게 추적하기 위해 이런 콜리더가 필요함 )
+    void ChackChaseLine_ByRay()
+    {
+        Debug.DrawRay(playerTr.position, -Vector3.up * 0.5f, Color.red);
+        hits = Physics.RaycastAll(playerTr.position, -Vector3.up, 0.5f);
+        for (int i = 0; i < hits.Length; i++)
+        {
+            RaycastHit hit = hits[i];
+
+            if (hit.transform.CompareTag("ChaseLine"))
+            {
+                isFalling = true;
+                break;
+            }
+        }
+    }
+
+
     // 벽 충돌 체크
     void ChackWall_ByRay()
     {
         wallCheckCenterPos = tr.position;
         wallCheckCenterPos.z = playerTr.position.z;
         // 오른쪽에 벽이 있는지 체크
-        Debug.DrawRay(wallCheckCenterPos, Vector3.right * wallRayToCamgap, Color.yellow);
-        hits = Physics.RaycastAll(wallCheckCenterPos, Vector3.right, wallRayToCamgap);
+        Debug.DrawRay(wallCheckCenterPos, Vector3.right * wallRayToCamGap, Color.magenta);
+        hits = Physics.RaycastAll(wallCheckCenterPos, Vector3.right, wallRayToCamGap);
 
+        if (hits.Length == 0)
+            isNeerWall_Right = false;
         for (int i = 0; i < hits.Length; i++)
         {
             RaycastHit hit = hits[i];
@@ -309,9 +291,11 @@ public class CameraCtrl_6 : MonoBehaviour
         }
 
         // 왼쪽에 벽이 있는지 체크
-        Debug.DrawRay(wallCheckCenterPos, Vector3.left * wallRayToCamgap, Color.yellow);
-        hits = Physics.RaycastAll(wallCheckCenterPos, Vector3.left, wallRayToCamgap);
+        Debug.DrawRay(wallCheckCenterPos, -Vector3.right * wallRayToCamGap, Color.cyan);
+        hits = Physics.RaycastAll(wallCheckCenterPos, -Vector3.right, wallRayToCamGap);
 
+        if (hits.Length == 0)
+            isNeerWall_Left = false;
         for (int i = 0; i < hits.Length; i++)
         {
             RaycastHit hit = hits[i];
@@ -325,8 +309,9 @@ public class CameraCtrl_6 : MonoBehaviour
             else
                 isNeerWall_Left = false;
         }
-        
+
     }
+
     #endregion
 
 
@@ -335,17 +320,14 @@ public class CameraCtrl_6 : MonoBehaviour
     #region 포탈 관련 함수
     public void StartTeleport()
     {
-        teleportTrigger = true;
+//        teleportTrigger = true;
     }
     public void EndTeleport()
     {
-        tr.position = playerTr.position + baseCamPos;
-        teleportTrigger = false;
+//        tr.position = playerTr.position + baseCamPos;
+//        teleportTrigger = false;
     }
     #endregion
-
-
-
 
 }
 
@@ -694,8 +676,6 @@ public class CameraCtrl_6 : MonoBehaviour
 }
 */
 
-
-
 //카메라 16_10_05 이후
 /*
 public class CameraCtrl_6 : MonoBehaviour
@@ -879,6 +859,8 @@ public class CameraCtrl_6 : MonoBehaviour
 
             if (hit.transform.CompareTag("Land"))
             {
+                if(objTr.name == "Luna")
+                    Debug.Log("땅땅");
                 tempPosY[idx++] = hit.point.y;
                 posY = hit.point.y;
             }
