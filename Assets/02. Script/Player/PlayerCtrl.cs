@@ -78,7 +78,9 @@ public class PlayerCtrl : MonoBehaviour
         // 플레이어에게 조작권한이 있다면 움직임
         if (isMove) Movement();
         //캐릭터 방향 회전
+        // 왼쪽 회전
         if (inputAxis < 0 && isFocusRight) { TurnPlayer(); }
+        // 오른쪽 회전
         else if (inputAxis > 0 && !isFocusRight) { TurnPlayer(); }
     }
 
@@ -175,13 +177,14 @@ public class PlayerCtrl : MonoBehaviour
     //캐릭터 방향 회전
     public void TurnPlayer()
     {
+        Debug.Log("Turn");
         isFocusRight = !isFocusRight;
         focusRight *= -1f;
-    
+
         transform.Rotate(new Vector3(0, 1, 0), 180);
 
         wahleMove.ResetSpeed();
-        if (!controller.isGrounded) { moveDir.x *= -1f; }
+        //if (!controller.isGrounded) { moveDir.x *= -1f; }
 
         //Vector3 localScale = transform.localScale;
         //localScale.z *= -1f;

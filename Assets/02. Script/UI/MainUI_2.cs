@@ -55,7 +55,7 @@ public class MainUI_2 : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(curSelectIdx);
+
         CloudeMove();
         OlaMove();
     }
