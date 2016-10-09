@@ -82,11 +82,10 @@ public class WahleMove : WahleCtrl
     private void TurningPlayer()
     {
         transform.localRotation = Quaternion.Slerp(transform.localRotation, lookRot,
-            initSpeed * Time.deltaTime);
-        transform.Translate(Vector3.forward * 0.5f * Time.deltaTime);
+            0.5f * Time.deltaTime);
+        transform.Translate(Vector3.forward * 1f * Time.deltaTime);
 
-        initSpeed = base.DecreaseSpeed(initSpeed, 0.5f, 2f);
-
+     
         changeTime += Time.deltaTime;
 
         // 일정 시간후 대기상태로 전환

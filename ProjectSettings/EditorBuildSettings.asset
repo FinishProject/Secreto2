@@ -5,5 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: Assets/01. Secen/Logo.unity
   - enabled: 1
+    path: Assets/01. Secen/MainScene 1.unity
+  - enabled: 0
+    path: Assets/01. Secen/IntroMovieScene.unity
+  - enabled: 0
+    path: Assets/01. Secen/LoadingScene.unity
+  - enabled: 0
     path: Assets/01. Secen/G_Build.unity
