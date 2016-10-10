@@ -11,9 +11,6 @@ public class WahleCtrl : MonoBehaviour {
     protected float distance = 0f; // 거리 차
     protected bool isSearch = false; // 탐색 여부
 
-    bool isStart = true;
-    private bool isSwitch = false;
-
     protected Vector3 npcPos; // NPC 위치를 저장할 변수
     protected Vector3 relativePos; // 상대적 위치값
     protected Quaternion lookRot; // 봐라볼 방향
@@ -21,11 +18,9 @@ public class WahleCtrl : MonoBehaviour {
 
     private Transform camTr; // 카메라 위치
     protected Animator anim;
-    private FSMBase fsmBase; // 몬스터 상태를 받아오기 위한 변수
 
     private WahleIdle idle;
     private WahleMove move;
-    private WahleAttack attack;
 
     public static IEnumerator curState;
     public static WahleCtrl instance;
@@ -36,18 +31,15 @@ public class WahleCtrl : MonoBehaviour {
         anim = gameObject.GetComponentInChildren<Animator>();
         camTr = GameObject.FindGameObjectWithTag("MainCamera").transform;
         playerTr = GameObject.Find("Luna_Head_Point").transform;
-        fsmBase = GetComponent<FSMBase>();
 
         idle = GetComponent<WahleIdle>();
         move = GetComponent<WahleMove>();
-        attack = GetComponent<WahleAttack>();
     }
 
     private void Start()
     {
         ChangeState(WahleState.IDLE);
         StartCoroutine(CoroutineUpdate());
-        StartCoroutine(SearchEnemy());
     }
 
     protected virtual IEnumerator CurStateUpdate() { yield return null; }
@@ -62,9 +54,6 @@ public class WahleCtrl : MonoBehaviour {
                 break;
             case WahleState.MOVE:
                 curState = move.CurStateUpdate();
-                break;
-            case WahleState.ATTACK:
-                curState = attack.CurStateUpdate();
                 break;
         }
     }
@@ -82,17 +71,6 @@ public class WahleCtrl : MonoBehaviour {
                 yield return null;
         }
     }
-
-    void ChangeWahleSwitch()
-    {
-        if (isSwitch)
-            ChangeState(WahleState.IDLE);
-        else
-            ChangeState(WahleState.SWITCH);
-
-        isSwitch = !isSwitch;
-    }
-
     // 플레이어가 발판에 올라갔을 시
     public IEnumerator StepHold()
     {
@@ -106,45 +84,6 @@ public class WahleCtrl : MonoBehaviour {
             transform.position = Vector3.Lerp(transform.position, playerTr.position - (playerTr.forward),
                 10f * Time.deltaTime);
             yield return null;
-        }
-    }
-
-    // 주변 몬스터 탐색
-    IEnumerator SearchEnemy()
-    {
-        float monsterDis = 0f;
-        while (true)
-        {
-            Collider[] searchColl = Physics.OverlapSphere(playerTr.position, 20f);
-            if (!isSearch)
-            {
-                for (int i = 0; i < searchColl.Length; i++)
-                {
-                    // 몬스터 탐색
-                    if (searchColl[i].CompareTag("MONSTER"))
-                    {
-                        // 몬스터가 일정거리 안에 들어올 시 공격으로 전환
-                        monsterDis = (searchColl[i].transform.position - playerTr.position).sqrMagnitude;
-                        if (monsterDis <= 28f)
-                        {
-                            if (!searchColl[i].GetComponent<FSMBase>().isDeath)
-                            {
-                                // 현재 상태를 공격으러 전환, 몬스터 객체를 넘겨줌
-                                ChangeState(WahleState.ATTACK);
-                                attack.GetTarget(searchColl[i].gameObject);
-                            }
-                            break;
-                        }
-                    }
-                    //NPC 탐색
-                    else if (searchColl[i].CompareTag("NPC"))
-                    {
-                        npcPos = searchColl[i].transform.position;
-                        break;
-                    }
-                }
-            }
-            yield return new WaitForSeconds(0.1f);
         }
     }
 
@@ -207,11 +146,11 @@ public class WahleCtrl : MonoBehaviour {
     }
 
     // 카메라 밖으로 나갔는지 확인
-    protected virtual bool CheckOutCamera()
+    protected virtual bool CheckOutCamera(Transform targetTr)
     {
-        Vector3 camVec = Camera.main.WorldToScreenPoint(transform.position);
+        Vector3 camVec = Camera.main.WorldToScreenPoint(targetTr.position);
         // 화면 밖으로 나갔을 시 true (오른쪽 || 왼쪽) 
-        if (camVec.x >= Camera.main.pixelWidth - 130f || camVec.x <= 130f)
+        if (camVec.x >= Camera.main.pixelWidth - 130f || camVec.x <= 0f)
             return true;
         else
             return false;

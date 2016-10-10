@@ -5,41 +5,30 @@ using UnityEngine.UI;
 public class ShowUI : MonoBehaviour {
 
     public Image shiftImg;
-    private float fadeSpeed = 2f;
+    public float fadeSpeed = 2f;
+    private int fadeDir = -1;
     private bool isActive = true;
 
-    public float alpha = 0f;
+    private float alpha = 0f;
     public static ShowUI instanace;
-
-    private Camera cam;
-    private RectTransform rectTr;
 
     void Awake()
     {
         instanace = this;
-        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        rectTr = GetComponent<RectTransform>();
     }
 
-    public void OnImage(float fadeDir)
+    public void OnImage(bool isShowUI)
     {
-        if (fadeDir == 1)
+        isActive = isShowUI;
+        if (isShowUI)
+        {
             shiftImg.gameObject.SetActive(true);
-        else
+            StartCoroutine(OffImage());
+        }
+        else if (!isShowUI)
+        {
             shiftImg.gameObject.SetActive(false);
-
-        //if (fadeDir == -1)
-        //    StartCoroutine(OffImage());
-        //else
-        //{
-        //    Color imgColor = shiftImg.material.color;
-        //    alpha += fadeDir * fadeSpeed * Time.deltaTime;
-        //    alpha = Mathf.Clamp01(alpha);
-
-        //    imgColor.a = alpha;
-
-        //    shiftImg.material.color = imgColor;
-        //}
+        }
     }
 
     public void SetPosition(Transform boxTr, float yLength)
@@ -51,14 +40,17 @@ public class ShowUI : MonoBehaviour {
 
     IEnumerator OffImage()
     {
-        while (alpha > 0f)
+        while (isActive)
         {
-            Color imgColor = shiftImg.material.color;
-            alpha -= fadeSpeed * Time.deltaTime;
+            Color imgColor = shiftImg.color;
+            alpha += fadeDir * fadeSpeed * Time.deltaTime;
             alpha = Mathf.Clamp01(alpha);
             imgColor.a = alpha;
 
-            shiftImg.material.color = imgColor;
+            shiftImg.color = imgColor;
+
+            if (alpha >= 1 || alpha <= 0)
+                fadeDir *= -1;
 
             yield return null;
         }

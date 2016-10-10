@@ -11,10 +11,8 @@ public class PlayerCtrl : MonoBehaviour
 {
     // 플레이어 이동 변수
     public float moveSpeed = 10f; // 이동 속도
-    public float maxJumpHight = 10f;
     public float basicJumpHight = 3.0f; // 기본 점프 높이
     public float dashJumpHight = 4.0f; // 대쉬 점프 높이
-    public float jumpAccel = 1f;
     public float upGravity = 1f; // 점프 시 중력 값
     public float dropGravity = 5f; // 공중에 있을 때의 중력값
     public static float curGravity; // 현재 중력값
@@ -78,7 +76,9 @@ public class PlayerCtrl : MonoBehaviour
         // 플레이어에게 조작권한이 있다면 움직임
         if (isMove) Movement();
         //캐릭터 방향 회전
+        // 왼쪽 회전
         if (inputAxis < 0 && isFocusRight) { TurnPlayer(); }
+        // 오른쪽 회전
         else if (inputAxis > 0 && !isFocusRight) { TurnPlayer(); }
     }
 
@@ -98,7 +98,7 @@ public class PlayerCtrl : MonoBehaviour
         // 지상에 있을 시
         if (controller.isGrounded)
         {
-            //curGravity = 50f;
+            curGravity = 50f;
             anim.SetBool("Jump", false);
             anim.SetBool("Dash", false);
             anim.SetBool("Idle", false);
@@ -109,7 +109,7 @@ public class PlayerCtrl : MonoBehaviour
             // 점프
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                StartCoroutine(BasicJump());
+                StartBasicJump();
             }
 
             // 키 입력 시 달리기 애니메이션 재생
@@ -131,7 +131,7 @@ public class PlayerCtrl : MonoBehaviour
             moveDir.x = inputAxis;
 
             if (Input.GetKeyDown(KeyCode.Space) && isJumping)
-                DashJump();
+                StartDashJump();
 
             if (controller.velocity.y <= -0.01)
                 curGravity = dropGravity;
@@ -141,51 +141,35 @@ public class PlayerCtrl : MonoBehaviour
         controller.Move(moveDir * moveSpeed * Time.deltaTime);
     }
 
-    IEnumerator BasicJump()
+    void StartBasicJump()
     {
         curGravity = upGravity;
         isJumping = true;
         anim.SetBool("Jump", true);
         pEffect.StartEffect(PlayerEffectList.BASIC_JUMP);
-        float jumpTime = 0f;
-        
-        //moveDir.y = basicJumpHight;
-        //moveDir.y -= curGravity * Time.deltaTime;
-        //controller.Move(moveDir * moveSpeed * Time.deltaTime);
 
-        while (Input.GetKey(KeyCode.Space))
-        {
-            if (jumpTime >= maxJumpHight)
-                break;
-            moveDir.y = jumpAccel;
-            jumpTime += Time.deltaTime;
-
-            yield return null;
-        }
+        moveDir.y += basicJumpHight;
     }
 
-    void DashJump()
+    void StartDashJump()
     {
         curGravity = upGravity;
-        anim.SetBool("Dash", true);
         isJumping = false;
+        anim.SetBool("Dash", true);
+        
         moveDir.y = dashJumpHight;
     }
 
     //캐릭터 방향 회전
     public void TurnPlayer()
     {
+        Debug.Log("Turn");
         isFocusRight = !isFocusRight;
         focusRight *= -1f;
-    
+
         transform.Rotate(new Vector3(0, 1, 0), 180);
 
         wahleMove.ResetSpeed();
-        if (!controller.isGrounded) { moveDir.x *= -1f; }
-
-        //Vector3 localScale = transform.localScale;
-        //localScale.z *= -1f;
-        //transform.localScale = localScale;
     }
 
 
@@ -193,6 +177,7 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (coll.CompareTag("DeadLine"))
         {
+            Debug.Log(coll.name);
             PlayerDie();
         }
 
