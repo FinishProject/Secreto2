@@ -859,8 +859,6 @@ public class CameraCtrl_6 : MonoBehaviour
 
             if (hit.transform.CompareTag("Land"))
             {
-                if(objTr.name == "Luna")
-                    Debug.Log("땅땅");
                 tempPosY[idx++] = hit.point.y;
                 posY = hit.point.y;
             }
