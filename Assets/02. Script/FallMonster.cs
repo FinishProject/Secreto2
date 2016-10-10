@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class FallMonster : MonoBehaviour {
 
     public GameObject endUi;
-    //public GameObject popupUi;
+    public Image lineImg;
     public Text[] textUi;
 
     public float fadeSpeed = 0.5f;
@@ -15,8 +15,7 @@ public class FallMonster : MonoBehaviour {
     void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("OBJECT"))
-        {
-            
+        {   
             PlayerCtrl.instance.SetStopMove();
             if (!isActive)
             {
@@ -43,23 +42,25 @@ public class FallMonster : MonoBehaviour {
     {
         yield return new WaitForSeconds(2f);
         endUi.SetActive(true);
+        lineImg.enabled = true;
         for (int i = 0; i < textUi.Length; i++)
             textUi[i].enabled = true;
+        
+        yield return new WaitForSeconds(4f);
 
-        yield return new WaitForSeconds(5f);
-
-        FadeInOut.instance.StartFadeInOut(1f, 1.8f, 1f);
+        FadeInOut.instance.StartFadeInOut(1f, 3f, 1f);
 
         yield return new WaitForSeconds(1f);
         StartCoroutine(FadeText(-1, 1));
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(3f);
         Application.LoadLevel("MainScene 1");
     }
 
     IEnumerator FadeText(float FadeDir, float alpha)
     {
         Color color;
+        Color lineColor = lineImg.color;
         while (true)
         {
             alpha -= fadeSpeed * Time.deltaTime;
@@ -71,8 +72,10 @@ public class FallMonster : MonoBehaviour {
                 color.a = alpha;
                 textUi[i].color = color;
             }
+            lineColor.a = alpha;
+            lineImg.color = lineColor;
 
-            if (alpha == 0f)
+            if (alpha == 0f || alpha == 1f)
                 break;
 
             yield return null;
