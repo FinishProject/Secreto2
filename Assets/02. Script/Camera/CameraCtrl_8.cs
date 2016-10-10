@@ -98,7 +98,7 @@ public class CameraCtrl_8 : MonoBehaviour {
         {
             tempPos = camParent_Tr.position;
             tempPos.y -= (box_Up_Tr.position.y - (box_Up_Tr.lossyScale.y * 0.5f)) - playerRect.buttom;
-            camParent_Tr.position = Vector3.Lerp(camParent_Tr.position, tempPos, 5 * Time.smoothDeltaTime);
+            camParent_Tr.position = Vector3.Lerp(camParent_Tr.position, tempPos, 3 * Time.smoothDeltaTime);
 
         }
     }

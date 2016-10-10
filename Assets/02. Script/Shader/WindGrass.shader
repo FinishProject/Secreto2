@@ -77,12 +77,13 @@
 				OUT.vertex = UnityPixelSnap(OUT.vertex);
 				#endif
 
-				float num = IN.vertex.z;
+				// 
+				float vertexNum = IN.vertex.z;
 
-				if ((num - _MinY) < 0.0) {
+				if ((vertexNum - _MinY) < 0.0) {
 					float3 worldPos = mul(unity_ObjectToWorld, IN.vertex).xyz;
-					float x = sin(worldPos.x / _WorldScale + (_Time.y*_Speed)) * -(num - _MinY) * _Scale * 0.01;
-					float y = cos(worldPos.y / _WorldScale + (_Time.y*_Speed)) * -(num + _MinY) * _Scale * 0.01;
+					float x = sin(worldPos.x / _WorldScale + (_Time.y*_Speed)) * -(vertexNum - _MinY) * _Scale * 0.01;
+					float y = cos(worldPos.y / _WorldScale + (_Time.y*_Speed)) * -(vertexNum + _MinY) * _Scale * 0.01;
 
 					OUT.vertex.x += x * _xScale;
 					OUT.vertex.y += y * _yScale;
