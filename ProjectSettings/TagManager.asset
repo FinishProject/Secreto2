@@ -16,6 +16,7 @@ TagManager:
   - EndPoint
   - WAHLE
   - BULLET
+  - ChaseLine
   layers:
   - Default
   - TransparentFX
