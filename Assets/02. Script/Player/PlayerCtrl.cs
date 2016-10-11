@@ -163,7 +163,6 @@ public class PlayerCtrl : MonoBehaviour
     //캐릭터 방향 회전
     public void TurnPlayer()
     {
-        Debug.Log("Turn");
         isFocusRight = !isFocusRight;
         focusRight *= -1f;
 
@@ -177,7 +176,6 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (coll.CompareTag("DeadLine"))
         {
-            Debug.Log(coll.name);
             PlayerDie();
         }
 
@@ -195,9 +193,11 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (hit.collider.CompareTag("OBJECT"))
         {
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && transform.position.y < hit.transform.position.y)
             {
-                hit.gameObject.GetComponent<PushBox>().PushObject(this.transform, isFocusRight);
+                if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
+                Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+                    hit.gameObject.GetComponent<PushBox>().PushObject(this.transform, isFocusRight);
             }
         }
     }

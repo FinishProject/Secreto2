@@ -17,18 +17,25 @@ public class ShowUI : MonoBehaviour {
         instanace = this;
     }
 
+    // 이미지 출력
     public void OnImage(bool isShowUI)
     {
         isActive = isShowUI;
-        if (isShowUI)
+        if (isActive)
         {
             shiftImg.gameObject.SetActive(true);
             StartCoroutine(OffImage());
         }
-        else if (!isShowUI)
+        else if (!isActive)
         {
             shiftImg.gameObject.SetActive(false);
         }
+    }
+
+    // 이미지 종료
+    public void SetActiveImage(bool isActive)
+    {
+        shiftImg.enabled = isActive;
     }
 
     public void SetPosition(Transform boxTr, float yLength)
@@ -54,5 +61,6 @@ public class ShowUI : MonoBehaviour {
 
             yield return null;
         }
+        Debug.Log("OFF !!");
     }
 }
