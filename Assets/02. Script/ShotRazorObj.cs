@@ -26,6 +26,7 @@ public class ShotRazorObj : MonoBehaviour {
     void ShotRay()
     {
         RaycastHit hit;
+        // 발사할 방향을 로컬 좌표에서 월드 좌표로 변환한다.
         Vector3 forward = transform.TransformDirection(Vector3.right);
 
         if (Physics.Raycast(startPoint.position, forward, out hit, maxLength))
@@ -36,8 +37,9 @@ public class ShotRazorObj : MonoBehaviour {
             }
 
             // 레이저 크기를 레이캐스트 충돌 위치와의 거리를 구하여 크기를 변경
-            Vector3 scale = lazerObj.transform.localScale;   
-            scale.x = hit.distance * interValue;
+            Vector3 scale = lazerObj.transform.localScale;
+            // 보간 값을 곱하여 레이저의 길이를 조절한다.
+            scale.x = hit.distance * interValue; 
             lazerObj.transform.localScale = scale;
             startObj.transform.position = startPoint.position;
         }

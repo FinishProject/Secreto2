@@ -39,19 +39,15 @@ public class TeleportGate : MonoBehaviour {
             FadeInOut.instance.StartFadeInOut(1f, 1.8f, 1f);
             StartCoroutine(MoveGate());
         }
-        // 오브젝트 체크, 오브젝트 있을 시 플레이어와 같이 이동하기 위해
-        else if (col.CompareTag("OBJECT"))
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        // 박스도 텔레포트에 들어오면 같이 이동
+        if (col.collider.CompareTag("OBJECT"))
         {
             isBox = true;
             boxTr = col.transform;
-        }
-    }
-
-    void OnTriggerExit(Collider col)
-    {
-        if (col.CompareTag("OBJECT"))
-        {
-            isBox = false;
         }
     }
 
