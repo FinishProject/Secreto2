@@ -74,7 +74,6 @@ public class Telpo : MonoBehaviour
 
     IEnumerator MovePoint(Collider col)
     {
-        CameraCtrl_6.instance.StartTeleport();
 
         // 출구 위치로 이동
         Vector3 movePoint = exitGate.transform.position;
@@ -89,12 +88,10 @@ public class Telpo : MonoBehaviour
         FadeInOut.instance.StartFadeInOut(1f, 1.8f, 1f);
 
         yield return new WaitForSeconds(1f);
-        CameraCtrl_6.instance.EndTeleport();
     }
 
     IEnumerator Toghter(Collider col)
     {
-        CameraCtrl_6.instance.StartTeleport();
 
         Vector3 movePoint = exitGate.transform.position;
         movePoint += exitGate.transform.up * 3f;
@@ -107,7 +104,6 @@ public class Telpo : MonoBehaviour
         FadeInOut.instance.StartFadeInOut(1f, 1.8f, 1f);
 
         yield return new WaitForSeconds(1f);
-        CameraCtrl_6.instance.EndTeleport();
         isBox = false;
     }
 }

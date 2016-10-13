@@ -223,12 +223,14 @@ public class PlayerCtrl : MonoBehaviour
 
     public void PlayerDie()
     {
+        
         StartCoroutine(ResetPlayer());
     }
 
     IEnumerator ResetPlayer()
     {
         dying = true;
+        GetComponent<CharacterController>().enabled = false;
         FadeInOut.instance.StartFadeInOut(1, 2, 3);
         isMove = false;
         cloth.gameObject.SetActive(false);
@@ -236,6 +238,8 @@ public class PlayerCtrl : MonoBehaviour
         pEffect.StartEffect(PlayerEffectList.DIE);
 
         yield return new WaitForSeconds(1.3f);
+        GetComponent<CharacterController>().enabled = true;
+        ObjectPosResetMgr.instance.ResetPos();
 
         GetPlayerData();
         cloth.gameObject.SetActive(true);
