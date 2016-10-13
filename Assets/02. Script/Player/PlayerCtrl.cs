@@ -80,12 +80,19 @@ public class PlayerCtrl : MonoBehaviour
         if (inputAxis < 0 && isFocusRight) { TurnPlayer(); }
         // 오른쪽 회전
         else if (inputAxis > 0 && !isFocusRight) { TurnPlayer(); }
+
+        if (controller.isGrounded)
+        {
+            anim.SetBool("Jump", false);
+            anim.SetBool("Dash", false);
+            anim.SetBool("Idle", false);
+            //anim.SetBool("JumpDown", false);
+        }
     }
 
     void Movement()
     {
         inputAxis = Input.GetAxis("Horizontal"); // 키 입력
-        anim.SetFloat("Velocity", controller.velocity.y);
 
         // 좌우 동시 입력을 막기위함
         if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.RightArrow) ||
@@ -99,19 +106,14 @@ public class PlayerCtrl : MonoBehaviour
         if (controller.isGrounded)
         {
             curGravity = 50f;
-            anim.SetBool("Jump", false);
-            anim.SetBool("Dash", false);
-            anim.SetBool("Idle", false);
 
             //이동
             moveDir = Vector3.right * inputAxis;
-
             // 점프
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 StartBasicJump();
             }
-
             // 키 입력 시 달리기 애니메이션 재생
             if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
                 Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) {
@@ -134,7 +136,11 @@ public class PlayerCtrl : MonoBehaviour
                 StartDashJump();
 
             if (controller.velocity.y <= -0.01)
+            {
                 curGravity = dropGravity;
+                anim.SetFloat("Velocity", controller.velocity.y);
+                //anim.SetBool("JumpDown", true);
+            }
         }
 
         moveDir.y -= curGravity * Time.deltaTime;
