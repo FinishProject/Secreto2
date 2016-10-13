@@ -3,26 +3,25 @@ using System.Collections;
 
 public class StepDownObj : MonoBehaviour {
 
-    public float downLenth = 0.3f;
-    public float speed = 4f;
+    public float maxLength = 10f;
+    public float downSpeed = 3f;
+    public float upSpeed = 2f;
+    private bool isBack = false;
 
-    private bool isStep = true;
+    private Vector3 originPos;
 
-    private Vector3 targetPos, originPos;
-
-    void Awake()
+    void Start()
     {
-        // 초기 위치와 타겟 위치 초기화
-        originPos = transform.position;
-        targetPos = new Vector3(originPos.x, originPos.y - downLenth, originPos.z);
+        originPos = this.transform.position;
     }
 
-    void OnTriggerEnter(Collider col)
+    void OnTriggerStay(Collider col)
     {
         if (col.CompareTag("Player"))
         {
-            isStep = true;
-            StartCoroutine(MoveDown());
+            isBack = false;
+
+            transform.position += Vector3.down * downSpeed * Time.deltaTime;
         }
     }
 
@@ -30,30 +29,16 @@ public class StepDownObj : MonoBehaviour {
     {
         if (col.CompareTag("Player"))
         {
-            isStep = false;
-            StartCoroutine(BackOriginPos());
+            isBack = true;
+            StartCoroutine(ReturnPosition());
         }
     }
 
-    // 아래로 이동
-    IEnumerator MoveDown()
+    IEnumerator ReturnPosition()
     {
-        while (transform.position.y >= (targetPos.y + 0.1f) && isStep)
+        while (isBack)
         {
-            transform.position = Vector3.MoveTowards(transform.position, 
-                targetPos, speed * Time.deltaTime);
-
-            yield return null;
-        }
-    }
-
-    // 초기 위치로 돌아감
-    IEnumerator BackOriginPos()
-    {
-        while (transform.position.y <= (originPos.y - 0.1f) && !isStep)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, 
-                originPos, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, originPos, upSpeed * Time.deltaTime);
 
             yield return null;
         }

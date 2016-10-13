@@ -11,16 +11,21 @@ public class PushBox : MonoBehaviour {
     bool isRight = true;
     bool isActive = false;
 
-    public void PushObject(Transform playerTr, bool isDir)
+    // PlayerCtrl 에서 플레이어가 밀때 실행
+    public void PushObject(Transform playerTr, bool isPlayerRight)
     {
-        isRight = isDir;
-        if(!isActive)
+        isRight = isPlayerRight;
+
+        if (!isActive)
+        {
+            isActive = true;
             StartCoroutine(Push(playerTr));
+        }
     }
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.CompareTag("Player"))
+        if (col.CompareTag("Player") && !isActive)
         {
             ShowUI.instanace.OnImage(true);
             ShowUI.instanace.SetPosition(this.transform, uiPosY);
@@ -35,30 +40,38 @@ public class PushBox : MonoBehaviour {
         }
     }
 
+    // 밀기
     IEnumerator Push(Transform playerTr)
     {
         PlayerCtrl.instance.SetPushAnim(true);
-        ShowUI.instanace.OnImage(false);
-        isActive = true;
 
+        ShowUI.instanace.OnImage(false);
+        
+        // 이동 방향키 누르고 있을 동안
         while (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
                 Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
         {
-            if (Input.GetKeyUp(KeyCode.LeftShift) || PlayerCtrl.inputAxis == 0f
-                || transform.position.y < playerTr.position.y || isRight != PlayerCtrl.isFocusRight)
+            // Shitf 키를 누르지 않거나, 플레이어 위치가 박스보다 높으면 밀기 종료
+            if (Input.GetKeyUp(KeyCode.LeftShift) || transform.position.y < playerTr.position.y 
+                || isRight != PlayerCtrl.isFocusRight)
             {
                 break;
             }
 
-            SoundMgr.instance.PushObject(true);
-
+            // 플레이어 정면으로 밀린다.
             moveDir = playerTr.forward;
             transform.position += moveDir * speed * Time.deltaTime;
 
+            // 사운드 재생
+            SoundMgr.instance.PushObject(true);
+
             yield return null;
         }
+        
+        // 사운드, 애니메이션 종료
         SoundMgr.instance.PushObject(false);
         PlayerCtrl.instance.SetPushAnim(false);
+
         ShowUI.instanace.OnImage(true);
         ShowUI.instanace.SetPosition(this.transform, uiPosY);
         isActive = false;
