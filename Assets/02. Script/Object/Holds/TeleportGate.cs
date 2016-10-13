@@ -71,7 +71,9 @@ public class TeleportGate : MonoBehaviour {
         PlayerCtrl.inputAxis = 0f;
         if(!isRight)
             PlayerCtrl.instance.TurnPlayer();
-        
+
+        CameraCtrl_6.instance.EndTeleport(isRight);
+
     }
 
     IEnumerator Movement()
