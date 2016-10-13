@@ -4,7 +4,7 @@ using System.Collections;
 public class ShotRazorObj : MonoBehaviour {
 
     public float maxLength = 30f;
-    private float interValue = 0.115f;
+    private float interValue = 0.12f;
 
     public GameObject startObj;
     public GameObject lazerObj;

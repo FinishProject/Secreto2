@@ -246,7 +246,6 @@ public class CameraCtrl_6 : MonoBehaviour
                 approxIdx = i - 1;
             }
         }
-        Debug.Log(idx);
         if (approx != 999f)
             posY = tempPosY[approxIdx];
     }
