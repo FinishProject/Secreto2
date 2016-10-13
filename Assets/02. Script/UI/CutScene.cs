@@ -64,6 +64,8 @@ public class CutScene : MonoBehaviour {
     IEnumerator SlideShow()
     {
         StartCoroutine(fadeSkip(true));
+        FadeInOut.instance.StartFadeInOut(0, 1, 2.5f);
+        yield return new WaitForSeconds( 2f);
         while (true)
         {
 

@@ -137,24 +137,24 @@ public class CameraCtrl_6 : MonoBehaviour
             temp = Vector3.Lerp(tr.position, new Vector3(playerTr.position.x, 0, playerTr.position.z) + baseCamPos_Left, curSpeed_X * Time.deltaTime);
 
         // 우측에 벽이 있으면 ( else if는 좌측에 벽이 있으면 )
-        if (isNeerWall_Right && isFocusRight)
+        if (isNeerWall_Right && wall_R_Pos_X - wallRayToCamGap < temp.x)
             temp.x = wall_R_Pos_X - wallRayToCamGap;
-        else if (isNeerWall_Left && !isFocusRight)
+        else if (isNeerWall_Left && wall_L_Pos_X + wallRayToCamGap > temp.x)
             temp.x = wall_L_Pos_X + wallRayToCamGap;
 
 
         // 카메라의 y 좌표 움직임
         // 플레이어 위치 > 추격할 거리 + 땅과의 거리
         if (playerTr.position.y > traceYpos + groundPos_Player.y)
-            temp.y = Mathf.Lerp(tr.position.y, traceYpos + groundPos_Player.y + baseCamPos.y + correctionValue, speed_Y_1 * Time.deltaTime);
+            temp.y = Mathf.Lerp(tr.position.y, traceYpos + groundPos_Player.y + baseCamPos.y + correctionValue + shakeVal.y, speed_Y_1 * Time.deltaTime);
 
         //추락할 때
         else if (isFalling)
-            temp.y = Mathf.Lerp(tr.position.y, baseCamPos.y + playerTr.position.y, Vector3.Distance(playerTr.position, tr.position) * Time.deltaTime);
+            temp.y = Mathf.Lerp(tr.position.y, baseCamPos.y + playerTr.position.y + shakeVal.y , Vector3.Distance(playerTr.position, tr.position) * Time.deltaTime);
 
         //그 외
         else
-            temp.y = Mathf.Lerp(tr.position.y, baseCamPos.y + groundPos_Player.y + correctionValue, speed_Y_2 * Time.deltaTime);
+            temp.y = Mathf.Lerp(tr.position.y, baseCamPos.y + groundPos_Player.y + correctionValue + shakeVal.y, speed_Y_2 * Time.deltaTime);
 
         // 텔레포트를 이용 할 때
         if (!teleportTrigger)
@@ -203,11 +203,10 @@ public class CameraCtrl_6 : MonoBehaviour
 
     #region 레이 캐스트
     RaycastHit[] hits;
-    // 기준 위치에서 레이를 쏴서 충동한 바닥의 위치를 알기위한 함수
     void ChackGround_ByRay(Transform objTr, ref float posY)
     {
-        Debug.DrawRay(objTr.position, -Vector3.up * rayRange, Color.yellow);
-        hits = Physics.RaycastAll(objTr.position, -Vector3.up, rayRange);
+        Debug.DrawRay(objTr.position, -Vector3.up * 30, Color.yellow);
+        hits = Physics.RaycastAll(objTr.position, -Vector3.up, 30);
 
         // Ignore를 가진 오브젝트가 있으면 예외 처리
         for (int i = 0; i < hits.Length; i++)
@@ -233,21 +232,69 @@ public class CameraCtrl_6 : MonoBehaviour
             }
         }
 
-        // 레이를 쏘는 위치 기준 제일 높은 위치에 있는 지형(Land)을 기준으로 Y축 위치를 저장하기 위함
-        float maxY = 0;
+        float tempVal;
+        float approx = 999f; // 근사치 값 ( 낮을 수록 근사 값)
+        int approxIdx = 0;
+
+        // 플레이어의 위치와 가까운 Y축 좌표를 찾음
         for (int i = idx; i > 0; i--)
         {
-            if (maxY < tempPosY[i - 1])
-                maxY = tempPosY[i - 1];
+            tempVal = Mathf.Abs(playerTr.position.y - tempPosY[i - 1]);
+            if (approx > tempVal)
+            {
+                approx = tempVal;
+                approxIdx = i - 1;
+            }
         }
-
-        if (maxY != 0)
-            posY = maxY;
-
+        if (approx != 999f)
+            posY = tempPosY[approxIdx];
     }
+        // 기준 위치에서 레이를 쏴서 충동한 바닥의 위치를 알기위한 함수
+        /*
+        void ChackGround_ByRay(Transform objTr, ref float posY)
+        {
+            Debug.DrawRay(objTr.position, -Vector3.up * rayRange, Color.yellow);
+            hits = Physics.RaycastAll(objTr.position, -Vector3.up, rayRange);
 
+            // Ignore를 가진 오브젝트가 있으면 예외 처리
+            for (int i = 0; i < hits.Length; i++)
+            {
+                RaycastHit hit = hits[i];
+                if (hit.transform.CompareTag("Ignore"))
+                {
+                    return;
+                }
+            }
 
-    // 추락시 카메라 추적할 때 필요한 콜리더 체크 ( 기본적으로 지형의 높이에 따른 카메라라서 빠르게 추적하기 위해 이런 콜리더가 필요함 )
+            // 레이를 쏴서 충돌한 지형들의 Y좌표를 저장 ( 지형이 겹쳐 있으면 여러개 잡히기 때문)
+            float[] tempPosY = new float[hits.Length];
+            int idx = 0;
+            for (int i = 0; i < hits.Length; i++)
+            {
+                RaycastHit hit = hits[i];
+
+                if (hit.transform.CompareTag("Land"))
+                {
+                    tempPosY[idx++] = hit.point.y;
+                    posY = hit.point.y;
+                }
+            }
+
+            // 레이를 쏘는 위치 기준 제일 높은 위치에 있는 지형(Land)을 기준으로 Y축 위치를 저장하기 위함
+            float maxY = 0;
+            for (int i = idx; i > 0; i--)
+            {
+                if (maxY < tempPosY[i - 1])
+                    maxY = tempPosY[i - 1];
+            }
+
+            if (maxY != 0)
+                posY = maxY;
+
+        }
+        */
+
+        // 추락시 카메라 추적할 때 필요한 콜리더 체크 ( 기본적으로 지형의 높이에 따른 카메라라서 빠르게 추적하기 위해 이런 콜리더가 필요함 )
     void ChackChaseLine_ByRay()
     {
         Debug.DrawRay(playerTr.position, -Vector3.up * 0.5f, Color.red);
@@ -314,18 +361,44 @@ public class CameraCtrl_6 : MonoBehaviour
 
     #endregion
 
+    public GameObject shakeObject;
+    Vector3 shakeVal;
+    bool isShaking;
+    
+    public void ShakeStart(Transform objTr, float startShakeRange)
+    {
+        StartCoroutine(Shake(objTr, startShakeRange));
+    }
 
+    IEnumerator Shake(Transform objTr, float startShakeRange)
+    {
+        shakeVal = new Vector3(0, 0.5f, 0);
+        float range = Vector3.Distance(objTr.position, playerTr.position);
+        Debug.Log(2);
+        while (range < startShakeRange)
+        {
+            Debug.Log(1);
+            range = Vector3.Distance(objTr.position, playerTr.position);
+            shakeVal.y *= -1f;
+            yield return new WaitForSeconds((range/startShakeRange)*0.5f);
+        }
+        shakeVal = new Vector3(0, 0, 0);
+    }
 
 
     #region 포탈 관련 함수
     public void StartTeleport()
     {
-//        teleportTrigger = true;
+        teleportTrigger = true;
     }
-    public void EndTeleport()
+    public void EndTeleport(bool isRight)
     {
-//        tr.position = playerTr.position + baseCamPos;
-//        teleportTrigger = false;
+        if(isRight)
+            tr.position = playerTr.position + baseCamPos;
+        else
+            tr.position = playerTr.position + baseCamPos_Left;
+
+        teleportTrigger = false;
     }
     #endregion
 

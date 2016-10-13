@@ -110,17 +110,16 @@ public class CameraCtrl_8 : MonoBehaviour {
         {
             tempPos = camParent_Tr.position;
             tempPos.x -= boxRect.left - playerRect.left;
-            camParent_Tr.position = Vector3.Lerp(camParent_Tr.position, tempPos, 10 * Time.smoothDeltaTime); 
+            camParent_Tr.position = Vector3.Lerp(camParent_Tr.position, tempPos, 15 * Time.smoothDeltaTime); 
         }
         // 플레이어가 오른쪽선을 넘었을 때
         else if (playerRect.right > boxRect.right)
         {
             tempPos = camParent_Tr.position;
             tempPos.x += playerRect.right - boxRect.right;
-            camParent_Tr.position = Vector3.Lerp(camParent_Tr.position, tempPos, 10 * Time.smoothDeltaTime);
+            camParent_Tr.position = Vector3.Lerp(camParent_Tr.position, tempPos, 15 * Time.smoothDeltaTime);
         }
 
-        
         // 플레이어가 상단선을 넘었을 때
         if (playerRect.top > boxRect.top)
         {
