@@ -226,7 +226,7 @@ public class PlayerCtrl : MonoBehaviour
 
         yield return new WaitForSeconds(1.3f);
         GetComponent<CharacterController>().enabled = true;
-        ObjectPosResetMgr.instance.ResetPos();
+        //ObjectPosResetMgr.instance.ResetPos();
 
         GetPlayerData();
         cloth.gameObject.SetActive(true);
