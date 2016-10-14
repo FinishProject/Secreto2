@@ -3,57 +3,40 @@ using System.Collections;
 
 public class RotateHold : MonoBehaviour {
 
-
-    public Transform point;
-
-    private Vector3 centerPoint;
     private float rotDir = 1f;
+    private Transform playerTr;
 
-    private float startTime = 0f;
-
-    private Quaternion qStart, qEnd;
-    private float angle = 0f;
+    private RotationMoveHold moveScript;
 
     void Start()
     {
-        centerPoint = transform.position;
+        playerTr = GameObject.FindGameObjectWithTag("Player").transform;
 
-        angle = (Mathf.Atan2(transform.position.z, transform.position.z) * Mathf.Rad2Deg);
-
-        qStart = Quaternion.AngleAxis(-angle, Vector3.forward);
-        qEnd = Quaternion.AngleAxis(angle, Vector3.forward);
+        moveScript = GetComponentInParent<RotationMoveHold>();
     }
 
-    void Update()
+    void OnTriggerStay(Collider col)
     {
+        if (col.CompareTag("Player"))
+        {
+            float speed = 0f;
+            if (moveScript != null)
+                speed = moveScript.GetSpeed();
 
-        //startTime += Time.deltaTime;
+            WahleCtrl.curState = WahleCtrl.instance.StepHold();
+            playerTr.Translate(this.transform.position.normalized * (speed * PlayerCtrl.focusRight) 
+                * Time.deltaTime);
 
-        //float moveSpeed = (Mathf.Sin(startTime * 2f) * 50f);
 
-        //float rotSpeed = (Mathf.Sin(startTime * 2f + Mathf.PI * 0.5f) + 1f) * 0.5f;
+            //Vector3 stepDir = col.ClosestPointOnBounds(col.transform.position);
 
-        //transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
-        //transform.rotation = Quaternion.Lerp(qStart, qEnd, rotSpeed);
+            //if (stepDir.x <= transform.position.x)
+            //    rotDir = 1f;
+            //else if (stepDir.x >= transform.position.x)
+            //    rotDir = -1f;
 
-        transform.LookAt(Vector3.right);
+            //if(this.transform.eulerAngles.x < 275f)
+            //    transform.Rotate(Vector3.up * rotDir * 50f * Time.deltaTime);
+        }
     }
-
-    //void OnTriggerStay(Collider col)
-    //{
-    //    if (col.CompareTag("Player"))
-    //    {
-    //        Rigidbody rb = GetComponent<Rigidbody>();
-    //        Vector3 stepDir = col.ClosestPointOnBounds(col.gameObject.transform.position);
-
-    //        if (stepDir.x <= transform.position.x)
-    //        {
-    //            rotDir = 1f;
-    //        }
-    //        else if (stepDir.x >= transform.position.x)
-    //            rotDir = -1f;
-
-    //        transform.Rotate(Vector3.up * rotDir * 10f * Time.deltaTime);
-    //    }
-    //}
 }

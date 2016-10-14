@@ -30,6 +30,7 @@ public class InitObjectPos : MonoBehaviour {
         GetComponentsInChildren<BoxCollider>();
         tempColor = meshRender.material.color;
         rigidbody = GetComponent<Rigidbody>();
+        
     }
 	void Update()
     {

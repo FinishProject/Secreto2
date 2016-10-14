@@ -43,6 +43,7 @@ public class PauseUI_2 : MonoBehaviour
         Time.timeScale = 1;
     }
 
+
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.LeftArrow))
@@ -53,8 +54,10 @@ public class PauseUI_2 : MonoBehaviour
         {
             IsSelectYes = false;
         }
-        else if (Input.GetKeyDown(KeyCode.Space))
+        else if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
         {
+            SoundMgr.instance.PlaySelectSound();
+
             if (IsSelectYes)
                 ToTitleScene();
             else
