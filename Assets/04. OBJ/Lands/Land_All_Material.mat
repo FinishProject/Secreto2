@@ -138,7 +138,7 @@ Material:
       second: 0
     - first:
         name: _MetallicRange
-      second: 0.351
+      second: 0.41
     - first:
         name: _MetallicRange2
       second: 1

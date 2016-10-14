@@ -18,7 +18,7 @@ Material:
     - first:
         name: _BumpMap
       second:
-        m_Texture: {fileID: 2800000, guid: ecd9a85c7015b7f48a01f9b0038c9d25, type: 3}
+        m_Texture: {fileID: 2800000, guid: 991c104d7ba507a4894dd76755b616f0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -72,7 +72,7 @@ Material:
     m_Floats:
     - first:
         name: _BumpScale
-      second: 1
+      second: 0.9
     - first:
         name: _Cutoff
       second: 0.5

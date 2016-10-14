@@ -7,12 +7,11 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: tree2_tree_leaf
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 490f4324c5b86034e9576314391c7948, type: 3}
   m_ShaderKeywords: _ALPHATEST_ON _EMISSION
   m_LightmapFlags: 1
-  m_CustomRenderQueue: 2450
-  stringTagMap:
-    RenderType: TransparentCutout
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -82,7 +81,7 @@ Material:
       second: 1
     - first:
         name: _Cutoff
-      second: 0.5
+      second: 0.438
     - first:
         name: _DetailNormalMapScale
       second: 1
@@ -102,6 +101,9 @@ Material:
         name: _Metallic
       second: 0
     - first:
+        name: _MinY
+      second: 0
+    - first:
         name: _Mode
       second: 1
     - first:
@@ -111,10 +113,16 @@ Material:
         name: _Parallax
       second: 0.02
     - first:
+        name: _Scale
+      second: 0.66
+    - first:
         name: _SmoothnessTextureChannel
       second: 0
     - first:
         name: _SpecularHighlights
+      second: 1
+    - first:
+        name: _Speed
       second: 1
     - first:
         name: _SrcBlend
@@ -123,8 +131,17 @@ Material:
         name: _UVSec
       second: 0
     - first:
+        name: _WorldScale
+      second: 1
+    - first:
         name: _ZWrite
       second: 1
+    - first:
+        name: _xScale
+      second: 0.5
+    - first:
+        name: _yScale
+      second: 0.5
     m_Colors:
     - first:
         name: _Color
@@ -132,6 +149,9 @@ Material:
     - first:
         name: _EmissionColor
       second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
+        name: _MainColor
+      second: {r: 1, g: 1, b: 1, a: 1}
     - first:
         name: _SpecColor
       second: {r: 0.2, g: 0.2, b: 0.2, a: 1}
