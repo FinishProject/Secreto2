@@ -16,8 +16,44 @@ Shader "Custom/StandardWindShader" {
 			_Cutoff("Alpha cutoff", Range(0,1)) = 0.5
 	}
 		SubShader{
-		Tags{ "RenderType" = "Opaque" "Queue" = "Geometry+1" "ForceNoShadowCasting" = "True" }
-		
+		Tags{ "RenderType" = "Opaque" "Queue" = "Transparent" }
+		zwrite on cull off
+
+		               Pass
+      { 
+         Name "ShadowCaster"
+         Tags { "LightMode" = "ShadowCaster" }
+         
+         CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #include "UnityCG.cginc"
+            
+            sampler2D _MainTex;
+            fixed _Cutoff;
+
+            struct v2f { 
+               V2F_SHADOW_CASTER; 
+               float2 uv : TEXCOORD1;
+            };
+            
+            v2f vert(appdata_full v)
+            {
+               v2f o;
+               o.pos = mul( UNITY_MATRIX_MVP, v.vertex ); 
+               o.uv = v.texcoord;
+               TRANSFER_SHADOW_CASTER(o)
+               return o;
+            }
+            
+            float4 frag(v2f IN) : COLOR
+            {
+               fixed4 c = tex2D( _MainTex, IN.uv );
+               clip( c.a - _Cutoff );
+               SHADOW_CASTER_FRAGMENT(IN)
+            }
+         ENDCG 
+      }    
 		CGPROGRAM
 	#pragma surface surf Standard fullforwardshadows vertex:vert           
 	#pragma target 3.0
