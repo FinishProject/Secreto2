@@ -142,20 +142,17 @@ public class CameraCtrl_6 : MonoBehaviour
         else if (isNeerWall_Left && wall_L_Pos_X + wallRayToCamGap > temp.x)
             temp.x = wall_L_Pos_X + wallRayToCamGap;
 
-
         // 카메라의 y 좌표 움직임
-        // 플레이어 위치 > 추격할 거리 + 땅과의 거리
-        if (playerTr.position.y > traceYpos + groundPos_Player.y)
-            temp.y = Mathf.Lerp(tr.position.y, traceYpos + groundPos_Player.y + baseCamPos.y + correctionValue + shakeVal.y, speed_Y_1 * Time.deltaTime);
-
         //추락할 때
-        else if (isFalling)
-            temp.y = Mathf.Lerp(tr.position.y, baseCamPos.y + playerTr.position.y + shakeVal.y , Vector3.Distance(playerTr.position, tr.position) * Time.deltaTime);
+        if (isFalling)
+            temp.y = Mathf.Lerp(tr.position.y, baseCamPos.y + playerTr.position.y + shakeVal.y, Vector3.Distance(playerTr.position, tr.position) * 1.5f * Time.deltaTime);
+        // 플레이어 위치 > 추격할 거리 + 땅과의 거리
+        else if (playerTr.position.y > traceYpos + groundPos_Player.y)
+            temp.y = Mathf.Lerp(tr.position.y, traceYpos + groundPos_Player.y + baseCamPos.y + correctionValue + shakeVal.y, speed_Y_1 * Time.deltaTime);
 
         //그 외
         else
             temp.y = Mathf.Lerp(tr.position.y, baseCamPos.y + groundPos_Player.y + correctionValue + shakeVal.y, speed_Y_2 * Time.deltaTime);
-
         // 텔레포트를 이용 할 때
         if (!teleportTrigger)
             tr.position = temp;
@@ -305,6 +302,7 @@ public class CameraCtrl_6 : MonoBehaviour
 
             if (hit.transform.CompareTag("ChaseLine"))
             {
+                Debug.Log("추락");
                 isFalling = true;
                 break;
             }
