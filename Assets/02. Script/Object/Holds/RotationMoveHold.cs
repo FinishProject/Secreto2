@@ -8,8 +8,8 @@ public class RotationMoveHold : MonoBehaviour {
     public float startAngel;
     float angle = 0;           // 각도
     float ragne;               // 중심점으로 부터의 거리
-    
-    Vector3 tempPos;
+
+    public Vector3 tempPos;
 
     // Use this for initialization
     void Start () {
@@ -28,4 +28,11 @@ public class RotationMoveHold : MonoBehaviour {
         tempPos.z = 0;
         hold.transform.position = tempPos + transform.position;
     }
+
+    public float GetSpeed()
+    {
+        return speed;
+    }
+
+    
 }
