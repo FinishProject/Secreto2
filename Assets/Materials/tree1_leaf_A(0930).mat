@@ -75,7 +75,7 @@ Material:
       second: 1
     - first:
         name: _Cutoff
-      second: 0.19
+      second: 0.122
     - first:
         name: _DetailNormalMapScale
       second: 1
@@ -111,7 +111,7 @@ Material:
       second: 0.02
     - first:
         name: _Scale
-      second: 1
+      second: 5.39
     - first:
         name: _SmoothnessTextureChannel
       second: 0
@@ -120,7 +120,7 @@ Material:
       second: 1
     - first:
         name: _Speed
-      second: 1
+      second: 6.87
     - first:
         name: _SrcBlend
       second: 1
@@ -129,7 +129,7 @@ Material:
       second: 0
     - first:
         name: _WorldScale
-      second: 1
+      second: 5.63
     - first:
         name: _ZWrite
       second: 1

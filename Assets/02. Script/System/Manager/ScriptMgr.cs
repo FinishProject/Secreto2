@@ -7,13 +7,9 @@ using UnityEngine.UI;
 // 스크립트 정보들
 public class Script
 {
-    public string name;
+    public string id;
     public string context;
-    public int scriptType;
     public int speaker;
-    public string questType;
-    public string questTarget;
-    public int completeNum;
 }
 
 public class SpokeNpc
@@ -37,7 +33,6 @@ public class ScriptMgr : MonoBehaviour {
 
     private List<Script> scriptData = new List<Script>(); //XML 데이터 저장
     private List<SpokeNpc> spokeNpc = new List<SpokeNpc>(); // 만난 NPC이름 저장
-    private QuestInfo questInfo; // 퀘스트 정보 저장
 
     public static ScriptMgr instance;
 
@@ -51,76 +46,28 @@ public class ScriptMgr : MonoBehaviour {
     }
 
     // NPC 이름에 해당하는 대사들과 퀘스트 정보를 가져옴
-    public void GetScript(string name)
+    public void GetScript(string curId)
     {
         List<Script> curScript = new List<Script>(); //현재 NPC의 대사를 저장
         isSpeak = true;
 
         // 이전에 대화를 하지 않는 NPC일 경우 대화를 위해 정보들을 가져옴
-        if (!GetSpeakName(name))
+        if (!GetSpeakName(curId))
         {
             for (int i = 0; i < scriptData.Count; i++)
             {
-                if (scriptData[i].name == name && scriptData[i].scriptType == 0)
+                if (scriptData[i].id == curId)
                 {
                     // 대사 정보들을 저장
                     curScript.Add(new Script
                     {
-                        name = name,
+                        id = scriptData[i].id,
                         context = scriptData[i].context,
-                        scriptType = scriptData[i].scriptType,
-                        speaker = scriptData[i].speaker,
-                    });
-                    // 퀘스트 정보를 저장
-                    questInfo = (new QuestInfo
-                    {
-                        questType = scriptData[0].questType,
-                        targetName = scriptData[0].questTarget,
-                        completNum = scriptData[0].completeNum,
-                    });
-                }
-            }
-            // NPC 이름과 퀘스트 달성 여부를 저장
-            spokeNpc.Add(new SpokeNpc
-            {
-                NpcName = name,
-                isQuestClear = false
-            });
-
-            QuestMgr.instance.GetQuestInfo(questInfo);
-            StartCoroutine(ShowScript(curScript));
-        }
-        // 퀘스트 수락 후 완료 시
-        else if (GetSpeakName(name) && isQuest)
-        {
-            for (int i = 0; i < scriptData.Count; i++)
-            {
-                if (scriptData[i].name == name && scriptData[i].scriptType == 1)
-                {
-                    // 대사 정보들을 저장
-                    curScript.Add(new Script
-                    {
-                        name = name,
-                        context = scriptData[i].context,
-                        scriptType = scriptData[i].scriptType,
                         speaker = scriptData[i].speaker,
                     });
                 }
             }
-            // 퀘스트 완료후 퀘스트 달성 여부 수정 저장
-            for(int i=0; i<spokeNpc.Count; i++)
-            {
-                if(spokeNpc[i].NpcName == name)
-                {
-                    spokeNpc[i].isQuestClear = true;
-                }
-            }
-            isQuest = false;
             StartCoroutine(ShowScript(curScript));
-        }
-        else if (GetSpeakName(name) && !isQuest) 
-        {
-            Debug.Log("END SPEAK");
         }
     }
 
@@ -135,7 +82,7 @@ public class ScriptMgr : MonoBehaviour {
                 {
                     PlayerCtrl.instance.isMove = true;
                     isSpeak = false;
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < bgUi.Length; i++)
                     {
                         bgUi[i].SetActive(false);
                     }
@@ -164,6 +111,11 @@ public class ScriptMgr : MonoBehaviour {
             bgUi[0].SetActive(false);
             bgUi[1].SetActive(true);
             txtUi[1].text = script;
+        }
+        else if(spekerNum == 2)
+        {
+            bgUi[2].SetActive(true);
+            txtUi[2].text = script;
         }
     }
 
