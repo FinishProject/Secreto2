@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Front_grass_2
-  m_Shader: {fileID: 4800000, guid: e2edc061f73cfa848b04f474bd618d8b, type: 3}
+  m_Shader: {fileID: 10751, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: -1
@@ -21,7 +21,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 78962088efc2e3c4789f525b9ffea478, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Floats: []
+    m_Floats:
+    - first:
+        name: _Cutoff
+      second: 0.5
     m_Colors:
     - first:
         name: _Color
