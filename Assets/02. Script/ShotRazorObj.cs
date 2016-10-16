@@ -74,6 +74,8 @@ public class ShotRazorObj : MonoBehaviour {
         // 발사할 방향을 로컬 좌표에서 월드 좌표로 변환한다.
         Vector3 forward = transform.TransformDirection(Vector3.right);
 
+        Debug.DrawRay(startPoint.position, forward, Color.red, 5f);
+
         if (Physics.Raycast(startPoint.position, forward, out hit, maxLength))
         {
             if (hit.collider.CompareTag("Player") && alpha == 1f)
@@ -89,7 +91,6 @@ public class ShotRazorObj : MonoBehaviour {
                 lazerObj.transform.localScale = scale;
                 startObj.transform.position = startPoint.position;
             }
-
 
         }
     }

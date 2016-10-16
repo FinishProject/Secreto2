@@ -58,7 +58,7 @@ public class QuestMgr : MonoBehaviour {
             {
                 Debug.Log("Complete");
                 isQuest = false;
-                ScriptMgr.instance.isQuest = true;
+                //ScriptMgr.instance.isQuest = true;
                 break;
             }
             yield return new WaitForSeconds(0.5f);
@@ -75,7 +75,7 @@ public class QuestMgr : MonoBehaviour {
             {
                 Debug.Log("Complete");
                 isQuest = false;
-                ScriptMgr.instance.isQuest = true;
+                //ScriptMgr.instance.isQuest = true;
                 break;
             }
             yield return new WaitForSeconds(0.5f);

@@ -46,13 +46,17 @@ public class FallStone : MonoBehaviour {
     {
         while (isActive)
         {
-            Vector3 spawnPos = PlayerCtrl.instance.transform.position;
-            spawnPos.y += 20f;
-            spawnPos.x += 5f;
             if (arrayIndex < spawnNum && !fallStone[arrayIndex].activeSelf)
             {
                 fallStone[arrayIndex].SetActive(true);
+
+                Vector3 spawnPos = new Vector3 (
+                    PlayerCtrl.instance.transform.position.x + 5f, 
+                    PlayerCtrl.instance.transform.position.y + 20f,
+                    PlayerCtrl.instance.transform.position.z);
+
                 fallStone[arrayIndex].transform.position = spawnPos;
+                Debug.Log(fallStone[arrayIndex].transform.position);
                 arrayIndex++;
                 yield return new WaitForSeconds(2f);
             }
