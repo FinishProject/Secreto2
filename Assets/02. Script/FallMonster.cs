@@ -9,7 +9,7 @@ public class FallMonster : MonoBehaviour {
     private bool isActive = false;
 
     private int fallCount = 0;
-
+    public GameObject worldCanvas;
 
     void OnTriggerEnter(Collider col)
     {
@@ -55,6 +55,7 @@ public class FallMonster : MonoBehaviour {
 
     IEnumerator StartEndingScript()
     {
+        worldCanvas.SetActive(false);
         yield return new WaitForSeconds(2f);
         ScriptMgr.instance.GetScript("ending");
 

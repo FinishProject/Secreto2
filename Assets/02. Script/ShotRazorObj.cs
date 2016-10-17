@@ -5,7 +5,7 @@ public class ShotRazorObj : MonoBehaviour {
 
     public float maxLength = 30f;
     private float fadeSpeed = 1f;
-    private float interValue = 0.12f;
+    private float interValue = 0.06f;
 
     public GameObject startObj;
     public GameObject lazerObj;
@@ -72,9 +72,7 @@ public class ShotRazorObj : MonoBehaviour {
     {
         RaycastHit hit;
         // 발사할 방향을 로컬 좌표에서 월드 좌표로 변환한다.
-        Vector3 forward = transform.TransformDirection(Vector3.right);
-
-        Debug.DrawRay(startPoint.position, forward, Color.red, 5f);
+        Vector3 forward = transform.TransformDirection(-Vector3.up);
 
         if (Physics.Raycast(startPoint.position, forward, out hit, maxLength))
         {

@@ -4,6 +4,7 @@ using System.Collections;
 public class RollDownLog : MonoBehaviour {
 
     public float LogSpeed = 1500;
+    public bool isStart = false;
     MeshRenderer LogMesh;
     float startShakeRange = 20;
     Vector3 orignPos;
@@ -47,6 +48,16 @@ public class RollDownLog : MonoBehaviour {
         
     }
 
+    public IEnumerator loopRollDown()
+    {
+        while(true)
+        {
+            StartRollDownLog();
+            yield return null;
+
+        }
+    }
+
     void Update()
     {
         if(isMoving)
@@ -75,7 +86,6 @@ public class RollDownLog : MonoBehaviour {
         if(isMoving && col.CompareTag("Player"))
         {
             PlayerCtrl.instance.PlayerDie();
-            SetLog();
         }
     }
 

@@ -104,23 +104,23 @@ public class ScriptMgr : MonoBehaviour {
     {
         PlayerCtrl.instance.isMove = false;
         int arrIndex = 0;
+        txtUi[3].enabled = true;
         while (true)
         {
+            
             if (arrIndex >= ShowScript.Count - 1)
             {
                 PlayerCtrl.instance.isMove = true;
-                for (int i = 0; i < bgUi.Length; i++)
-                {
-                    bgUi[i].SetActive(false);
-                }
+                txtUi[3].enabled = false;
+
                 break;
             }
             ActiveUI(ShowScript[arrIndex].speaker, ShowScript[arrIndex].context);
 
             while (true)
             {
-                txtUi[2].color = FadeText(1f);
-                if (txtUi[2].color.a == 1f)
+                txtUi[3].color = FadeText(1f);
+                if (txtUi[3].color.a == 1f)
                     break;
 
                 yield return null;
@@ -130,8 +130,8 @@ public class ScriptMgr : MonoBehaviour {
 
             while (true)
             {
-                txtUi[2].color = FadeText(-1f);
-                if (txtUi[2].color.a == 0f)
+                txtUi[3].color = FadeText(-1f);
+                if (txtUi[3].color.a == 0f)
                     break;
 
                 yield return null;
@@ -144,7 +144,7 @@ public class ScriptMgr : MonoBehaviour {
 
     Color FadeText(float fadeDir)
     {
-        Color color = txtUi[2].color;
+        Color color = txtUi[3].color;
         float alpha = color.a;
 
         alpha += fadeDir * 1f * Time.deltaTime;
@@ -179,13 +179,12 @@ public class ScriptMgr : MonoBehaviour {
         // 설명
         else if(spekerNum == 2)
         {
-            bgUi[1].SetActive(true);
-            bgUi[4].SetActive(true);
-            txtUi[1].text = script;
+            txtUi[3].text = script;
         }
         // 나레이션
         else if(spekerNum == 3)
         {
+           
             bgUi[1].SetActive(true);
             bgUi[3].SetActive(true);
             txtUi[1].text = script;

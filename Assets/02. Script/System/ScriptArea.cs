@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ScriptArea : MonoBehaviour {
 
@@ -14,7 +15,11 @@ public class ScriptArea : MonoBehaviour {
         if (col.CompareTag("Player") && !isActive)
         {
             isActive = true;
-            if (isLoad)
+
+            if (setId.Equals("narration"))
+                StartCoroutine(WaitScript());
+            
+            else if (isLoad)
             {
                 ScriptMgr.instance.GetScript(setId);
             }
@@ -34,5 +39,11 @@ public class ScriptArea : MonoBehaviour {
                 ScriptMgr.instance.SetActiveUI(false, null);
             }
         }
+    }
+
+    IEnumerator WaitScript()
+    {
+        yield return new WaitForSeconds(0.5f);
+        ScriptMgr.instance.GetScript(setId);
     }
 }

@@ -61,6 +61,5 @@ public class ShowUI : MonoBehaviour {
 
             yield return null;
         }
-        Debug.Log("OFF !!");
     }
 }
