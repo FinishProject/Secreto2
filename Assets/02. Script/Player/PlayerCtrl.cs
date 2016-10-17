@@ -81,13 +81,6 @@ public class PlayerCtrl : MonoBehaviour
         // 오른쪽 회전
         else if (inputAxis > 0 && !isFocusRight) { TurnPlayer(); }
 
-        if (controller.isGrounded)
-        {
-            anim.SetBool("Jump", false);
-            anim.SetBool("Dash", false);
-            anim.SetBool("Idle", false);
-            //anim.SetBool("JumpDown", false);
-        }
     }
 
     void Movement()
@@ -107,6 +100,11 @@ public class PlayerCtrl : MonoBehaviour
         {
             curGravity = 50f;
 
+            anim.SetBool("Jump", false);
+            anim.SetBool("Dash", false);
+            anim.SetBool("Idle", false);
+            //anim.SetBool("JumpDown", false);
+
             //이동
             moveDir = Vector3.right * inputAxis;
             // 점프
@@ -114,18 +112,23 @@ public class PlayerCtrl : MonoBehaviour
             {
                 StartBasicJump();
             }
+
             // 키 입력 시 달리기 애니메이션 재생
             if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
-                Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) {
+                Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+            {
                 anim.SetBool("Run", true);
 
                 if (!audioSource.isPlaying)
                     audioSource.PlayOneShot(runSound);
             }
-            else {
+            else
+            {
                 anim.SetBool("Run", false);
                 audioSource.Stop();
             }
+
+
         }
         // 공중에 있을 시
         else if (!controller.isGrounded)
@@ -178,7 +181,7 @@ public class PlayerCtrl : MonoBehaviour
     }
 
 
-    void OnTriggerStay(Collider coll)
+    void OnTriggerEnter(Collider coll)
     {
         if (coll.CompareTag("DeadLine"))
         {

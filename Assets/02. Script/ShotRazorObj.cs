@@ -5,7 +5,7 @@ public class ShotRazorObj : MonoBehaviour {
 
     public float maxLength = 30f;
     private float fadeSpeed = 1f;
-    private float interValue = 0.12f;
+    private float interValue = 0.06f;
 
     public GameObject startObj;
     public GameObject lazerObj;
@@ -16,6 +16,8 @@ public class ShotRazorObj : MonoBehaviour {
 
     private float fadeDir = -1f;
     private float alpha = 0f;
+
+    public bool isLand = true;
 
     void Start()
     {
@@ -72,7 +74,7 @@ public class ShotRazorObj : MonoBehaviour {
     {
         RaycastHit hit;
         // 발사할 방향을 로컬 좌표에서 월드 좌표로 변환한다.
-        Vector3 forward = transform.TransformDirection(Vector3.right);
+        Vector3 forward = transform.TransformDirection(-Vector3.up);
 
         if (Physics.Raycast(startPoint.position, forward, out hit, maxLength))
         {
@@ -80,7 +82,7 @@ public class ShotRazorObj : MonoBehaviour {
             {
                 PlayerCtrl.instance.PlayerDie();
             }
-            else if (hit.collider.CompareTag("Land"))
+            else if (hit.collider.CompareTag("Land") && isLand)
             {
                 //레이저 크기를 레이캐스트 충돌 위치와의 거리를 구하여 크기를 변경
                 Vector3 scale = lazerObj.transform.localScale;
@@ -89,7 +91,6 @@ public class ShotRazorObj : MonoBehaviour {
                 lazerObj.transform.localScale = scale;
                 startObj.transform.position = startPoint.position;
             }
-
 
         }
     }

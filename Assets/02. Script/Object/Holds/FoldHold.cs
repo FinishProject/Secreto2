@@ -10,6 +10,7 @@ public class FoldHold : MonoBehaviour {
     private float moveSpeed = 0f;
     private float moveDir = -1f;
     private float startTime = 0f;
+    private bool isOn = false;
 
     private Transform playerTr;
     private Vector3 originPos, finishPos;
@@ -34,14 +35,28 @@ public class FoldHold : MonoBehaviour {
         moveSpeed = (Mathf.Sin(startTime * speed) * length);
 
         transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+
+        if (isOn)
+        {
+            playerTr.Translate(Vector3.forward * (moveSpeed * -PlayerCtrl.focusRight) * Time.deltaTime);
+        }
     }
 
-    void OnTriggerStay(Collider col)
+    void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("Player"))
         {
+            isOn = true;
             WahleCtrl.curState = WahleCtrl.instance.StepHold();
-            playerTr.Translate(Vector3.forward * (moveSpeed * -PlayerCtrl.focusRight) * Time.deltaTime);
+        }
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        if (col.CompareTag("Player"))
+        {
+            isOn = false;
+            WahleCtrl.instance.ChangeState(WahleState.MOVE);
         }
     }
 }

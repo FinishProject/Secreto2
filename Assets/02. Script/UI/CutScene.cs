@@ -8,12 +8,11 @@ public class CutScene : MonoBehaviour {
     [System.Serializable]
     public struct ImgInfo
     {
-        public Image cutImg;
+        public GameObject cutImg;
         public float transTime;
         public bool playFadeOut;
     }
     public ImgInfo[] imgInfo;
-    public Image SkipImg;
     private bool onSkipButton;
     private int index;
     private int imgCnt;
@@ -23,9 +22,9 @@ public class CutScene : MonoBehaviour {
         onSkipButton = false;
         imgCnt = imgInfo.Length;
         
-        imgInfo[0].cutImg.enabled = true;
+        imgInfo[0].cutImg.SetActive( true);
         for (int i = 1; i < imgCnt; i++)
-            imgInfo[i].cutImg.enabled = false;
+            imgInfo[i].cutImg.SetActive(false);
 
         StartCoroutine(SlideShow());
     }
@@ -35,35 +34,8 @@ public class CutScene : MonoBehaviour {
             onSkipButton = true;
     }
 
-    IEnumerator fadeSkip(bool fadeIn)
-    {
-        Color tempAlpha = SkipImg.color;
-        float pressKeyFadeSpeed = 0.8f;
-
-        if (!fadeIn)
-        {
-            tempAlpha.a = 1;
-            pressKeyFadeSpeed *= -1;
-        }
-        else
-        {
-            tempAlpha.a = 0;
-        }
-        SkipImg.color = tempAlpha;
-        
-        while (true)
-        {
-            tempAlpha.a = pressKeyFadeSpeed * Time.deltaTime;
-            SkipImg.color += tempAlpha;
-            if (SkipImg.color.a >= 1.0f || SkipImg.color.a <= 0)
-                break;
-
-            yield return null;
-        }
-    }
     IEnumerator SlideShow()
     {
-        StartCoroutine(fadeSkip(true));
         FadeInOut.instance.StartFadeInOut(0, 1, 2.5f);
         yield return new WaitForSeconds( 2f);
         while (true)
@@ -80,7 +52,6 @@ public class CutScene : MonoBehaviour {
 
             if(imgCnt <= index + 1)
             {
-                StartCoroutine(fadeSkip(false));
                 FadeInOut.instance.StartFadeInOut(0.5f, 5f, 0.5f);
                 yield return new WaitForSeconds(1.5f);
             }
@@ -96,8 +67,8 @@ public class CutScene : MonoBehaviour {
                 yield break;
             }
 
-            imgInfo[index++].cutImg.enabled = false;
-            imgInfo[index].cutImg.enabled = true;
+            imgInfo[index++].cutImg.SetActive(false);
+            imgInfo[index].cutImg.SetActive(true);
         }
     }
 

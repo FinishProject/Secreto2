@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public enum WahleState { IDLE, MOVE, ATTACK, SWITCH }
+public enum WahleState { IDLE, MOVE, ATTACK, SWITCH, MEET }
 
 public class WahleCtrl : MonoBehaviour {
     public float maxSpeed = 10f; // 최대 속도
@@ -21,6 +21,7 @@ public class WahleCtrl : MonoBehaviour {
 
     private WahleIdle idle;
     private WahleMove move;
+    private WahleMeet meet;
 
     public static IEnumerator curState;
     public static WahleCtrl instance;
@@ -32,13 +33,15 @@ public class WahleCtrl : MonoBehaviour {
         camTr = GameObject.FindGameObjectWithTag("MainCamera").transform;
         playerTr = GameObject.Find("Luna_Head_Point").transform;
 
+        meet = GetComponent<WahleMeet>();
         idle = GetComponent<WahleIdle>();
         move = GetComponent<WahleMove>();
     }
 
     private void Start()
     {
-        ChangeState(WahleState.IDLE);
+        //curState = meet.CurStateUpdate();
+        ChangeState(WahleState.MEET);
         StartCoroutine(CoroutineUpdate());
     }
 
@@ -49,6 +52,9 @@ public class WahleCtrl : MonoBehaviour {
     {
         switch (state)
         {
+            case WahleState.MEET:
+                curState = meet.CurStateUpdate();
+                break;
             case WahleState.IDLE:
                 curState = idle.CurStateUpdate();
                 break;
@@ -71,6 +77,7 @@ public class WahleCtrl : MonoBehaviour {
                 yield return null;
         }
     }
+
     // 플레이어가 발판에 올라갔을 시
     public IEnumerator StepHold()
     {
