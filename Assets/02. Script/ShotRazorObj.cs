@@ -17,6 +17,8 @@ public class ShotRazorObj : MonoBehaviour {
     private float fadeDir = -1f;
     private float alpha = 0f;
 
+    public bool isLand = true;
+
     void Start()
     {
         shotPoint = startPoint.position;
@@ -80,7 +82,7 @@ public class ShotRazorObj : MonoBehaviour {
             {
                 PlayerCtrl.instance.PlayerDie();
             }
-            else if (hit.collider.CompareTag("Land"))
+            else if (hit.collider.CompareTag("Land") && isLand)
             {
                 //레이저 크기를 레이캐스트 충돌 위치와의 거리를 구하여 크기를 변경
                 Vector3 scale = lazerObj.transform.localScale;
