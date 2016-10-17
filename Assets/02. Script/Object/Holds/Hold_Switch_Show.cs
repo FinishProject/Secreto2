@@ -13,6 +13,7 @@ public class Hold_Switch_Show : MonoBehaviour {
     public float nextExecutionLevel = 0.65f;
 
     public GameObject elevatorParent;
+    public GameObject scriptArea;
     struct ElevatorInfo
     {
         public GameObject elevator;     // 엘레베이터 본체
@@ -54,7 +55,9 @@ public class Hold_Switch_Show : MonoBehaviour {
 
             // 알파값이 1이고 현재 셰이더가 스탠다드 셰이더가 아닐 시 스탠다드 셰이더로 변경
             if (alpha == 0 && holdObj.GetComponent<Renderer>().material.shader != standard)
+            {
                 holdObj.GetComponent<Renderer>().material.shader = standard;
+            }
 
             yield return null;
         }
@@ -66,13 +69,13 @@ public class Hold_Switch_Show : MonoBehaviour {
         if (col.collider.CompareTag("OBJECT"))
         {
             isOnBox = true;
-
+            scriptArea.SetActive(false);
             StopAllCoroutines();
             StartCoroutine(TimeAboutPlay(true));
         }
     }
 
-
+    /*
     void OnCollisionExit(Collision col)
     {
         if (col.collider.CompareTag("OBJECT") && isOnBox)
@@ -82,7 +85,9 @@ public class Hold_Switch_Show : MonoBehaviour {
             StartCoroutine(TimeAboutPlay(false));
         }
     }
+    */
 
+        /*
     void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("Player") && !isOnBox)
@@ -91,8 +96,9 @@ public class Hold_Switch_Show : MonoBehaviour {
             StartCoroutine(TimeAboutPlay(true));
         }
     }
+    */
 
-
+    /*
     void OnTriggerExit(Collider col)
     {
         if (col.CompareTag("Player") && !isOnBox)
@@ -101,7 +107,8 @@ public class Hold_Switch_Show : MonoBehaviour {
             StartCoroutine(TimeAboutPlay(false));
         }
     }
-    
+    */
+
     IEnumerator TimeAboutPlay(bool isMoveUp)
     {
         /*
@@ -111,6 +118,8 @@ public class Hold_Switch_Show : MonoBehaviour {
             StartCoroutine(moveUP(curIdx, false));
             curIdx--;
         }*/
+        CameraCtrl_6.instance.StartViewTargetCam();
+        yield return new WaitForSeconds(2f);
         int curIdx = 0;
         while (true)
         { 

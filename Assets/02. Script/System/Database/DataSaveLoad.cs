@@ -63,27 +63,18 @@ public abstract class DataSaveLoad {
         //XML데이터를 Script클래스 리스트의 옮겨 담음
         for (int i = 0; i < nodes.Count; i++)
         {
-            string m_Name, m_Context, m_QuestType, m_QuestTarget;
-            int m_scriptType, mSpeaker, m_ComleteNum;
+            string m_Id, m_Context;
+            int speaker;
 
-            m_Name = nodes[i].SelectSingleNode("name").InnerText;
+            m_Id = nodes[i].SelectSingleNode("id").InnerText;
             m_Context = nodes[i].SelectSingleNode("context").InnerText;
-            m_scriptType = System.Convert.ToInt32(nodes[i].SelectSingleNode("type").InnerText);
-            mSpeaker = System.Convert.ToInt32(nodes[i].SelectSingleNode("speaker").InnerText);
-
-            m_QuestType = nodes[0].SelectSingleNode("questType").InnerText;
-            m_QuestTarget = nodes[0].SelectSingleNode("targetName").InnerText;
-            m_ComleteNum = System.Convert.ToInt32(nodes[0].SelectSingleNode("completeNum").InnerText);
+            speaker = System.Convert.ToInt32(nodes[i].SelectSingleNode("speaker").InnerText);
 
             scriptData.Add(new Script
             {
-                name = m_Name,
+                id = m_Id,
                 context = m_Context,
-                scriptType = m_scriptType,
-                speaker = mSpeaker,
-                questType = m_QuestType,
-                questTarget = m_QuestTarget,
-                completeNum = m_ComleteNum,
+                speaker = speaker,
             });
         }
         return scriptData;

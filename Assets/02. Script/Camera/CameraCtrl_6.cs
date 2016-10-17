@@ -163,6 +163,7 @@ public class CameraCtrl_6 : MonoBehaviour
         // 텔레포트를 이용 할 때
         if (!teleportTrigger)
             tr.position = temp;
+
     }
     #endregion
 
@@ -231,6 +232,7 @@ public class CameraCtrl_6 : MonoBehaviour
 
             if (hit.transform.CompareTag("Land"))
             {
+                Debug.Log(hit.transform.name);
                 tempPosY[idx++] = hit.point.y;
                 posY = hit.point.y;
             }
@@ -326,12 +328,12 @@ public class CameraCtrl_6 : MonoBehaviour
         Debug.DrawRay(wallCheckCenterPos, Vector3.right * wallRayToCamGap, Color.magenta);
         hits = Physics.RaycastAll(wallCheckCenterPos, Vector3.right, wallRayToCamGap);
 
+        
         if (hits.Length == 0)
             isNeerWall_Right = false;
         for (int i = 0; i < hits.Length; i++)
         {
             RaycastHit hit = hits[i];
-
             if (hit.transform.CompareTag("WALL"))
             {
                 wall_R_Pos_X = hit.point.x;
@@ -341,6 +343,8 @@ public class CameraCtrl_6 : MonoBehaviour
             else
                 isNeerWall_Right = false;
         }
+
+//        Debug.Log(hits.Length + " 오른쪽 " + isNeerWall_Right);
 
         // 왼쪽에 벽이 있는지 체크
         Debug.DrawRay(wallCheckCenterPos, -Vector3.right * wallRayToCamGap, Color.cyan);
@@ -418,10 +422,16 @@ public class CameraCtrl_6 : MonoBehaviour
     }
     public void EndTeleport(bool isRight)
     {
+        Vector3 tempPos;
+
         if(isRight)
             tr.position = playerTr.position + baseCamPos;
         else
-            tr.position = playerTr.position + baseCamPos_Left;
+        {
+            tempPos = playerTr.position + baseCamPos_Left;
+            tempPos.y = traceYpos + groundPos_Player.y + baseCamPos.y + correctionValue;
+            tr.position = tempPos;
+        }
 
         teleportTrigger = false;
     }

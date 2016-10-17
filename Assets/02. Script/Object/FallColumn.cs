@@ -5,13 +5,22 @@ public class FallColumn : MonoBehaviour {
 
 
     private bool isActive = true;
-	
-	// Update is called once per frame
+    private float getTime = 0f;
+
+    public float move = 1.7f;
+    public float rot = 2f;
+    float rotSpeed = 0f;
+    float startTime = 0f;
+
+    private float angle = 0f;
+    public float moveLength = 1f;
+
+
 	void Update () {
-        if (isActive)
-        {
-            transform.Translate(Vector3.right * 0.8f * Time.deltaTime);
-            transform.RotateAround(Vector3.right, -2f * Time.deltaTime);
+        if (isActive) {
+            angle += rot;
+            transform.RotateAround(Vector3.left, rot * Time.deltaTime);
+            transform.Translate(Vector3.right * move * Time.deltaTime);
         }
     }
 
@@ -21,7 +30,7 @@ public class FallColumn : MonoBehaviour {
         if (col.collider.CompareTag("Land"))
         {
             isActive = false;
-            GetComponent<Rigidbody>().useGravity = true;
+            //GetComponent<Rigidbody>().useGravity = true;
         }
     }
 }
