@@ -72,7 +72,7 @@ Material:
     m_Floats:
     - first:
         name: _BumpScale
-      second: 0.57
+      second: 0.2
     - first:
         name: _Cutoff
       second: 0.5
@@ -121,7 +121,7 @@ Material:
     m_Colors:
     - first:
         name: _Color
-      second: {r: 0.2530277, g: 0.27289405, b: 0.33088237, a: 1}
+      second: {r: 0.29411763, g: 0.29411763, b: 0.29411763, a: 1}
     - first:
         name: _EmissionColor
       second: {r: 0, g: 0, b: 0, a: 1}

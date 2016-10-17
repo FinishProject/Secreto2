@@ -7,11 +7,12 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: tree1_leaf_A(0930)
-  m_Shader: {fileID: 4800000, guid: 490f4324c5b86034e9576314391c7948, type: 3}
+  m_Shader: {fileID: 4800000, guid: 9e3aaccd3a95c6f4085d8463843dfbc3, type: 3}
   m_ShaderKeywords: _ALPHATEST_ON _EMISSION
   m_LightmapFlags: 1
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2450
+  stringTagMap:
+    RenderType: TransparentCutout
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -48,7 +49,7 @@ Material:
     - first:
         name: _MainTex
       second:
-        m_Texture: {fileID: 2800000, guid: 00d0b8d318e864a4599a4f69f98ae3b7, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4e99a04e6846f2e4482cea9cd7be8345, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -69,13 +70,19 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - first:
+        name: _SpecGlossMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - first:
         name: _BumpScale
       second: 1
     - first:
         name: _Cutoff
-      second: 0.19
+      second: 0.122
     - first:
         name: _DetailNormalMapScale
       second: 1
@@ -111,7 +118,7 @@ Material:
       second: 0.02
     - first:
         name: _Scale
-      second: 1
+      second: 5.39
     - first:
         name: _SmoothnessTextureChannel
       second: 0
@@ -120,7 +127,7 @@ Material:
       second: 1
     - first:
         name: _Speed
-      second: 1
+      second: 6.87
     - first:
         name: _SrcBlend
       second: 1
@@ -129,7 +136,7 @@ Material:
       second: 0
     - first:
         name: _WorldScale
-      second: 1
+      second: 5.63
     - first:
         name: _ZWrite
       second: 1
@@ -152,3 +159,6 @@ Material:
     - first:
         name: _MainColor
       second: {r: 0.6838235, g: 0.6838235, b: 0.6838235, a: 1}
+    - first:
+        name: _SpecColor
+      second: {r: 0.2, g: 0.2, b: 0.2, a: 1}

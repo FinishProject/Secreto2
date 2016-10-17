@@ -42,6 +42,9 @@ public class CameraCtrl_6 : MonoBehaviour
     public Transform rayBox_L;      //   왼쪽 레이 박스 Transform
     public Transform rayBox_Wall;   // 벽체크 레이 박스 Transform
 
+    public Transform CamTargetPos;
+    bool hasCamTarget;
+
 
     Vector3 rayBox_R_addpos;        // 캐릭터 위치에 비례한 레이 박스의 위치 값 ( 오른쪽 )
     Vector3 rayBox_L_addpos;        // 캐릭터 위치에 비례한 레이 박스의 위치 값 ( 왼쪽 )
@@ -108,7 +111,8 @@ public class CameraCtrl_6 : MonoBehaviour
     {
         FocusChecker();             // 진행 방향 체크
         Speed_X_Ctrl();             // x축 속도조절
-
+        if (Input.GetKeyDown(KeyCode.I))
+            StartViewTargetCam();
         // 레이 체크
         ChackGround_ByRay(playerTr, ref groundPos_Player.y);
         if (isFocusRight)
@@ -129,6 +133,9 @@ public class CameraCtrl_6 : MonoBehaviour
 
     void LateUpdate()
     {
+        if (hasCamTarget)
+            return;
+
         Vector3 temp = tr.position;
         // 카메라의 x 좌표 움직임 ( 캐릭터가 바라보는 방향에 따라 ) 
         if (isFocusRight)
@@ -142,23 +149,21 @@ public class CameraCtrl_6 : MonoBehaviour
         else if (isNeerWall_Left && wall_L_Pos_X + wallRayToCamGap > temp.x)
             temp.x = wall_L_Pos_X + wallRayToCamGap;
 
-
         // 카메라의 y 좌표 움직임
-        // 플레이어 위치 > 추격할 거리 + 땅과의 거리
-        if (playerTr.position.y > traceYpos + groundPos_Player.y)
-            temp.y = Mathf.Lerp(tr.position.y, traceYpos + groundPos_Player.y + baseCamPos.y + correctionValue + shakeVal.y, speed_Y_1 * Time.deltaTime);
-
         //추락할 때
-        else if (isFalling)
-            temp.y = Mathf.Lerp(tr.position.y, baseCamPos.y + playerTr.position.y + shakeVal.y , Vector3.Distance(playerTr.position, tr.position) * Time.deltaTime);
+        if (isFalling)
+            temp.y = Mathf.Lerp(tr.position.y, baseCamPos.y + playerTr.position.y + shakeVal.y, Vector3.Distance(playerTr.position, tr.position) * 1.5f * Time.deltaTime);
+        // 플레이어 위치 > 추격할 거리 + 땅과의 거리
+        else if (playerTr.position.y > traceYpos + groundPos_Player.y)
+            temp.y = Mathf.Lerp(tr.position.y, traceYpos + groundPos_Player.y + baseCamPos.y + correctionValue + shakeVal.y, speed_Y_1 * Time.deltaTime);
 
         //그 외
         else
             temp.y = Mathf.Lerp(tr.position.y, baseCamPos.y + groundPos_Player.y + correctionValue + shakeVal.y, speed_Y_2 * Time.deltaTime);
-
         // 텔레포트를 이용 할 때
         if (!teleportTrigger)
             tr.position = temp;
+
     }
     #endregion
 
@@ -305,6 +310,7 @@ public class CameraCtrl_6 : MonoBehaviour
 
             if (hit.transform.CompareTag("ChaseLine"))
             {
+                Debug.Log("추락");
                 isFalling = true;
                 break;
             }
@@ -321,12 +327,12 @@ public class CameraCtrl_6 : MonoBehaviour
         Debug.DrawRay(wallCheckCenterPos, Vector3.right * wallRayToCamGap, Color.magenta);
         hits = Physics.RaycastAll(wallCheckCenterPos, Vector3.right, wallRayToCamGap);
 
+        
         if (hits.Length == 0)
             isNeerWall_Right = false;
         for (int i = 0; i < hits.Length; i++)
         {
             RaycastHit hit = hits[i];
-
             if (hit.transform.CompareTag("WALL"))
             {
                 wall_R_Pos_X = hit.point.x;
@@ -336,6 +342,8 @@ public class CameraCtrl_6 : MonoBehaviour
             else
                 isNeerWall_Right = false;
         }
+
+//        Debug.Log(hits.Length + " 오른쪽 " + isNeerWall_Right);
 
         // 왼쪽에 벽이 있는지 체크
         Debug.DrawRay(wallCheckCenterPos, -Vector3.right * wallRayToCamGap, Color.cyan);
@@ -361,6 +369,26 @@ public class CameraCtrl_6 : MonoBehaviour
 
     #endregion
 
+    #region 타켓을 바라보는 카메라
+    public void StartViewTargetCam()
+    {
+        StartCoroutine(ViewTargetCam());
+    }
+
+    IEnumerator ViewTargetCam()
+    {
+        FadeInOut.instance.StartFadeInOut(1, 1, 1);
+        hasCamTarget = true;
+        yield return new WaitForSeconds(2f);
+        tr.position = CamTargetPos.position;
+        yield return new WaitForSeconds(3f);
+        FadeInOut.instance.StartFadeInOut(1, 1, 1);
+        yield return new WaitForSeconds(1f);
+        hasCamTarget = false;
+    }
+    #endregion
+
+    #region 카메라 쉐이킹
     public GameObject shakeObject;
     Vector3 shakeVal;
     bool isShaking;
@@ -372,7 +400,7 @@ public class CameraCtrl_6 : MonoBehaviour
 
     IEnumerator Shake(Transform objTr, float startShakeRange)
     {
-        shakeVal = new Vector3(0, 0.5f, 0);
+        shakeVal = new Vector3(0, 0.3f, 0);
         float range = Vector3.Distance(objTr.position, playerTr.position);
         Debug.Log(2);
         while (range < startShakeRange)
@@ -380,11 +408,11 @@ public class CameraCtrl_6 : MonoBehaviour
             Debug.Log(1);
             range = Vector3.Distance(objTr.position, playerTr.position);
             shakeVal.y *= -1f;
-            yield return new WaitForSeconds((range/startShakeRange)*0.5f);
+            yield return new WaitForSeconds((range/startShakeRange)*0.2f);
         }
         shakeVal = new Vector3(0, 0, 0);
     }
-
+    #endregion
 
     #region 포탈 관련 함수
     public void StartTeleport()
@@ -393,10 +421,16 @@ public class CameraCtrl_6 : MonoBehaviour
     }
     public void EndTeleport(bool isRight)
     {
+        Vector3 tempPos;
+
         if(isRight)
             tr.position = playerTr.position + baseCamPos;
         else
-            tr.position = playerTr.position + baseCamPos_Left;
+        {
+            tempPos = playerTr.position + baseCamPos_Left;
+            tempPos.y = traceYpos + groundPos_Player.y + baseCamPos.y + correctionValue;
+            tr.position = tempPos;
+        }
 
         teleportTrigger = false;
     }
