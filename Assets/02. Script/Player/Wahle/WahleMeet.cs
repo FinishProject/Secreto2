@@ -9,9 +9,9 @@ public class WahleMeet : WahleCtrl
         while (true)
         {
             distance = (playerTr.position - transform.position).sqrMagnitude;
-
             if (distance <= 5f)
             {
+                
                 base.ChangeState(WahleState.MOVE);
             }
             yield return null;

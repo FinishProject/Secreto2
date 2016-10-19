@@ -12,13 +12,13 @@ public class Layer_Object : MonoBehaviour {
         StartCoroutine( ShootLayer());
     }
 
-    void OnTriggerEnter(Collider col)
-    {
-        if (col.CompareTag("Player"))
-        {
-            col.GetComponent<PlayerCtrl>().getDamage(100);
-        }
-    }
+    //void OnTriggerEnter(Collider col)
+    //{
+    //    if (col.CompareTag("Player"))
+    //    {
+    //        col.GetComponent<PlayerCtrl>().getDamage(100);
+    //    }
+    //}
 
     IEnumerator ShootLayer()
     {

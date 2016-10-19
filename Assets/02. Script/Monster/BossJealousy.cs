@@ -316,11 +316,11 @@ public class BossJealousy : FSMBase
             nvAgent.Resume();
     }
 
-    // 데미지 줄때
-    public void GiveDamage()
-    {
-        PlayerCtrl.instance.getDamage(10);
-    }
+    //// 데미지 줄때
+    //public void GiveDamage()
+    //{
+    //    PlayerCtrl.instance.getDamage(10);
+    //}
 
     #endregion
 }
