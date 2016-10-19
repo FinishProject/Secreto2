@@ -287,10 +287,10 @@ public class Slug : FSMBase
     }
 
     // 데미지 줄때
-    public void GiveDamage()
-    {
-        PlayerCtrl.instance.getDamage(10);
-    }
+    //public void GiveDamage()
+    //{
+    //    PlayerCtrl.instance.getDamage(10);
+    //}
 
     #endregion
 }

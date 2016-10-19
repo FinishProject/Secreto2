@@ -17,9 +17,9 @@ public class DamageObject : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if(col.tag.Equals("Player"))
-        {
-            PlayerCtrl.instance.getDamage(damage);
-        }
+        //if(col.tag.Equals("Player"))
+        //{
+        //    PlayerCtrl.instance.getDamage(damage);
+        //}
     }
 }
