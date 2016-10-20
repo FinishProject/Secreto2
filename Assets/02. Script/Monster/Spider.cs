@@ -213,11 +213,11 @@ public class Spider : FSMBase
         yield return null;
     }
 
-    void Attacking_OnTriggerEnter(Collider col)
-    {
-        if (col.tag.Equals("Player"))
-            GiveDamage();
-    }
+    //void Attacking_OnTriggerEnter(Collider col)
+    //{
+    //    if (col.tag.Equals("Player"))
+    //        GiveDamage();
+    //}
 
     #endregion
 
@@ -315,9 +315,9 @@ public class Spider : FSMBase
 
 
     // 데미지 줄때
-    public void GiveDamage()
-    {
-        PlayerCtrl.instance.getDamage(10);
-    }
+    //public void GiveDamage()
+    //{
+    //    PlayerCtrl.instance.getDamage(10);
+    //}
     #endregion
 }

@@ -402,14 +402,32 @@ public class CameraCtrl_6 : MonoBehaviour
     {
         shakeVal = new Vector3(0, 0.3f, 0);
         float range = Vector3.Distance(objTr.position, playerTr.position);
-        Debug.Log(2);
+
         while (range < startShakeRange)
         {
-            Debug.Log(1);
             range = Vector3.Distance(objTr.position, playerTr.position);
             shakeVal.y *= -1f;
             yield return new WaitForSeconds((range/startShakeRange)*0.2f);
         }
+        shakeVal = new Vector3(0, 0, 0);
+    }
+
+    public void StartShake(float shakeTime)
+    {
+        StartCoroutine(ShakeCamera(shakeTime));
+    }
+
+    IEnumerator ShakeCamera(float shakeTime)
+    {
+        shakeVal = new Vector3(0, 0.3f, 0);
+
+        while (shakeTime >= 0f)
+        {
+            shakeVal.y *= -1f;
+            shakeTime -= Time.deltaTime;
+            yield return new WaitForSeconds(0.2f);
+        }
+       
         shakeVal = new Vector3(0, 0, 0);
     }
     #endregion

@@ -20,35 +20,29 @@ public class PlayerCtrl : MonoBehaviour
 
     public static float inputAxis = 0f;     // 입력 받는 키의 값
     public static bool isFocusRight = true; // 우측을 봐라보는 여부
-    private float amorTime = 0.5f;
 
     [System.NonSerialized]
     public bool isMove = true;       // 현재 이동 여부
     [System.NonSerialized]
     public bool isJumping = false;   // 현재 점프중인지 확인
 
-    private float fullHp = 100; // 체력
-    private float curHp = 100;
     public static float focusRight = 1f;
     private float lockPosZ = 0f;
-
-    private bool hasSuperArmor = false;
-
-    public float ProportionHP
-    {
-        get { return curHp / fullHp; }
-    }
 
     public static Vector3 moveDir = Vector3.zero; // 이동 벡터
     public static CharacterController controller; // 캐릭터컨트롤러
     private Animator anim;
 
-    public Cloth cloth;
     public GameObject lunaModel;
+    public GameObject clothModel;
     private PlayerEffect pEffect;
     private WahleMove wahleMove;
     public AudioClip runSound;
     private AudioSource audioSource;
+
+    private AnimatorStateInfo currentBaseLayer;
+    static int runState = Animator.StringToHash("Base Layer.Run");
+    static int jumpDownState = Animator.StringToHash("Base Layer.Jump_Down");
 
     public static PlayerCtrl instance;
 
@@ -66,21 +60,76 @@ public class PlayerCtrl : MonoBehaviour
     {
         //GetPlayerData();
         curGravity = dropGravity;
-
         lockPosZ = transform.position.z;
+    }
+
+
+    void FixedUpdate()
+    {
+        currentBaseLayer = anim.GetCurrentAnimatorStateInfo(0);
+        SetAnimator();
     }
 
     void Update()
     {
         transform.position = new Vector3(transform.position.x, transform.position.y, lockPosZ);
+        
         // 플레이어에게 조작권한이 있다면 움직임
         if (isMove) Movement();
+        else if (!isMove)
+        {
+            moveDir.x = 0f;
+            moveDir.y -= curGravity * Time.deltaTime;
+            controller.Move(moveDir * moveSpeed * Time.deltaTime);
+        }
+
         //캐릭터 방향 회전
         // 왼쪽 회전
         if (inputAxis < 0 && isFocusRight) { TurnPlayer(); }
         // 오른쪽 회전
         else if (inputAxis > 0 && !isFocusRight) { TurnPlayer(); }
+    }
 
+    void SetAnimator()
+    {
+        if (controller.isGrounded && isMove)
+        {
+            anim.SetBool("Jump", false);
+            anim.SetBool("Dash", false);
+            anim.SetBool("Fall", false);
+
+            // 키 입력 시 달리기 애니메이션 재생
+            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
+                Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+            {
+                anim.SetBool("Run", true);
+
+                if (!audioSource.isPlaying)
+                    audioSource.PlayOneShot(runSound);
+            }
+            else
+            {
+                anim.SetBool("Run", false);
+                audioSource.Stop();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                anim.SetBool("Jump", true);
+            }
+        }
+        else if (!controller.isGrounded)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                anim.SetBool("Dash", true);
+            }
+
+            else if(controller.velocity.y <= -0.01 && currentBaseLayer.nameHash.Equals(runState))
+            {
+                anim.SetBool("Fall", true);
+            }
+        }
     }
 
     void Movement()
@@ -99,12 +148,6 @@ public class PlayerCtrl : MonoBehaviour
         if (controller.isGrounded)
         {
             curGravity = 50f;
-
-            anim.SetBool("Jump", false);
-            anim.SetBool("Dash", false);
-            anim.SetBool("Idle", false);
-            //anim.SetBool("JumpDown", false);
-
             //이동
             moveDir = Vector3.right * inputAxis;
             // 점프
@@ -112,23 +155,6 @@ public class PlayerCtrl : MonoBehaviour
             {
                 StartBasicJump();
             }
-
-            // 키 입력 시 달리기 애니메이션 재생
-            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
-                Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
-            {
-                anim.SetBool("Run", true);
-
-                if (!audioSource.isPlaying)
-                    audioSource.PlayOneShot(runSound);
-            }
-            else
-            {
-                anim.SetBool("Run", false);
-                audioSource.Stop();
-            }
-
-
         }
         // 공중에 있을 시
         else if (!controller.isGrounded)
@@ -139,11 +165,7 @@ public class PlayerCtrl : MonoBehaviour
                 StartDashJump();
 
             if (controller.velocity.y <= -0.01)
-            {
                 curGravity = dropGravity;
-                anim.SetFloat("Velocity", controller.velocity.y);
-                //anim.SetBool("JumpDown", true);
-            }
         }
 
         moveDir.y -= curGravity * Time.deltaTime;
@@ -187,15 +209,10 @@ public class PlayerCtrl : MonoBehaviour
         {
             PlayerDie();
         }
-
-        else if (coll.CompareTag("Finish"))
-        {
-            InGameUI_2.instance.GameEnd();
-        }
-        else if (coll.CompareTag("StartPoint"))
-        {
-            Save();
-        }
+        //else if (coll.CompareTag("StartPoint"))
+        //{
+        //    Save();
+        //}
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
@@ -213,7 +230,6 @@ public class PlayerCtrl : MonoBehaviour
 
     public void PlayerDie()
     {
-        
         StartCoroutine(ResetPlayer());
     }
 
@@ -223,8 +239,9 @@ public class PlayerCtrl : MonoBehaviour
         GetComponent<CharacterController>().enabled = false;
         FadeInOut.instance.StartFadeInOut(1, 2, 3);
         isMove = false;
-        cloth.gameObject.SetActive(false);
+
         lunaModel.SetActive(false);
+        clothModel.SetActive(false);
         pEffect.StartEffect(PlayerEffectList.DIE);
 
         yield return new WaitForSeconds(1.3f);
@@ -232,8 +249,8 @@ public class PlayerCtrl : MonoBehaviour
         //ObjectPosResetMgr.instance.ResetPos();
 
         GetPlayerData();
-        cloth.gameObject.SetActive(true);
         lunaModel.SetActive(true);
+        clothModel.SetActive(true);
 
         isMove = true;
 
@@ -254,49 +271,11 @@ public class PlayerCtrl : MonoBehaviour
             transform.position = pData.pPosition;
         }
     }
-
-    public void getRecovery(float recovery)
-    {
-        curHp += recovery;
-        InGameUI.instance.ChangeHpBar();
-        if (curHp >= 100)
-        {
-            curHp = 100;
-            return;
-        }
-    }
-
-    public void getDamage(float damage)
-    {
-        if (!hasSuperArmor)
-        {
-            StartCoroutine(SuperArmor());
-            curHp -= damage;
-            InGameUI.instance.ChangeHpBar();
-            anim.SetTrigger("Hit");
-            if (curHp <= 0)
-            {
-                PlayerDie();
-                return;
-            }
-        }
-    }
-
-    IEnumerator SuperArmor()
-    {
-        hasSuperArmor = true;
-        yield return new WaitForSeconds(amorTime);
-        hasSuperArmor = false;
-    }
-
-    
     public void animReset()
     {
-        anim.SetFloat("Velocity", 0);
         anim.SetBool("Run", false);
         anim.SetBool("Jump", false);
         anim.SetBool("Dash", false);
-        anim.SetBool("Idle", true);
     }
 
     void OnEnable()

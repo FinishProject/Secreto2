@@ -70,9 +70,7 @@ public class WahleCtrl : MonoBehaviour {
         while (true)
         {
             if (!curState.Equals(null) && curState.MoveNext())
-            {
                 yield return curState.Current;
-            }
             else
                 yield return null;
         }

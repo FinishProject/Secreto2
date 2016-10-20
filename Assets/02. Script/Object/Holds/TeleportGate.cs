@@ -57,7 +57,7 @@ public class TeleportGate : MonoBehaviour {
         Vector3 exitPoint = exitGate.position;
         exitPoint += Vector3.right * focusDir * 3f;
         exitPoint -= Vector3.up * 4.5f;
-        StartCoroutine(Movement());
+        //StartCoroutine(Movement());
         CameraCtrl_6.instance.StartTeleport();
         yield return new WaitForSeconds(1f);
 

@@ -30,7 +30,7 @@ public class HpRecoveryItem : WasteItem
 
         if (col.tag.Equals("Player") && isGetPossible)
         {
-            PlayerCtrl.instance.getRecovery(itemData.value);  // 플레이어 체력회복
+            //PlayerCtrl.instance.getRecovery(itemData.value);  // 플레이어 체력회복
             StopAllCoroutines();                              // 사용중인 코루틴 정지
             isGetPossible = false;
             isChasePlayer = false;
