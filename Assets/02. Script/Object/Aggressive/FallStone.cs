@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class FallStone : MonoBehaviour {
 
@@ -12,6 +13,8 @@ public class FallStone : MonoBehaviour {
     private GameObject[] fallStone;
 
     public static FallStone instance;
+
+    private Queue<int> stoneIndex = new Queue<int>();
 
 	void Start () {
         instance = this;
@@ -51,14 +54,18 @@ public class FallStone : MonoBehaviour {
                 fallStone[arrayIndex].SetActive(true);
 
                 Vector3 spawnPos = new Vector3 (
-                    PlayerCtrl.instance.transform.position.x + 5f, 
+                    PlayerCtrl.instance.transform.position.x + 2f, 
                     PlayerCtrl.instance.transform.position.y + 20f,
                     PlayerCtrl.instance.transform.position.z);
 
                 fallStone[arrayIndex].transform.position = spawnPos;
-                Debug.Log(fallStone[arrayIndex].transform.position);
+
+                CameraCtrl_6.instance.StartShake(0.13f);
+
+                StartCoroutine(RemoveSotne(arrayIndex));
                 arrayIndex++;
-                yield return new WaitForSeconds(2f);
+                
+                yield return new WaitForSeconds(5f);
             }
 
             if (arrayIndex >= spawnNum)
@@ -66,5 +73,13 @@ public class FallStone : MonoBehaviour {
 
             yield return null;
         }
+    }
+
+    IEnumerator RemoveSotne(int curIndex)
+    {
+        stoneIndex.Enqueue(curIndex);
+        yield return new WaitForSeconds(3f);
+        int removeIndex = stoneIndex.Dequeue();
+        fallStone[removeIndex].SetActive(false);
     }
 }

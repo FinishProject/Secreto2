@@ -20,14 +20,16 @@ public class WayPoint : MonoBehaviour
             OnSave();
             InGameUI_2.instance.AvtiveSave();
 
-            StartCoroutine(SetEffect());
+            if(effect.Length > 0)
+                StartCoroutine(SetEffect());
         }
 
     }
 
     IEnumerator SetEffect()
     {
-        for(int i=0; i<effect.Length; i++)
+        Debug.Log("Effect");
+        for (int i = 0; i < effect.Length; i++)
             effect[i].SetActive(true);
 
         yield return new WaitForSeconds(2.5f);

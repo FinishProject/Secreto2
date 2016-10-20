@@ -34,6 +34,7 @@ public class PlayerCtrl : MonoBehaviour
     private Animator anim;
 
     public GameObject lunaModel;
+    public GameObject clothModel;
     private PlayerEffect pEffect;
     private WahleMove wahleMove;
     public AudioClip runSound;
@@ -93,9 +94,9 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (controller.isGrounded && isMove)
         {
-            Debug.Log("Player Is Grounded");
             anim.SetBool("Jump", false);
             anim.SetBool("Dash", false);
+            anim.SetBool("Fall", false);
 
             // 키 입력 시 달리기 애니메이션 재생
             if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
@@ -123,8 +124,12 @@ public class PlayerCtrl : MonoBehaviour
             {
                 anim.SetBool("Dash", true);
             }
+
+            else if(controller.velocity.y <= -0.01 && currentBaseLayer.nameHash.Equals(runState))
+            {
+                anim.SetBool("Fall", true);
+            }
         }
-        
     }
 
     void Movement()
@@ -204,10 +209,10 @@ public class PlayerCtrl : MonoBehaviour
         {
             PlayerDie();
         }
-        else if (coll.CompareTag("StartPoint"))
-        {
-            Save();
-        }
+        //else if (coll.CompareTag("StartPoint"))
+        //{
+        //    Save();
+        //}
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
@@ -236,6 +241,7 @@ public class PlayerCtrl : MonoBehaviour
         isMove = false;
 
         lunaModel.SetActive(false);
+        clothModel.SetActive(false);
         pEffect.StartEffect(PlayerEffectList.DIE);
 
         yield return new WaitForSeconds(1.3f);
@@ -244,6 +250,7 @@ public class PlayerCtrl : MonoBehaviour
 
         GetPlayerData();
         lunaModel.SetActive(true);
+        clothModel.SetActive(true);
 
         isMove = true;
 
