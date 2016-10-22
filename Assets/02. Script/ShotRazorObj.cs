@@ -36,7 +36,7 @@ public class ShotRazorObj : MonoBehaviour {
     }
 
 	void Update () {
-        if(alpha == 1f)
+        if(alpha >= 0.9f)
             ShotRay();
 	}
     
@@ -46,25 +46,35 @@ public class ShotRazorObj : MonoBehaviour {
         Renderer meshRender = lazerMat.GetComponent<Renderer>();
         Color setColor = meshRender.material.color;
 
+        bool isUp = true;
         while (true)
         {
             alpha += fadeDir * fadeSpeed * Time.deltaTime;
             alpha = Mathf.Clamp01(alpha);
 
             setColor.a = alpha;
-
             meshRender.material.color = setColor;
 
             if (alpha == 0f || alpha == 1f)
             {
                 fadeDir *= -1f;
                 yield return new WaitForSeconds(5f);
+
+                if (fadeDir == 1f)
+                {
+                    isUp = true;
+                    fadeSpeed = 0.3f;
+                }
+                else
+                    fadeSpeed = 2f;
             }
 
-            if (fadeDir == 1f)
-                fadeSpeed = 0.3f;
-            else
-                fadeSpeed = 2f;
+            if (isUp && fadeSpeed <= 1f && setColor.a >= 0.2f)
+            {
+                yield return new WaitForSeconds(2.5f);
+                isUp = false;
+                fadeSpeed = 5f;
+            }
 
             yield return null;
         }

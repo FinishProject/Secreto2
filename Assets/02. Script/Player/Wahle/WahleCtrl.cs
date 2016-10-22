@@ -26,6 +26,8 @@ public class WahleCtrl : MonoBehaviour {
     public static IEnumerator curState;
     public static WahleCtrl instance;
 
+    bool isActive = true;
+
     void Awake()
     {
         instance = this;
@@ -38,10 +40,9 @@ public class WahleCtrl : MonoBehaviour {
         move = GetComponent<WahleMove>();
     }
 
-    private void Start()
+    protected void Start()
     {
-        //curState = meet.CurStateUpdate();
-        ChangeState(WahleState.MEET);
+        curState = meet.CurStateUpdate();
         StartCoroutine(CoroutineUpdate());
     }
 

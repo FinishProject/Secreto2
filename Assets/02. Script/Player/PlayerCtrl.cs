@@ -43,6 +43,7 @@ public class PlayerCtrl : MonoBehaviour
     private AnimatorStateInfo currentBaseLayer;
     static int runState = Animator.StringToHash("Base Layer.Run");
     static int jumpDownState = Animator.StringToHash("Base Layer.Jump_Down");
+    static int JumpUpState = Animator.StringToHash("Base Layer.Jump_Up(5~25)");
 
     public static PlayerCtrl instance;
 
@@ -120,7 +121,7 @@ public class PlayerCtrl : MonoBehaviour
         }
         else if (!controller.isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) && currentBaseLayer.nameHash.Equals(JumpUpState))
             {
                 anim.SetBool("Dash", true);
             }
@@ -209,10 +210,10 @@ public class PlayerCtrl : MonoBehaviour
         {
             PlayerDie();
         }
-        //else if (coll.CompareTag("StartPoint"))
-        //{
-        //    Save();
-        //}
+        else if (coll.CompareTag("StartPoint"))
+        {
+            Save();
+        }
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
