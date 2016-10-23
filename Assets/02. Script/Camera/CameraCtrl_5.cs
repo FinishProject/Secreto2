@@ -70,6 +70,7 @@ public class CameraCtrl_5 : MonoBehaviour, Sensorable_Return
 
     void LateUpdate()
     {
+
         sensorArea.transform.position = PlayerCtrl.instance.transform.position + new Vector3(0,1);
         Vector3 temp = tr.position;
 
@@ -156,6 +157,7 @@ public class CameraCtrl_5 : MonoBehaviour, Sensorable_Return
                 {
                     if (returnObjet != null)
                     {
+                        Debug.Log(11);
                         if(!returnObjet.GetComponent<CameraArea_2>().moving)
                         {
                             isCamAreaMove = false;

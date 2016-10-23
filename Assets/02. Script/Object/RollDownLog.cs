@@ -31,6 +31,7 @@ public class RollDownLog : MonoBehaviour {
         isMoving = false;
         LogMesh.enabled = false;
         collider.enabled = false;
+        isShaking = false;
 
         transform.position = orignPos;
         transform.rotation = orignRot;

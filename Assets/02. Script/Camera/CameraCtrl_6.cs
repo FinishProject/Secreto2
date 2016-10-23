@@ -208,6 +208,7 @@ public class CameraCtrl_6 : MonoBehaviour
 
     #region 레이 캐스트
     RaycastHit[] hits;
+    GameObject curHold = null;
     void ChackGround_ByRay(Transform objTr, ref float posY)
     {
         Debug.DrawRay(objTr.position, -Vector3.up * 30, Color.yellow);
@@ -403,7 +404,6 @@ public class CameraCtrl_6 : MonoBehaviour
     {
         shakeVal = new Vector3(0, 0.3f, 0);
         float range = Vector3.Distance(objTr.position, playerTr.position);
-        Debug.Log(2);
         while (range < startShakeRange)
         {
             Debug.Log(1);

@@ -68,6 +68,7 @@ public class CameraCtrl_4 : MonoBehaviour, Sensorable_Return, Sensorable_Somethi
 
     void Update()
     {
+        sensorArea.transform.position = playerTr.position;
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             Debug.Log(1111);
