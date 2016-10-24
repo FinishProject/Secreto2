@@ -42,9 +42,9 @@ public class Sensor : MonoBehaviour
 
         if (col.tag.Equals("Player"))
         {
-            if (transform.parent.GetComponent<Sensorable_Player>() != null &&
-                transform.parent.GetComponent<Sensorable_Player>().ActiveSensor_Player(index))
-                gameObject.SetActive(false);
+            if (transform.parent.GetComponent<Sensorable_Player>() != null)
+                transform.parent.GetComponent<Sensorable_Player>().ActiveSensor_Player(index);
+//                gameObject.SetActive(false);
         }
 
         if (col.tag.Equals(colliderName))
