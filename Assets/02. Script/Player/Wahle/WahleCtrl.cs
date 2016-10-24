@@ -82,13 +82,21 @@ public class WahleCtrl : MonoBehaviour {
     {
         while (true)
         {
-            relativePos = (playerTr.position - transform.position); // 두 객체간의 거리 차
+
+            relativePos = playerTr.position - transform.position;
             lookRot = Quaternion.LookRotation(relativePos);
 
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, lookRot, 5f * Time.deltaTime);
-            // 선형 보간을 사용한 캐릭터 추격
-            transform.position = Vector3.Lerp(transform.position, playerTr.position - (playerTr.forward),
-                10f * Time.deltaTime);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, lookRot,
+            2f * Time.deltaTime);
+            transform.Translate(Vector3.forward * 3f * Time.deltaTime);
+
+            //relativePos = (playerTr.position - transform.position); // 두 객체간의 거리 차
+            //lookRot = Quaternion.LookRotation(relativePos);
+
+            //transform.localRotation = Quaternion.Slerp(transform.localRotation, lookRot, 5f * Time.deltaTime);
+            //// 선형 보간을 사용한 캐릭터 추격
+            //transform.position = Vector3.Lerp(transform.position, playerTr.position - (playerTr.forward),
+            //    10f * Time.deltaTime);
             yield return null;
         }
     }

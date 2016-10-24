@@ -25,11 +25,11 @@ public class ShotRazorObj : MonoBehaviour {
         shotPoint.x += 0.5f;
         startObj.transform.position = shotPoint;
 
-        Vector3 scale = lazerObj.transform.localScale;
+        //Vector3 scale = lazerObj.transform.localScale;
         // 보간 값을 곱하여 레이저의 길이를 조절한다.
-        scale.x = maxLength * interValue;
-        lazerObj.transform.localScale = scale;
-        startObj.transform.position = startPoint.position;
+        //scale.x = maxLength * interValue;
+        //lazerObj.transform.localScale = scale;
+        //startObj.transform.position = startPoint.position;
 
         StartCoroutine(SetLazer());
 
@@ -95,11 +95,11 @@ public class ShotRazorObj : MonoBehaviour {
             else if (hit.collider.CompareTag("Land") && isLand)
             {
                 //레이저 크기를 레이캐스트 충돌 위치와의 거리를 구하여 크기를 변경
-                Vector3 scale = lazerObj.transform.localScale;
+                //Vector3 scale = lazerObj.transform.localScale;
                 //보간 값을 곱하여 레이저의 길이를 조절한다.
-                scale.x = hit.distance * interValue;
-                lazerObj.transform.localScale = scale;
-                startObj.transform.position = startPoint.position;
+                //scale.x = hit.distance * interValue;
+                //lazerObj.transform.localScale = scale;
+                //startObj.transform.position = startPoint.position;
             }
 
         }

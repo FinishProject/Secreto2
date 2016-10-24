@@ -33,7 +33,7 @@ public class FallStone : MonoBehaviour {
         if (col.CompareTag("Player") && !isActive)
         {
             isActive = true;
-            StartCoroutine(FallStoneSpawn());
+            StartCoroutine(SpawnStone());
         }
     }
     
@@ -42,6 +42,26 @@ public class FallStone : MonoBehaviour {
         if (col.CompareTag("Player"))
         {
             isActive = false;
+        }
+    }
+
+    IEnumerator SpawnStone()
+    {
+        while (isActive)
+        {
+
+            GameObject stoneObj = (GameObject)Instantiate(stoneObject,
+                new Vector3(
+                    PlayerCtrl.instance.transform.position.x + 2f,
+                    PlayerCtrl.instance.transform.position.y + 20f,
+                    PlayerCtrl.instance.transform.position.z),
+            Quaternion.identity);
+
+            yield return new WaitForSeconds(5f);
+
+            Destroy(stoneObj);
+            
+            yield return null;
         }
     }
 
