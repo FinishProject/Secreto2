@@ -5,21 +5,21 @@ public class PushGidoong : MonoBehaviour, Sensorable_Player
 { 
     public GameObject pusher;
     Rigidbody pushersRigidbody;
-
+    int passCount;
+    public bool pushFirstTime;
 	// Use this for initialization
 	void Start () {
         pushersRigidbody = pusher.GetComponent<Rigidbody>();
-    }
-	
-	// Update is called once per frame
-	void Update () {
-
+        passCount = 0;
     }
 
     public bool ActiveSensor_Player(int index)
     {
-        Debug.Log(1);
-        pushersRigidbody.AddForce(-Vector3.forward * 3000);
+        passCount++;
+        if(pushFirstTime || passCount >= 2)
+        {
+            pushersRigidbody.AddForce(-Vector3.forward * 3000);
+        }
         return true;
     }
 }

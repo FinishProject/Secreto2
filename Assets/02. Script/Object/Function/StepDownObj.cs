@@ -12,14 +12,14 @@ public class StepDownObj : MonoBehaviour {
     private Vector3 originPos;
 
     private Shader standard;
-    private Shader trans;
+    public Shader trans;
 
     void Start()
     {
         originPos = this.transform.position;
         standard = Shader.Find("Standard");
-        trans = Shader.Find("Custom/balpan_trans");
-        Debug.Log(trans);
+        //trans = Shader.Find("Custom/balpan_trans");
+        //Debug.Log(trans);
     }
 
     void OnTriggerStay(Collider col)
