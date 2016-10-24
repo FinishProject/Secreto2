@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: tree1_leaf_A(0930)
-  m_Shader: {fileID: 4800000, guid: 9e3aaccd3a95c6f4085d8463843dfbc3, type: 3}
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _ALPHATEST_ON _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: 2450
@@ -53,6 +53,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
+        name: _MainTex2D
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
         name: _MetallicGlossMap
       second:
         m_Texture: {fileID: 0}
@@ -82,7 +88,7 @@ Material:
       second: 1
     - first:
         name: _Cutoff
-      second: 0.122
+      second: 0.253
     - first:
         name: _DetailNormalMapScale
       second: 1

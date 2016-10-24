@@ -24,7 +24,7 @@ public class LoadingScreen : MonoBehaviour
         StartCoroutine(ShowText());
 
         yield return new WaitForSeconds(1.5f);
-        Application.LoadLevel("G_Build");
+        Application.LoadLevel("G_Build_Test");
     }
 
     IEnumerator ShowText()

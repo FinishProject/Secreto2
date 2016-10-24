@@ -25,18 +25,18 @@ public class ShotRazorObj : MonoBehaviour {
         shotPoint.x += 0.5f;
         startObj.transform.position = shotPoint;
 
-        Vector3 scale = lazerObj.transform.localScale;
+        //Vector3 scale = lazerObj.transform.localScale;
         // 보간 값을 곱하여 레이저의 길이를 조절한다.
-        scale.x = maxLength * interValue;
-        lazerObj.transform.localScale = scale;
-        startObj.transform.position = startPoint.position;
+        //scale.x = maxLength * interValue;
+        //lazerObj.transform.localScale = scale;
+        //startObj.transform.position = startPoint.position;
 
         StartCoroutine(SetLazer());
 
     }
 
 	void Update () {
-        if(alpha == 1f)
+        if(alpha >= 0.9f)
             ShotRay();
 	}
     
@@ -46,25 +46,35 @@ public class ShotRazorObj : MonoBehaviour {
         Renderer meshRender = lazerMat.GetComponent<Renderer>();
         Color setColor = meshRender.material.color;
 
+        bool isUp = true;
         while (true)
         {
             alpha += fadeDir * fadeSpeed * Time.deltaTime;
             alpha = Mathf.Clamp01(alpha);
 
             setColor.a = alpha;
-
             meshRender.material.color = setColor;
 
             if (alpha == 0f || alpha == 1f)
             {
                 fadeDir *= -1f;
                 yield return new WaitForSeconds(5f);
+
+                if (fadeDir == 1f)
+                {
+                    isUp = true;
+                    fadeSpeed = 0.3f;
+                }
+                else
+                    fadeSpeed = 2f;
             }
 
-            if (fadeDir == 1f)
-                fadeSpeed = 0.3f;
-            else
-                fadeSpeed = 2f;
+            if (isUp && fadeSpeed <= 1f && setColor.a >= 0.2f)
+            {
+                yield return new WaitForSeconds(2.5f);
+                isUp = false;
+                fadeSpeed = 5f;
+            }
 
             yield return null;
         }
@@ -85,11 +95,11 @@ public class ShotRazorObj : MonoBehaviour {
             else if (hit.collider.CompareTag("Land") && isLand)
             {
                 //레이저 크기를 레이캐스트 충돌 위치와의 거리를 구하여 크기를 변경
-                Vector3 scale = lazerObj.transform.localScale;
+                //Vector3 scale = lazerObj.transform.localScale;
                 //보간 값을 곱하여 레이저의 길이를 조절한다.
-                scale.x = hit.distance * interValue;
-                lazerObj.transform.localScale = scale;
-                startObj.transform.position = startPoint.position;
+                //scale.x = hit.distance * interValue;
+                //lazerObj.transform.localScale = scale;
+                //startObj.transform.position = startPoint.position;
             }
 
         }

@@ -52,13 +52,13 @@ public class DownWall : MonoBehaviour {
         else if(!isUp) { isDown = false; }
     }
 
-    void OnTriggerEnter(Collider col)
-    {
-        if (col.CompareTag("Player"))
-        {
-            PlayerCtrl.instance.getDamage(200f);
-        }
-    }
+    //void OnTriggerEnter(Collider col)
+    //{
+    //    if (col.CompareTag("Player"))
+    //    {
+    //        PlayerCtrl.instance.getDamage(200f);
+    //    }
+    //}
 
 
     //void Start()
