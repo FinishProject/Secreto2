@@ -214,6 +214,20 @@ public class PlayerCtrl : MonoBehaviour
         {
             Save();
         }
+        else if (coll.CompareTag("Hold"))
+        {
+            Debug.Log(this.transform.parent);
+            WahleCtrl.curState = WahleCtrl.instance.StepHold();
+        }
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        if (col.CompareTag("Hold"))
+        {
+            WahleCtrl.instance.transform.parent = this.transform.parent;
+            WahleCtrl.instance.ChangeState(WahleState.MOVE);
+        }
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
