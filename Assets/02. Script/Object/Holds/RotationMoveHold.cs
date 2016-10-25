@@ -60,7 +60,6 @@ public class RotationMoveHold : MonoBehaviour {
         if (coll.CompareTag("Player"))
         {
             isOn = false;
-            WahleCtrl.instance.ChangeState(WahleState.MOVE);
         }
     }
 

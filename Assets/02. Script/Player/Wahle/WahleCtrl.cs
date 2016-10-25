@@ -26,6 +26,9 @@ public class WahleCtrl : MonoBehaviour {
     public static IEnumerator curState;
     public static WahleCtrl instance;
 
+    public GameObject lunaModel;
+    public GameObject playerMgr;
+
     bool isActive = true;
 
     void Awake()
@@ -80,6 +83,8 @@ public class WahleCtrl : MonoBehaviour {
     // 플레이어가 발판에 올라갔을 시
     public IEnumerator StepHold()
     {
+        transform.parent = lunaModel.transform;
+
         while (true)
         {
 
@@ -87,7 +92,7 @@ public class WahleCtrl : MonoBehaviour {
             lookRot = Quaternion.LookRotation(relativePos);
 
             transform.localRotation = Quaternion.Slerp(transform.localRotation, lookRot,
-            2f * Time.deltaTime);
+            50f * Time.deltaTime);
             transform.Translate(Vector3.forward * 3f * Time.deltaTime);
 
             //relativePos = (playerTr.position - transform.position); // 두 객체간의 거리 차
