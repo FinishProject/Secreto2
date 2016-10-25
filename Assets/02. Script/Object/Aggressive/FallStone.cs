@@ -19,13 +19,13 @@ public class FallStone : MonoBehaviour {
 	void Start () {
         instance = this;
 
-        fallStone = new GameObject[spawnNum];
+        //fallStone = new GameObject[spawnNum];
 
-        for (int i = 0; i < spawnNum; i++)
-        {
-            fallStone[i] = (GameObject)Instantiate(stoneObject, this.transform.position, Quaternion.identity);
-            fallStone[i].SetActive(false);
-        }
+        //for (int i = 0; i < spawnNum; i++)
+        //{
+        //    fallStone[i] = (GameObject)Instantiate(stoneObject, this.transform.position, Quaternion.identity);
+        //    fallStone[i].SetActive(false);
+        //}
 	}
 	
     void OnTriggerEnter(Collider col)
@@ -47,15 +47,16 @@ public class FallStone : MonoBehaviour {
 
     IEnumerator SpawnStone()
     {
+        Debug.Log("11");
         while (isActive)
         {
 
             GameObject stoneObj = (GameObject)Instantiate(stoneObject,
                 new Vector3(
-                    PlayerCtrl.instance.transform.position.x + 2f,
+                    PlayerCtrl.instance.transform.position.x,
                     PlayerCtrl.instance.transform.position.y + 20f,
                     PlayerCtrl.instance.transform.position.z),
-            Quaternion.identity);
+            new Quaternion(0, 0, 0, 0));
 
             yield return new WaitForSeconds(5f);
 
