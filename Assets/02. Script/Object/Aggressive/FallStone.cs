@@ -47,10 +47,8 @@ public class FallStone : MonoBehaviour {
 
     IEnumerator SpawnStone()
     {
-        Debug.Log("11");
         while (isActive)
         {
-
             GameObject stoneObj = (GameObject)Instantiate(stoneObject,
                 new Vector3(
                     PlayerCtrl.instance.transform.position.x,

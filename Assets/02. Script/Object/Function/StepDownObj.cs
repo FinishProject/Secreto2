@@ -14,13 +14,9 @@ public class StepDownObj : MonoBehaviour {
     private Shader standard;
     public Shader trans;
 
-    private Material basicMat;
-    public Material transparentMat;
-
     void Start()
     {
         originPos = this.transform.position;
-        basicMat = GetComponent<Renderer>().material;
 
         standard = Shader.Find("Standard");
     }
@@ -72,6 +68,8 @@ public class StepDownObj : MonoBehaviour {
             float curAlpha = Fade(1);
             if (curAlpha == 1f)
                 GetComponent<Renderer>().material.shader = standard;
+            else if(curAlpha >= 0.5f)
+                GetComponent<Collider>().isTrigger = false;
 
             transform.position = Vector3.MoveTowards(transform.position, originPos, upSpeed * Time.deltaTime);
 
