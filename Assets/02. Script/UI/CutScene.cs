@@ -9,7 +9,7 @@ public class CutScene : MonoBehaviour {
     public struct ImgInfo
     {
         public GameObject cutImg;
-        public float transTime;
+//        public float transTime;
         public bool playFadeOut;
     }
     public ImgInfo[] imgInfo;
@@ -28,42 +28,38 @@ public class CutScene : MonoBehaviour {
 
         StartCoroutine(SlideShow());
     }
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            onSkipButton = true;
-    }
 
     IEnumerator SlideShow()
     {
-        FadeInOut.instance.StartFadeInOut(0, 1, 2.5f);
+        FadeInOut.instance.StartFadeInOut(0, normalTransTime * 0.2f, normalTransTime * 0.8f);
         yield return new WaitForSeconds( 2f);
         while (true)
         {
 
-            if (imgInfo[index].transTime > 0)
-            {
-                yield return new WaitForSeconds(imgInfo[index].transTime);
-            }
-            else
-            {
+            //if (imgInfo[index].transTime > 0)
+            //{
+            //    yield return new WaitForSeconds(imgInfo[index].transTime);
+            //}
+            //else
+            //{
                 yield return new WaitForSeconds(normalTransTime);
-            }
+            //}
 
             if(imgCnt <= index + 1)
             {
-                FadeInOut.instance.StartFadeInOut(0.5f, 5f, 0.5f);
+                FadeInOut.instance.StartFadeInOut(normalTransTime * 0.2f, 100f, normalTransTime * 0.2f);
                 yield return new WaitForSeconds(1.5f);
             }
             else if (imgInfo[index].playFadeOut)
             {
-                FadeInOut.instance.StartFadeInOut(0.5f, 0.3f, 0.5f);
-                yield return new WaitForSeconds(0.5f);
+                Debug.Log(1);
+                FadeInOut.instance.StartFadeInOut(normalTransTime * 0.4f, normalTransTime * 0.2f, normalTransTime * 0.4f);
+                yield return new WaitForSeconds(normalTransTime * 0.6f);
             }
 
-            if (onSkipButton || imgCnt <= index + 1)
+            if (imgCnt <= index + 1)
             {
-                Application.LoadLevel("LoadingScene");
+//                Application.LoadLevel("MainScene 1");
                 yield break;
             }
 
