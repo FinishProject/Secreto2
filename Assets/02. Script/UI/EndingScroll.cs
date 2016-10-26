@@ -7,7 +7,7 @@ public class EndingScroll : MonoBehaviour {
     public Text text; 
     public Image blackImg;
     public GameObject logo;
-    public float speed;
+    float speed;
     Vector3 t;
 
 
@@ -27,7 +27,7 @@ public class EndingScroll : MonoBehaviour {
         textHeight = textTr.rect.height;
         moveRange = 0;
         screenHeight = Screen.height;
-        speed = (Screen.height / 100) * speed;
+        speed = 230;
 
         StartCoroutine(Scroll());
     }
