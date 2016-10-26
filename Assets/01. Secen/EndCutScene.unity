@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1770c90a17b89be42baf43e73c4d5537, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalTransTime: 2.1
+  normalTransTime: 3
   imgInfo:
   - cutImg: {fileID: 998520628}
     playFadeOut: 1

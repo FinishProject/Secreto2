@@ -16,6 +16,7 @@ public class AltarCtrl : MonoBehaviour {
 
     public GameObject altarEffect;
     public Transform stepHold;
+    public GameObject infoUI;
 
     private Vector3 originPos, finishPos;
 
@@ -44,12 +45,19 @@ public class AltarCtrl : MonoBehaviour {
         {
             SoundMgr.instance.PlayAudio("Rock_On");
             PlayerCtrl.instance.animReset();
+            StartCoroutine(ShowUI());
             isDraw = true;
             isClear = false;
             StartCoroutine(DrawColor());
             altarEffect.SetActive(true);
             isOnBox = true;
         }
+    }
+
+    IEnumerator ShowUI()
+    {
+        yield return new WaitForSeconds(8f);
+        infoUI.SetActive(true);
     }
 
   

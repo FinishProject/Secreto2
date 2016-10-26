@@ -46,14 +46,14 @@ public class FallStone : MonoBehaviour {
             yield return new WaitForSeconds(0.5f);
 
             GameObject stone = (GameObject)Instantiate(stoneObject,
-                new Vector3(PlayerCtrl.instance.transform.position.x + 2f,
+                new Vector3(PlayerCtrl.instance.transform.position.x + 1f,
                 PlayerCtrl.instance.transform.position.y + 10f,
                 PlayerCtrl.instance.transform.position.z), 
                 new Quaternion(180f, 0f, 0f, 0));
 
             
 
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(6f);
 
             yield return null;
         }

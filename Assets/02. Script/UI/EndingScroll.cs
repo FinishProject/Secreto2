@@ -27,7 +27,7 @@ public class EndingScroll : MonoBehaviour {
         textHeight = textTr.rect.height;
         moveRange = 0;
         screenHeight = Screen.height;
-        speed = 230;
+        speed = 170f;
 
         StartCoroutine(Scroll());
     }
