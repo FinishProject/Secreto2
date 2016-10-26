@@ -25,10 +25,8 @@ public class WahleMeet : WahleCtrl
         while (true)
         {
             float curDir = Mathf.Sign(playerTr.position.x - transform.position.x);
-            Debug.Log(curDir);
             if (curDir != -1f)
             {
-
                 base.ChangeState(WahleState.MOVE);
             }
 

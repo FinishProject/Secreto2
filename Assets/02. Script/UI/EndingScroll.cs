@@ -57,6 +57,35 @@ public class EndingScroll : MonoBehaviour {
         
     }
 
+
+    IEnumerator FadeLogo()
+    {
+        Image[] logoImg = logo.GetComponentsInChildren<Image>();
+        Color color = logoImg[0].color;
+        float alpha = 0f;
+
+        while (true)
+        {
+            alpha += 0.7f * Time.deltaTime;
+            alpha = Mathf.Clamp01(alpha);
+
+            color.a = alpha;
+
+            for (int i = 0; i < logoImg.Length; i++)
+            {
+                logoImg[i].color = color;
+            }
+
+            if (alpha >= 1f)
+            {
+                yield return new WaitForSeconds(1f);
+                Application.LoadLevel("MainScene 1");
+            }
+
+            yield return null;
+        }
+    }
+
     IEnumerator FadeOut(float fadeOutTime)
     {
         float alpha = 1;
