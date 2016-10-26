@@ -23,9 +23,10 @@ GameObject:
   - 23: {fileID: 23000013836676820}
   - 54: {fileID: 54000012019135024}
   - 135: {fileID: 135000012748267812}
+  - 135: {fileID: 135000012846228686}
   m_Layer: 0
   m_Name: Rock 01 prefab (7)
-  m_TagString: Untagged
+  m_TagString: DeadLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42,9 +43,10 @@ GameObject:
   - 23: {fileID: 23000013025400744}
   - 54: {fileID: 54000013599792340}
   - 135: {fileID: 135000014177699676}
+  - 135: {fileID: 135000010600052896}
   m_Layer: 0
   m_Name: Rock 01 prefab (16)
-  m_TagString: Untagged
+  m_TagString: DeadLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -61,9 +63,10 @@ GameObject:
   - 23: {fileID: 23000010227366276}
   - 54: {fileID: 54000010648747996}
   - 135: {fileID: 135000011588067758}
+  - 135: {fileID: 135000012652013706}
   m_Layer: 0
   m_Name: Rock 01 prefab (10)
-  m_TagString: Untagged
+  m_TagString: DeadLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80,9 +83,10 @@ GameObject:
   - 23: {fileID: 23000013700490466}
   - 54: {fileID: 54000012955439090}
   - 135: {fileID: 135000012975250736}
+  - 135: {fileID: 135000012598638932}
   m_Layer: 0
   m_Name: Rock 01 prefab (15)
-  m_TagString: Untagged
+  m_TagString: DeadLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -114,9 +118,10 @@ GameObject:
   - 23: {fileID: 23000013072972120}
   - 54: {fileID: 54000013575056010}
   - 135: {fileID: 135000011774195294}
+  - 135: {fileID: 135000013909927960}
   m_Layer: 0
   m_Name: Rock 01 prefab (11)
-  m_TagString: Untagged
+  m_TagString: DeadLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,9 +138,10 @@ GameObject:
   - 23: {fileID: 23000012608211486}
   - 54: {fileID: 54000010976035040}
   - 135: {fileID: 135000013526946908}
+  - 135: {fileID: 135000012521851278}
   m_Layer: 0
   m_Name: Rock 01 prefab (5)
-  m_TagString: Untagged
+  m_TagString: DeadLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -152,9 +158,10 @@ GameObject:
   - 23: {fileID: 23000014026537858}
   - 54: {fileID: 54000011485829400}
   - 135: {fileID: 135000012953462650}
+  - 135: {fileID: 135000013309948624}
   m_Layer: 0
   m_Name: Rock 01 prefab (8)
-  m_TagString: Untagged
+  m_TagString: DeadLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -171,9 +178,10 @@ GameObject:
   - 23: {fileID: 23000011214641242}
   - 54: {fileID: 54000010565108276}
   - 135: {fileID: 135000013697401248}
+  - 135: {fileID: 135000010049988740}
   m_Layer: 0
   m_Name: Rock 01 prefab (6)
-  m_TagString: Untagged
+  m_TagString: DeadLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -190,9 +198,10 @@ GameObject:
   - 23: {fileID: 23000011932716400}
   - 54: {fileID: 54000010940859302}
   - 135: {fileID: 135000013409318466}
+  - 135: {fileID: 135000010316176914}
   m_Layer: 0
   m_Name: Rock 01 prefab (17)
-  m_TagString: Untagged
+  m_TagString: DeadLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -209,9 +218,10 @@ GameObject:
   - 23: {fileID: 23000013669046134}
   - 54: {fileID: 54000014160455482}
   - 135: {fileID: 135000012657287696}
+  - 135: {fileID: 135000011513007118}
   m_Layer: 0
   m_Name: Rock 01 prefab (12)
-  m_TagString: Untagged
+  m_TagString: DeadLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -228,9 +238,10 @@ GameObject:
   - 23: {fileID: 23000010606802326}
   - 54: {fileID: 54000013649969608}
   - 135: {fileID: 135000013208633050}
+  - 135: {fileID: 135000014078534482}
   m_Layer: 0
   m_Name: Rock 01 prefab (14)
-  m_TagString: Untagged
+  m_TagString: DeadLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -247,9 +258,10 @@ GameObject:
   - 23: {fileID: 23000014203871344}
   - 54: {fileID: 54000011821667574}
   - 135: {fileID: 135000012140323944}
+  - 135: {fileID: 135000011452960842}
   m_Layer: 0
   m_Name: Rock 01 prefab (9)
-  m_TagString: Untagged
+  m_TagString: DeadLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -266,9 +278,10 @@ GameObject:
   - 23: {fileID: 23000012333152032}
   - 54: {fileID: 54000012959256742}
   - 135: {fileID: 135000011236589106}
+  - 135: {fileID: 135000012294361902}
   m_Layer: 0
   m_Name: Rock 01 prefab (13)
-  m_TagString: Untagged
+  m_TagString: DeadLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -358,7 +371,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012364300694}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 62, y: -50.2, z: 50}
+  m_LocalPosition: {x: -19.1, y: -66.4, z: 3.1}
   m_LocalScale: {x: 0.20000009, y: 0.20000023, z: 0.20000021}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -423,7 +436,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011655071844}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 59.3, y: -36.1, z: 45.2}
+  m_LocalPosition: {x: 10.6, y: -71.7, z: 23}
   m_LocalScale: {x: 0.5000002, y: 0.50000083, z: 0.50000095}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -449,7 +462,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011073503266}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.7, y: -15.8, z: 11.5}
+  m_LocalPosition: {x: 8.6, y: 0.4, z: 5.3}
   m_LocalScale: {x: 1, y: 1.0000002, z: 1.0000006}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -462,7 +475,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010474860314}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 85.5, y: -30.2, z: 60.2}
+  m_LocalPosition: {x: 54.2, y: 3.7, z: 32.9}
   m_LocalScale: {x: 0.50000006, y: 0.50000006, z: 0.50000024}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -1131,6 +1144,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!135 &135000010049988740
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011579184504}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20.63
+  m_Center: {x: -0.8578719, y: 0.8740253, z: -0.06990909}
+--- !u!135 &135000010316176914
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011655071844}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20.63
+  m_Center: {x: -0.8577498, y: 0.87402534, z: -0.06991674}
+--- !u!135 &135000010600052896
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010474860314}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20.63
+  m_Center: {x: -0.85787195, y: 0.87402534, z: -0.06992437}
 --- !u!135 &135000011236589106
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -1143,6 +1192,30 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 18.697899
   m_Center: {x: -0.85774994, y: 0.87401015, z: -0.06992432}
+--- !u!135 &135000011452960842
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012522377556}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20.63
+  m_Center: {x: -0.8577498, y: 0.87402534, z: -0.06990903}
+--- !u!135 &135000011513007118
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011801798822}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20.63
+  m_Center: {x: -0.8577498, y: 0.87402534, z: -0.06989385}
 --- !u!135 &135000011588067758
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -1179,6 +1252,54 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 18.6979
   m_Center: {x: -0.8576888, y: 0.87402534, z: -0.06992429}
+--- !u!135 &135000012294361902
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013759599552}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20.63
+  m_Center: {x: -0.85774994, y: 0.87402534, z: -0.06992437}
+--- !u!135 &135000012521851278
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011073503266}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20.63
+  m_Center: {x: -0.8578111, y: 0.87402534, z: -0.06992443}
+--- !u!135 &135000012598638932
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010600863946}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20.63
+  m_Center: {x: -0.85774994, y: 0.87402534, z: -0.06992438}
+--- !u!135 &135000012652013706
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010528278588}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20.63
+  m_Center: {x: -0.85774994, y: 0.87402534, z: -0.06991669}
 --- !u!135 &135000012657287696
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -1203,6 +1324,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 18.697903
   m_Center: {x: -0.85775006, y: 0.8740177, z: -0.06992443}
+--- !u!135 &135000012846228686
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010174572320}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20.63
+  m_Center: {x: -0.85775006, y: 0.8737812, z: -0.06992443}
 --- !u!135 &135000012953462650
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -1239,6 +1372,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 18.6979
   m_Center: {x: -0.85775006, y: 0.8739948, z: -0.06992438}
+--- !u!135 &135000013309948624
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011548342622}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20.63
+  m_Center: {x: -0.85768884, y: 0.87402534, z: -0.06992437}
 --- !u!135 &135000013409318466
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -1275,6 +1420,30 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 18.697897
   m_Center: {x: -0.8577498, y: 0.8740215, z: -0.06992435}
+--- !u!135 &135000013909927960
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010942117462}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20.63
+  m_Center: {x: -0.85774994, y: 0.87402534, z: -0.0698938}
+--- !u!135 &135000014078534482
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012364300694}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20.63
+  m_Center: {x: -0.85774994, y: 0.87402534, z: -0.0699091}
 --- !u!135 &135000014177699676
 SphereCollider:
   m_ObjectHideFlags: 1

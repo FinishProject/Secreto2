@@ -22,13 +22,8 @@ public class AltarCtrl : MonoBehaviour {
     public float length = 0.5f;
     public float speed = 1f;
 
-    public AudioClip clip;
-    private AudioSource source;
-
     void Start()
     {
-
-        source = GetComponent<AudioSource>();
         //originColor = new Color(0f, 0.8117652f, 1.5f);
         originColor = new Color(0.322f, 0.322f, 0.322f);
         for (int i = 0; i < render.Length; i++)
@@ -47,7 +42,8 @@ public class AltarCtrl : MonoBehaviour {
     {
         if (col.collider.CompareTag("OBJECT"))
         {
-            source.PlayOneShot(clip);
+            Debug.Log("On");
+            SoundMgr.instance.PlayAudio("Rock_On");
             isDraw = true;
             isClear = false;
             StartCoroutine(DrawColor());
@@ -61,6 +57,7 @@ public class AltarCtrl : MonoBehaviour {
     {
         if (col.collider.CompareTag("OBJECT") && isOnBox)
         {
+            SoundMgr.instance.StopAudio("Rock_On");
             isDraw = false;
             isClear = true;
             altarEffect.SetActive(false);

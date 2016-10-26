@@ -149,7 +149,7 @@ public class PlayerCtrl : MonoBehaviour
         // 지상에 있을 시
         if (controller.isGrounded)
         {
-            curGravity = 50f;
+            curGravity = 20f;
             //이동
             moveDir = Vector3.right * inputAxis;
             // 점프
@@ -209,7 +209,7 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (coll.CompareTag("DeadLine"))
         {
-            PlayerDie();
+            //PlayerDie();
         }
         else if (coll.CompareTag("StartPoint"))
         {

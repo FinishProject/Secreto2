@@ -25,35 +25,37 @@ public class WahleMeet : WahleCtrl
         while (true)
         {
             float curDir = Mathf.Sign(playerTr.position.x - transform.position.x);
+            Debug.Log(curDir);
             if (curDir != -1f)
             {
+
                 base.ChangeState(WahleState.MOVE);
             }
 
-            if (100f >= (playerTr.position - transform.position).sqrMagnitude)
-            {
-                isMove = true;
-                //PlayerCtrl.instance.isMove = false;
-                //PlayerCtrl.instance.animReset();
-            }
+            //if (100f >= (playerTr.position - transform.position).sqrMagnitude)
+            //{
+            //    isMove = true;
+            //    //PlayerCtrl.instance.isMove = false;
+            //    //PlayerCtrl.instance.animReset();
+            //}
 
-            if (isMove)
-            {
-                relativePos = targetPoint.position - transform.position;
-                distance = relativePos.sqrMagnitude;
+            //if (isMove)
+            //{
+            //    relativePos = targetPoint.position - transform.position;
+            //    distance = relativePos.sqrMagnitude;
 
-                if(!isStop)
-                    lookRot = Quaternion.LookRotation(relativePos);
+            //    if(!isStop)
+            //        lookRot = Quaternion.LookRotation(relativePos);
 
-                if (distance < 8f && !isActive)
-                    StartCoroutine(CountDown());
+            //    if (distance < 8f && !isActive)
+            //        StartCoroutine(CountDown());
 
-                transform.localRotation = Quaternion.Slerp(transform.localRotation, lookRot, lookSpeed * Time.deltaTime);
-                transform.Translate(Vector3.forward * maxSpeed * Time.deltaTime);
+            //    transform.localRotation = Quaternion.Slerp(transform.localRotation, lookRot, lookSpeed * Time.deltaTime);
+            //    transform.Translate(Vector3.forward * maxSpeed * Time.deltaTime);
 
-                if (!isStop)
-                    maxSpeed = DecreaseSpeed(maxSpeed, 2f, accel);
-            }
+            //    if (!isStop)
+            //        maxSpeed = DecreaseSpeed(maxSpeed, 2f, accel);
+            //}
 
             yield return null;
         }
