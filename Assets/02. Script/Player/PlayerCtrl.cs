@@ -40,7 +40,8 @@ public class PlayerCtrl : MonoBehaviour
     public AudioClip runSound;
     private AudioSource audioSource;
 
-    private AnimatorStateInfo currentBaseLayer;
+    private AnimatorStateInfo currentAnim;
+    static int idleState = Animator.StringToHash("Base Layer.Idle");
     static int runState = Animator.StringToHash("Base Layer.Run");
     static int jumpDownState = Animator.StringToHash("Base Layer.Jump_Down");
     static int JumpUpState = Animator.StringToHash("Base Layer.Jump_Up(5~25)");
@@ -67,7 +68,7 @@ public class PlayerCtrl : MonoBehaviour
 
     void FixedUpdate()
     {
-        currentBaseLayer = anim.GetCurrentAnimatorStateInfo(0);
+        currentAnim = anim.GetCurrentAnimatorStateInfo(0);
         SetAnimator();
     }
 
@@ -121,12 +122,12 @@ public class PlayerCtrl : MonoBehaviour
         }
         else if (!controller.isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Space) && currentBaseLayer.nameHash.Equals(JumpUpState))
+            if (Input.GetKeyDown(KeyCode.Space) && currentAnim.nameHash.Equals(JumpUpState))
             {
                 anim.SetBool("Dash", true);
             }
 
-            else if(controller.velocity.y <= -0.01 && currentBaseLayer.nameHash.Equals(runState))
+            else if(controller.velocity.y <= -0.01 && currentAnim.nameHash.Equals(runState))
             {
                 anim.SetBool("Fall", true);
             }
@@ -148,7 +149,7 @@ public class PlayerCtrl : MonoBehaviour
         // 지상에 있을 시
         if (controller.isGrounded)
         {
-            curGravity = 50f;
+            curGravity = 20f;
             //이동
             moveDir = Vector3.right * inputAxis;
             // 점프
@@ -208,7 +209,7 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (coll.CompareTag("DeadLine"))
         {
-            PlayerDie();
+            //PlayerDie();
         }
         else if (coll.CompareTag("StartPoint"))
         {
@@ -216,7 +217,6 @@ public class PlayerCtrl : MonoBehaviour
         }
         else if (coll.CompareTag("Hold"))
         {
-            Debug.Log(this.transform.parent);
             WahleCtrl.curState = WahleCtrl.instance.StepHold();
         }
     }

@@ -83,17 +83,24 @@ public class WahleCtrl : MonoBehaviour {
     // 플레이어가 발판에 올라갔을 시
     public IEnumerator StepHold()
     {
-        transform.parent = lunaModel.transform;
-
         while (true)
         {
 
             relativePos = playerTr.position - transform.position;
             lookRot = Quaternion.LookRotation(relativePos);
+            distance = relativePos.sqrMagnitude;
+
+            //if(distance <= 3f)
+            //{
+            //    transform.parent = PlayerCtrl.instance.transform;
+            //}
 
             transform.localRotation = Quaternion.Slerp(transform.localRotation, lookRot,
-            50f * Time.deltaTime);
-            transform.Translate(Vector3.forward * 3f * Time.deltaTime);
+            1f * Time.deltaTime);
+            transform.Translate(Vector3.forward * 2f * Time.deltaTime);
+
+            transform.position = Vector3.Lerp(transform.position, 
+                new Vector3(transform.position.x, playerTr.position.y, transform.position.z), 3f * Time.deltaTime);
 
             //relativePos = (playerTr.position - transform.position); // 두 객체간의 거리 차
             //lookRot = Quaternion.LookRotation(relativePos);

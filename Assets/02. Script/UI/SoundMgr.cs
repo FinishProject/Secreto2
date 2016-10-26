@@ -1,34 +1,67 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SoundMgr : MonoBehaviour {
 
-    public AudioClip objPushSound;
-    public AudioClip selectButtonSound;
+    public AudioClip[] audioArray;
 
-    private AudioSource source;
-
+    private AudioSource[] source;
     public static SoundMgr instance;
-    bool isTest = true;
+    private List<AudioSource> sourceList = new List<AudioSource>();
 
-	// Use this for initialization
 	void Start () {
         instance = this;
 
-        source = GetComponent<AudioSource>();
-	}
-
-    public void PushObject(bool isPlay)
+        source = GetComponents<AudioSource>();
+    }
+    // 사운드 실행
+    public void PlayAudio(string audioName)
     {
-        if (!source.isPlaying && isPlay)
-            source.PlayOneShot(objPushSound);
-        else if (!isPlay)
-            source.Stop();
+        AudioClip newClip = FindAudioClip(audioName);
+        if (!GetPlayingClip(newClip))
+        {
+            sourceList.Add(gameObject.AddComponent<AudioSource>());
+            if (newClip != null)
+            {
+                sourceList[sourceList.Count - 1].clip = newClip;
+                sourceList[sourceList.Count - 1].Play();
+            }
+        }
     }
 
-    public float PlaySelectSound()
+    // 현재 플레이중인 클립 여부
+    bool GetPlayingClip(AudioClip clipName)
     {
-        source.PlayOneShot(selectButtonSound);
-        return selectButtonSound.length;
+        for (int i = 0; i < sourceList.Count; i++)
+        {
+            if (sourceList[i].clip == clipName)
+                return true;
+        }
+        return false;
     }
+
+    // 배열에서 클립 찾기
+    AudioClip FindAudioClip(string clipName)
+    {
+        for(int i=0; i<audioArray.Length; i++)
+        {
+            if (audioArray[i].name == clipName)
+                return audioArray[i];
+        }
+        return null;
+    }
+    // 사운드 중단
+    public void StopAudio(string clipName)
+    {
+        for (int i = 0; i < sourceList.Count; i++)
+        {
+            if (sourceList[i].clip.name == clipName)
+            {
+                Destroy(sourceList[i].GetComponent<AudioSource>());
+                sourceList.RemoveAt(i);
+            }
+        }
+    }
+
 }

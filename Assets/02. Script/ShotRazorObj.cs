@@ -23,26 +23,29 @@ public class ShotRazorObj : MonoBehaviour {
 
     public bool isLand = true;
 
-    void Start()
-    {
-        shotPoint = startPoint.position;
-        shotPoint.x += 0.5f;
-        startObj.transform.position = shotPoint;
-
-        //Vector3 scale = lazerObj.transform.localScale;
-        // 보간 값을 곱하여 레이저의 길이를 조절한다.
-        //scale.x = maxLength * interValue;
-        //lazerObj.transform.localScale = scale;
-        //startObj.transform.position = startPoint.position;
-
-        StartCoroutine(SetLazer());
-
-    }
+    private bool isActive = false;
 
 	void Update () {
         if(alpha >= 0.9f)
             ShotRay();
 	}
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.CompareTag("Player") && !isActive)
+        {
+            isActive = true;
+            StartCoroutine(SetLazer());
+        }
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        if (col.CompareTag("Player"))
+        {
+            isActive = false;
+        }
+    }
     
 
     IEnumerator SetLazer()
@@ -51,7 +54,7 @@ public class ShotRazorObj : MonoBehaviour {
         Color setColor = meshRender.material.color;
 
         bool isUp = true;
-        while (true)
+        while (isActive)
         {
             alpha += fadeDir * fadeSpeed * Time.deltaTime;
             alpha = Mathf.Clamp01(alpha);
@@ -62,20 +65,22 @@ public class ShotRazorObj : MonoBehaviour {
             if (alpha == 0f || alpha == 1f)
             {
                 fadeDir *= -1f;
-                yield return new WaitForSeconds(fullWaitTime);
-
                 if (fadeDir == 1f)
                 {
+                    SoundMgr.instance.StopAudio("Laser");
                     isUp = true;
                     fadeSpeed = upSpeed;
                 }
                 else
                     fadeSpeed = downSpeed;
+
+                yield return new WaitForSeconds(fullWaitTime);
             }
 
             if (isUp && fadeSpeed <= 1f && setColor.a >= 0.2f)
             {
                 yield return new WaitForSeconds(chargeWaitTime);
+                SoundMgr.instance.PlayAudio("Laser");
                 isUp = false;
                 fadeSpeed = 5f;
             }
@@ -89,23 +94,12 @@ public class ShotRazorObj : MonoBehaviour {
         RaycastHit hit;
         // 발사할 방향을 로컬 좌표에서 월드 좌표로 변환한다.
         Vector3 forward = transform.TransformDirection(-Vector3.up);
-
         if (Physics.Raycast(startPoint.position, forward, out hit, maxLength))
         {
-            if (hit.collider.CompareTag("Player") && alpha == 1f)
+            if (hit.collider.CompareTag("Player"))
             {
                 PlayerCtrl.instance.PlayerDie();
             }
-            else if (hit.collider.CompareTag("Land") && isLand)
-            {
-                //레이저 크기를 레이캐스트 충돌 위치와의 거리를 구하여 크기를 변경
-                //Vector3 scale = lazerObj.transform.localScale;
-                //보간 값을 곱하여 레이저의 길이를 조절한다.
-                //scale.x = hit.distance * interValue;
-                //lazerObj.transform.localScale = scale;
-                //startObj.transform.position = startPoint.position;
-            }
-
         }
     }
 }

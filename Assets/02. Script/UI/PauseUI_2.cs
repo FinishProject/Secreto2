@@ -56,7 +56,7 @@ public class PauseUI_2 : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
         {
-            SoundMgr.instance.PlaySelectSound();
+            //SoundMgr.instance.PlaySelectSound();
 
             if (IsSelectYes)
                 ToTitleScene();

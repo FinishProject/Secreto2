@@ -58,7 +58,6 @@ public class FallMonster : MonoBehaviour {
         worldCanvas.SetActive(false);
         yield return new WaitForSeconds(2f);
         ScriptMgr.instance.GetScript("ending");
-
         while (true)
         {
             if (!ScriptMgr.isSpeak)
