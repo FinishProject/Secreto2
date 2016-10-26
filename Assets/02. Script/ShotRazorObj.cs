@@ -3,8 +3,12 @@ using System.Collections;
 
 public class ShotRazorObj : MonoBehaviour {
 
-    public float maxLength = 30f;
+    private float maxLength = 150f;
     private float fadeSpeed = 1f;
+    public float upSpeed = 0.3f;
+    public float downSpeed = 2f;
+    public float chargeWaitTime = 2.5f;
+    public float fullWaitTime = 5f;
     private float interValue = 0.06f;
 
     public GameObject startObj;
@@ -58,20 +62,20 @@ public class ShotRazorObj : MonoBehaviour {
             if (alpha == 0f || alpha == 1f)
             {
                 fadeDir *= -1f;
-                yield return new WaitForSeconds(5f);
+                yield return new WaitForSeconds(fullWaitTime);
 
                 if (fadeDir == 1f)
                 {
                     isUp = true;
-                    fadeSpeed = 0.3f;
+                    fadeSpeed = upSpeed;
                 }
                 else
-                    fadeSpeed = 2f;
+                    fadeSpeed = downSpeed;
             }
 
             if (isUp && fadeSpeed <= 1f && setColor.a >= 0.2f)
             {
-                yield return new WaitForSeconds(2.5f);
+                yield return new WaitForSeconds(chargeWaitTime);
                 isUp = false;
                 fadeSpeed = 5f;
             }
