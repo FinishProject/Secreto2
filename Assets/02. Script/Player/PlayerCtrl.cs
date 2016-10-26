@@ -209,7 +209,7 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (coll.CompareTag("DeadLine"))
         {
-            //PlayerDie();
+            PlayerDie();
         }
         else if (coll.CompareTag("StartPoint"))
         {

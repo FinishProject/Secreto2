@@ -42,8 +42,8 @@ public class AltarCtrl : MonoBehaviour {
     {
         if (col.collider.CompareTag("OBJECT"))
         {
-            Debug.Log("On");
             SoundMgr.instance.PlayAudio("Rock_On");
+            PlayerCtrl.instance.animReset();
             isDraw = true;
             isClear = false;
             StartCoroutine(DrawColor());
