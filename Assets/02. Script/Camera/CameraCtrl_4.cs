@@ -1,6 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/********************************************** 사용 방법 ***************************************************
+
+    맵에 카메라 위치정보를 가지고 있는 Collider의 정보를 받아와 작동하는 카메라 
+    
+    ※ 사용 방법
+    1. 오브젝트 구조
+    MainCamera                <- 스크립트 추가
+        └ Sensor_Wall_R      <- 캐릭터 좌측 방향에 배치 (WALL 태그가 있는 벽과 충돌 했을때를 판정하기 위함)
+        └ Sensor_Wall_L      <- 캐릭터 우측 방향에 배치 (위와 동일 기능)
+        └ Sensor_Area        <- 캐릭터와 겹치게 배치
+        (추가 오브젝트들은 충돌을 하는 오브젝트이므로 Sencer 스크립트와 collider추가, 크기 조절등 조치가 필요)
+    
+    2. 플레이어가 지나갈 위치에 CameraArea 스크립트를 포함한 Collider를 추가해야한다. 
+
+************************************************************************************************************/
+
 public class CameraCtrl_4 : MonoBehaviour, Sensorable_Return, Sensorable_Something
 {
     public Vector3 playerDistance;

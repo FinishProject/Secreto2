@@ -58,14 +58,13 @@ public class FallMonster : MonoBehaviour {
         worldCanvas.SetActive(false);
         yield return new WaitForSeconds(2f);
         ScriptMgr.instance.GetScript("ending");
-
         while (true)
         {
             if (!ScriptMgr.isSpeak)
             {
                 FadeInOut.instance.StartFadeInOut(1f, 3f, 1f);
                 yield return new WaitForSeconds(3f);
-                Application.LoadLevel("MainScene 1");
+                Application.LoadLevel("EndCutScene");
             }
 
             yield return null;

@@ -17,9 +17,8 @@ public class StepDownObj : MonoBehaviour {
     void Start()
     {
         originPos = this.transform.position;
+
         standard = Shader.Find("Standard");
-        //trans = Shader.Find("Custom/balpan_trans");
-        //Debug.Log(trans);
     }
 
     void OnTriggerStay(Collider col)
@@ -69,6 +68,8 @@ public class StepDownObj : MonoBehaviour {
             float curAlpha = Fade(1);
             if (curAlpha == 1f)
                 GetComponent<Renderer>().material.shader = standard;
+            else if(curAlpha >= 0.5f)
+                GetComponent<Collider>().isTrigger = false;
 
             transform.position = Vector3.MoveTowards(transform.position, originPos, upSpeed * Time.deltaTime);
 

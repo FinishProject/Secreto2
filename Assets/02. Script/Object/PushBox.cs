@@ -63,13 +63,13 @@ public class PushBox : MonoBehaviour {
             transform.position += moveDir * speed * Time.deltaTime;
 
             // 사운드 재생
-            SoundMgr.instance.PushObject(true);
+            SoundMgr.instance.PlayAudio("rock_push");
 
             yield return null;
         }
-        
+
         // 사운드, 애니메이션 종료
-        SoundMgr.instance.PushObject(false);
+        SoundMgr.instance.StopAudio("rock_push");
         PlayerCtrl.instance.SetPushAnim(false);
 
         ShowUI.instanace.OnImage(true);

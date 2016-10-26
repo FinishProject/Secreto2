@@ -18,14 +18,6 @@ public class FallStone : MonoBehaviour {
 
 	void Start () {
         instance = this;
-
-        fallStone = new GameObject[spawnNum];
-
-        for (int i = 0; i < spawnNum; i++)
-        {
-            fallStone[i] = (GameObject)Instantiate(stoneObject, this.transform.position, Quaternion.identity);
-            fallStone[i].SetActive(false);
-        }
 	}
 	
     void OnTriggerEnter(Collider col)
@@ -49,57 +41,26 @@ public class FallStone : MonoBehaviour {
     {
         while (isActive)
         {
+            CameraCtrl_6.instance.StartShake(0.5f);
 
-            GameObject stoneObj = (GameObject)Instantiate(stoneObject,
-                new Vector3(
-                    PlayerCtrl.instance.transform.position.x + 2f,
-                    PlayerCtrl.instance.transform.position.y + 20f,
-                    PlayerCtrl.instance.transform.position.z),
-            Quaternion.identity);
+            yield return new WaitForSeconds(0.5f);
 
-            yield return new WaitForSeconds(5f);
+            GameObject stone = (GameObject)Instantiate(stoneObject,
+                new Vector3(PlayerCtrl.instance.transform.position.x + 1f,
+                PlayerCtrl.instance.transform.position.y + 10f,
+                PlayerCtrl.instance.transform.position.z), 
+                new Quaternion(180f, 0f, 0f, 0));
 
-            Destroy(stoneObj);
             
-            yield return null;
-        }
-    }
 
-    IEnumerator FallStoneSpawn()
-    {
-        while (isActive)
-        {
-            if (arrayIndex < spawnNum && !fallStone[arrayIndex].activeSelf)
-            {
-                fallStone[arrayIndex].SetActive(true);
-
-                Vector3 spawnPos = new Vector3 (
-                    PlayerCtrl.instance.transform.position.x + 2f, 
-                    PlayerCtrl.instance.transform.position.y + 20f,
-                    PlayerCtrl.instance.transform.position.z);
-
-                fallStone[arrayIndex].transform.position = spawnPos;
-
-                CameraCtrl_6.instance.StartShake(0.13f);
-
-                StartCoroutine(RemoveSotne(arrayIndex));
-                arrayIndex++;
-                
-                yield return new WaitForSeconds(5f);
-            }
-
-            if (arrayIndex >= spawnNum)
-                arrayIndex = 0;
+            yield return new WaitForSeconds(6f);
 
             yield return null;
         }
     }
 
-    IEnumerator RemoveSotne(int curIndex)
+    void DestroyObject(GameObject obj)
     {
-        stoneIndex.Enqueue(curIndex);
-        yield return new WaitForSeconds(3f);
-        int removeIndex = stoneIndex.Dequeue();
-        fallStone[removeIndex].SetActive(false);
+        Destroy(obj, 5f);
     }
 }

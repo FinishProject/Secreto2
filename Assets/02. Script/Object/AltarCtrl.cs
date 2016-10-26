@@ -16,19 +16,15 @@ public class AltarCtrl : MonoBehaviour {
 
     public GameObject altarEffect;
     public Transform stepHold;
+    public GameObject infoUI;
 
     private Vector3 originPos, finishPos;
 
     public float length = 0.5f;
     public float speed = 1f;
 
-    public AudioClip clip;
-    private AudioSource source;
-
     void Start()
     {
-
-        source = GetComponent<AudioSource>();
         //originColor = new Color(0f, 0.8117652f, 1.5f);
         originColor = new Color(0.322f, 0.322f, 0.322f);
         for (int i = 0; i < render.Length; i++)
@@ -47,7 +43,9 @@ public class AltarCtrl : MonoBehaviour {
     {
         if (col.collider.CompareTag("OBJECT"))
         {
-            source.PlayOneShot(clip);
+            SoundMgr.instance.PlayAudio("Rock_On");
+            PlayerCtrl.instance.animReset();
+            StartCoroutine(ShowUI());
             isDraw = true;
             isClear = false;
             StartCoroutine(DrawColor());
@@ -56,11 +54,18 @@ public class AltarCtrl : MonoBehaviour {
         }
     }
 
+    IEnumerator ShowUI()
+    {
+        yield return new WaitForSeconds(8f);
+        infoUI.SetActive(true);
+    }
+
   
     void OnCollisionExit(Collision col)
     {
         if (col.collider.CompareTag("OBJECT") && isOnBox)
         {
+            SoundMgr.instance.StopAudio("Rock_On");
             isDraw = false;
             isClear = true;
             altarEffect.SetActive(false);

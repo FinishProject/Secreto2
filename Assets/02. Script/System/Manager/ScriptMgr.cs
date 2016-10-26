@@ -65,6 +65,7 @@ public class ScriptMgr : MonoBehaviour {
 
     IEnumerator ShowScript(List<Script> ShowScript)
     {
+        
         int arrIndex = 0;
         PlayerCtrl.instance.isMove = false;
         PlayerCtrl.instance.animReset();
@@ -96,7 +97,6 @@ public class ScriptMgr : MonoBehaviour {
         {
             bgUi[i].SetActive(false);
         }
-
         // UI 출력
         switch (spekerNum)
         {
@@ -107,6 +107,11 @@ public class ScriptMgr : MonoBehaviour {
             case 1: // 올라
                 bgUi[1].SetActive(true);
                 bgUi[4].SetActive(true);
+                txtUi[1].text = script;
+                break;
+            case 3:
+                bgUi[1].SetActive(true);
+                bgUi[3].SetActive(true);
                 txtUi[1].text = script;
                 break;
         }

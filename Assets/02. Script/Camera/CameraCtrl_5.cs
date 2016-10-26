@@ -2,10 +2,6 @@
 using System.Collections;
 using UnityStandardAssets.ImageEffects;
 
-
-
-// 카메라 4
-
 public class CameraCtrl_5 : MonoBehaviour, Sensorable_Return
 {
     public float camSpeed = 5f;
