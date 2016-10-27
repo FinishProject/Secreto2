@@ -9,6 +9,7 @@ public class ScriptArea : MonoBehaviour {
 
     public bool isLoad = true;
     private bool isActive = false;
+    private bool isActive2 = false;
 
 	void OnTriggerEnter(Collider col)
     {
@@ -16,17 +17,10 @@ public class ScriptArea : MonoBehaviour {
         {
             isActive = true;
 
-            if (setId.Equals("narration"))
-                StartCoroutine(WaitScript());
-            
-            else if (isLoad)
-            {
+            if(isLoad)
                 ScriptMgr.instance.GetScript(setId);
-            }
-            else if (!isLoad)
-            {
-                ScriptMgr.instance.SetActiveUI(true, context);
-            }
+            else
+            ScriptMgr.instance.SetActiveUI(true, context);
         }
     }
 
@@ -34,11 +28,19 @@ public class ScriptArea : MonoBehaviour {
     {
         if (col.CompareTag("Player"))
         {
-            if (!isLoad)
+            if (!isLoad && !isActive2)
             {
+                isActive2 = true;
                 ScriptMgr.instance.SetActiveUI(false, null);
+                //StartCoroutine(Off());
             }
         }
+    }
+
+    IEnumerator Off()
+    {
+        yield return new WaitForSeconds(1.5f);
+        this.gameObject.SetActive(false);
     }
 
     IEnumerator WaitScript()

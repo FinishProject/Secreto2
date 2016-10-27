@@ -16,7 +16,7 @@ public class SoundMgr : MonoBehaviour {
         source = GetComponents<AudioSource>();
     }
     // 사운드 실행
-    public void PlayAudio(string audioName)
+    public void PlayAudio(string audioName, bool isLoop)
     {
         AudioClip newClip = FindAudioClip(audioName);
         if (!GetPlayingClip(newClip))
@@ -26,6 +26,7 @@ public class SoundMgr : MonoBehaviour {
             {
                 sourceList[sourceList.Count - 1].clip = newClip;
                 sourceList[sourceList.Count - 1].Play();
+                sourceList[sourceList.Count - 1].loop = isLoop;
             }
         }
     }

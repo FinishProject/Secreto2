@@ -45,7 +45,7 @@ public class FallStone : MonoBehaviour {
         while (isActive)
         {
             CameraCtrl_6.instance.StartShake(0.5f);
-            SoundMgr.instance.PlayAudio("Earthquake");
+            SoundMgr.instance.PlayAudio("Earthquake", false);
 
             yield return new WaitForSeconds(0.5f);
 
@@ -55,9 +55,10 @@ public class FallStone : MonoBehaviour {
                 stoneObject, points[spawnIndxe].position,
                new Quaternion(0, 0, 0, 0));
 
+            Destroy(stone, 5f);
             yield return new WaitForSeconds(5f);
 
-            Destroy(stone, 5f);
+            
             //StartCoroutine(DestroyObject(stone));
             SoundMgr.instance.StopAudio("Earthquake");
 

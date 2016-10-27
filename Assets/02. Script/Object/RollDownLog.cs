@@ -63,6 +63,7 @@ public class RollDownLog : MonoBehaviour {
     {
         if(isMoving)
         {
+            
             rigidbody.AddForce(Vector3.right * LogSpeed, ForceMode.Force);
             if (!isShaking && Vector3.Distance(transform.position, PlayerCtrl.instance.transform.position) < startShakeRange)
             {

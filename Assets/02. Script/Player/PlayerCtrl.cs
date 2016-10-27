@@ -122,7 +122,7 @@ public class PlayerCtrl : MonoBehaviour
         }
         else if (!controller.isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Space) && currentAnim.nameHash.Equals(JumpUpState))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 anim.SetBool("Dash", true);
             }
