@@ -23,6 +23,7 @@ public class AltarCtrl : MonoBehaviour {
     public float length = 0.5f;
     public float speed = 1f;
 
+   
     void Start()
     {
         //originColor = new Color(0f, 0.8117652f, 1.5f);
@@ -43,7 +44,6 @@ public class AltarCtrl : MonoBehaviour {
     {
         if (col.collider.CompareTag("OBJECT"))
         {
-            SoundMgr.instance.PlayAudio("Rock_On");
             PlayerCtrl.instance.animReset();
             StartCoroutine(ShowUI());
             isDraw = true;
@@ -99,6 +99,7 @@ public class AltarCtrl : MonoBehaviour {
     IEnumerator DrawColor()
     {
         drawColor = render[0].material.GetColor("_EmissionColor");
+        //SoundMgr.instance.PlayAudio("Rock_On");
         while (isDraw)
         {
             if (drawColor.r >= targetColor.r)
@@ -121,6 +122,7 @@ public class AltarCtrl : MonoBehaviour {
 
             yield return null;
         }
+        //SoundMgr.instance.StopAudio("Rock_On");
     }
 
     IEnumerator ClearColor()

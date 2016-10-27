@@ -45,6 +45,8 @@ public class FallStone : MonoBehaviour {
 
             yield return new WaitForSeconds(0.5f);
 
+            SoundMgr.instance.PlayAudio("Earthquake");
+
             GameObject stone = (GameObject)Instantiate(stoneObject,
                 new Vector3(PlayerCtrl.instance.transform.position.x + 1f,
                 PlayerCtrl.instance.transform.position.y + 10f,
