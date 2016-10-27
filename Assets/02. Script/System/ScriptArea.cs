@@ -15,7 +15,7 @@ public class ScriptArea : MonoBehaviour {
     {
         if (col.CompareTag("Player") && !isActive)
         {
-            isActive = true;
+            //isActive = true;
 
             if (isLoad)
                 ScriptMgr.instance.GetScript(setId);
