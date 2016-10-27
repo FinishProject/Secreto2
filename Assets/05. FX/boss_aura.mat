@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Elevator_2
-  m_Shader: {fileID: 4800000, guid: 34b88430124b24646835787f0407c2f3, type: 3}
+  m_Name: boss_aura
+  m_Shader: {fileID: 200, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
@@ -17,12 +17,6 @@ Material:
     m_TexEnvs:
     - first:
         name: _BumpMap
-      second:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - first:
-        name: _BumpTex
       second:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -48,19 +42,25 @@ Material:
     - first:
         name: _EmissionMap
       second:
-        m_Texture: {fileID: 2800000, guid: d4470a927f337904ca61baec1e9a9817, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
         name: _MainTex
       second:
-        m_Texture: {fileID: 2800000, guid: 3958a6c37d433214cb100d4e35ddde88, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2bdb537a82f338047938202003a8401f, type: 3}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Offset: {x: 0, y: 0.85714287}
     - first:
         name: _MainTex2
       second:
-        m_Texture: {fileID: 2800000, guid: cc8360a0577a57d49b5f3e5ea74649f9, type: 3}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MainTex3
+      second:
+        m_Texture: {fileID: 2800000, guid: 6b0086d6248e4624d81d8862fc49cb26, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -93,19 +93,22 @@ Material:
       second: 1
     - first:
         name: _DstBlend
-      second: 0
+      second: 10
     - first:
         name: _GlossMapScale
       second: 1
     - first:
         name: _Glossiness
-      second: 0
+      second: 0.5
     - first:
         name: _GlossyReflections
       second: 1
     - first:
+        name: _InvFade
+      second: 1
+    - first:
         name: _Metallic
-      second: 0.104
+      second: 0
     - first:
         name: _Mode
       second: 0
@@ -116,9 +119,6 @@ Material:
         name: _Parallax
       second: 0.02
     - first:
-        name: _Rimpow
-      second: 262.09
-    - first:
         name: _SmoothnessTextureChannel
       second: 0
     - first:
@@ -126,26 +126,53 @@ Material:
       second: 1
     - first:
         name: _SrcBlend
-      second: 1
+      second: 5
     - first:
         name: _UVSec
       second: 0
     - first:
         name: _ZWrite
       second: 1
+    - first:
+        name: _Zwrite
+      second: 0
+    - first:
+        name: _rot1
+      second: 0
+    - first:
+        name: _rot2
+      second: 0
+    - first:
+        name: _tex1U
+      second: 0
+    - first:
+        name: _tex1V
+      second: 0
+    - first:
+        name: _tex2U
+      second: 0
+    - first:
+        name: _tex2V
+      second: 0
+    - first:
+        name: _tex3U
+      second: 0
+    - first:
+        name: _tex3V
+      second: 0
+    - first:
+        name: _tex3pow
+      second: 0
     m_Colors:
     - first:
         name: _Color
       second: {r: 1, g: 1, b: 1, a: 1}
     - first:
-        name: _Ecolor
-      second: {r: 1, g: 0, b: 0, a: 1}
+        name: _EmisColor
+      second: {r: 0.2, g: 0.2, b: 0.2, a: 0}
     - first:
         name: _EmissionColor
-      second: {r: 0.07028545, g: 0.7352941, b: 0.26749474, a: 1}
+      second: {r: 0, g: 0, b: 0, a: 1}
     - first:
-        name: _eColor
-      second: {r: 0.09558821, g: 0.8503042, b: 1, a: 1}
-    - first:
-        name: _lineColor
-      second: {r: 0.64705884, g: 0.9123732, b: 1, a: 1}
+        name: _TintColor
+      second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
