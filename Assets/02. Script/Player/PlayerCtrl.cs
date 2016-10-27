@@ -149,7 +149,7 @@ public class PlayerCtrl : MonoBehaviour
         // 지상에 있을 시
         if (controller.isGrounded)
         {
-            curGravity = 20f;
+            curGravity = 50f;
             //이동
             moveDir = Vector3.right * inputAxis;
             // 점프

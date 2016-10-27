@@ -8,7 +8,7 @@ public class SoundMgr : MonoBehaviour {
 
     private AudioSource[] source;
     public static SoundMgr instance;
-    private List<AudioSource> sourceList = new List<AudioSource>();
+    public List<AudioSource> sourceList = new List<AudioSource>();
 
 	void Start () {
         instance = this;
@@ -35,7 +35,9 @@ public class SoundMgr : MonoBehaviour {
     {
         for (int i = 0; i < sourceList.Count; i++)
         {
-            if (sourceList[i].clip == clipName)
+            if (sourceList[i] == null)
+                sourceList.RemoveAt(i);
+            else if (sourceList[i].clip == clipName)
                 return true;
         }
         return false;
@@ -56,7 +58,9 @@ public class SoundMgr : MonoBehaviour {
     {
         for (int i = 0; i < sourceList.Count; i++)
         {
-            if (sourceList[i].clip.name == clipName)
+            if(sourceList[i] == null)
+                sourceList.RemoveAt(i);
+            else if (sourceList[i].clip.name == clipName)
             {
                 Destroy(sourceList[i].GetComponent<AudioSource>());
                 sourceList.RemoveAt(i);
