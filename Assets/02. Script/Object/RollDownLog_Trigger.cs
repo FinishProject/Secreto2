@@ -39,12 +39,14 @@ public class RollDownLog_Trigger : MonoBehaviour {
         {
             if (isStarted)
             {
+                SoundMgr.instance.PlayAudio("Earthquake", true);
                 StartCoroutine(roll);
                 yield return new WaitForSeconds(3f);
                 StartCoroutine(roll2);
             }
             else
             {
+                SoundMgr.instance.StopAudio("Earthquake");
                 StopCoroutine(roll);
                 StopCoroutine(roll2);
             }
