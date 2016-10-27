@@ -112,7 +112,7 @@ public class PlayerCtrl : MonoBehaviour
                 if (!audioSource.isPlaying)
                 {
                     int index = Random.Range(0, runSound.Length);
-                    audioSource.PlayOneShot(runSound[index]);
+                    //audioSource.PlayOneShot(runSound[index]);
                 }
             }
             // 달리기 멈춤
@@ -232,7 +232,7 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (col.CompareTag("Hold"))
         {
-            WahleCtrl.instance.transform.parent = this.transform.parent;
+            //WahleCtrl.instance.transform.parent = this.transform.parent;
             WahleCtrl.instance.ChangeState(WahleState.MOVE);
         }
     }
@@ -266,7 +266,7 @@ public class PlayerCtrl : MonoBehaviour
         clothModel.SetActive(false);
         pEffect.StartEffect(PlayerEffectList.DIE);
 
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(1.5f);
         GetComponent<CharacterController>().enabled = true;
         //ObjectPosResetMgr.instance.ResetPos();
 
