@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
+//using System;
 
 public enum PlayerEffectList
 {
@@ -16,10 +16,11 @@ public class PlayerCtrl : MonoBehaviour
     public float upGravity = 1f; // 점프 시 중력 값
     public float dropGravity = 5f; // 공중에 있을 때의 중력값
     public static float curGravity; // 현재 중력값
-    public static bool dying;      // 죽는중
 
     public static float inputAxis = 0f;     // 입력 받는 키의 값
     public static bool isFocusRight = true; // 우측을 봐라보는 여부
+
+    public static bool dying;      // 죽는중
 
     [System.NonSerialized]
     public bool isMove = true;       // 현재 이동 여부
@@ -37,7 +38,8 @@ public class PlayerCtrl : MonoBehaviour
     public GameObject clothModel;
     private PlayerEffect pEffect;
     private WahleMove wahleMove;
-    public AudioClip runSound;
+    public AudioClip[] runSound;
+    public AudioClip stopRun;
     private AudioSource audioSource;
 
     private AnimatorStateInfo currentAnim;
@@ -107,12 +109,17 @@ public class PlayerCtrl : MonoBehaviour
                 anim.SetBool("Run", true);
 
                 if (!audioSource.isPlaying)
-                    audioSource.PlayOneShot(runSound);
+                {
+                    int index = Random.Range(0, runSound.Length);
+                    audioSource.PlayOneShot(runSound[index]);
+                }
             }
             else
             {
                 anim.SetBool("Run", false);
                 audioSource.Stop();
+                //audioSource.PlayOneShot(stopRun);
+                
             }
 
             if (Input.GetKeyDown(KeyCode.Space))
