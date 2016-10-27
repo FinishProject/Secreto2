@@ -47,6 +47,7 @@ public class PlayerCtrl : MonoBehaviour
     static int runState = Animator.StringToHash("Base Layer.Run");
     static int jumpDownState = Animator.StringToHash("Base Layer.Jump_Down");
     static int JumpUpState = Animator.StringToHash("Base Layer.Jump_Up(5~25)");
+    static int fallState = Animator.StringToHash("Base Layer.Jump_DownLoop");
 
     public static PlayerCtrl instance;
 
@@ -102,7 +103,7 @@ public class PlayerCtrl : MonoBehaviour
             anim.SetBool("Dash", false);
             anim.SetBool("Fall", false);
 
-            // 키 입력 시 달리기 애니메이션 재생
+            // 달리기 중
             if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
                 Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
             {
@@ -114,29 +115,28 @@ public class PlayerCtrl : MonoBehaviour
                     audioSource.PlayOneShot(runSound[index]);
                 }
             }
+            // 달리기 멈춤
             else
             {
                 anim.SetBool("Run", false);
                 audioSource.Stop();
                 //audioSource.PlayOneShot(stopRun);
-                
             }
 
+            // 기본 점프 애니메이션
             if (Input.GetKeyDown(KeyCode.Space))
-            {
                 anim.SetBool("Jump", true);
-            }
         }
         else if (!controller.isGrounded)
         {
+            // 2단 점프 애니메이션
             if (Input.GetKeyDown(KeyCode.Space))
-            {
                 anim.SetBool("Dash", true);
-            }
-
-            else if(controller.velocity.y <= -0.01 && currentAnim.nameHash.Equals(runState))
+            // 추락 애니메이션
+            else if(controller.velocity.y <= -10f && currentAnim.nameHash.Equals(runState))
             {
-                anim.SetBool("Fall", true);
+                if(!currentAnim.nameHash.Equals(fallState))
+                    anim.SetBool("Fall", true);
             }
         }
     }
@@ -156,7 +156,7 @@ public class PlayerCtrl : MonoBehaviour
         // 지상에 있을 시
         if (controller.isGrounded)
         {
-            curGravity = 50f;
+            curGravity = 35f;
             //이동
             moveDir = Vector3.right * inputAxis;
             // 점프
