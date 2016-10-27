@@ -16,12 +16,14 @@ public class AltarCtrl : MonoBehaviour {
 
     public GameObject altarEffect;
     public Transform stepHold;
+    public GameObject infoUI;
 
     private Vector3 originPos, finishPos;
 
     public float length = 0.5f;
     public float speed = 1f;
 
+   
     void Start()
     {
         //originColor = new Color(0f, 0.8117652f, 1.5f);
@@ -42,14 +44,20 @@ public class AltarCtrl : MonoBehaviour {
     {
         if (col.collider.CompareTag("OBJECT"))
         {
-            Debug.Log("On");
-            SoundMgr.instance.PlayAudio("Rock_On");
+            PlayerCtrl.instance.animReset();
+            StartCoroutine(ShowUI());
             isDraw = true;
             isClear = false;
             StartCoroutine(DrawColor());
             altarEffect.SetActive(true);
             isOnBox = true;
         }
+    }
+
+    IEnumerator ShowUI()
+    {
+        yield return new WaitForSeconds(8f);
+        infoUI.SetActive(true);
     }
 
   
@@ -91,6 +99,7 @@ public class AltarCtrl : MonoBehaviour {
     IEnumerator DrawColor()
     {
         drawColor = render[0].material.GetColor("_EmissionColor");
+        //SoundMgr.instance.PlayAudio("Rock_On");
         while (isDraw)
         {
             if (drawColor.r >= targetColor.r)
@@ -113,6 +122,7 @@ public class AltarCtrl : MonoBehaviour {
 
             yield return null;
         }
+        //SoundMgr.instance.StopAudio("Rock_On");
     }
 
     IEnumerator ClearColor()

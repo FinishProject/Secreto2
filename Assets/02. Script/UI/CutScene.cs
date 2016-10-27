@@ -52,7 +52,6 @@ public class CutScene : MonoBehaviour {
             }
             else if (imgInfo[index].playFadeOut)
             {
-                Debug.Log(1);
                 FadeInOut.instance.StartFadeInOut(normalTransTime * 0.4f, normalTransTime * 0.2f, normalTransTime * 0.4f);
                 yield return new WaitForSeconds(normalTransTime * 0.6f);
             }

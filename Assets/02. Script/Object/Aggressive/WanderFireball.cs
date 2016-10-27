@@ -8,9 +8,11 @@ public class WanderFireball : MonoBehaviour {
     public float waitTime = 2f;
 
     private bool isMove = false;
-
-    public GameObject eyesObj;
     private Vector3 originLocation, finishLocation;
+
+    private bool isUpMove = false;
+
+    public GameObject fireEyes;
 
 	// Use this for initialization
 	void Start () {
@@ -24,37 +26,50 @@ public class WanderFireball : MonoBehaviour {
     IEnumerator Movement()
     {
         Vector3 targetLocation = finishLocation;
-        float moveSpeed = 0f;
-        float startTime = 0f;
-
         float waitForTime = 0f;
-
+        float moveSpeed = 0f;
         while (true)
         {
-            if(transform.position.x <= finishLocation.x + 1f)
+
+            float distance = (targetLocation - transform.position).sqrMagnitude;
+            
+            if(distance <= 5f && !isUpMove)
             {
-                while (startTime < 2f)
-                {
+                isUpMove = true;
+                fireEyes.SetActive(true);
+                StartCoroutine(VerticalMovement());
 
-                    startTime += Time.deltaTime;
+                yield return new WaitForSeconds(6f);
 
-                    float verticalSpeed = Mathf.Sin(2f * startTime) * 0.5f;
-                    transform.Translate(Vector3.up * verticalSpeed * Time.deltaTime);
+                fireEyes.SetActive(false);
+                moveSpeed = 0f;
+                isUpMove = false;
 
-                    yield return null;
-                }
-                
                 if (targetLocation == originLocation)
                     targetLocation = finishLocation;
                 else
                     targetLocation = originLocation;
-               
             }
 
-            
+            moveSpeed += speed * Time.deltaTime;
 
+            transform.position = Vector3.Lerp(transform.position, targetLocation, moveSpeed * Time.deltaTime);
 
-            transform.position = Vector3.Lerp(transform.position, targetLocation, 0.3f * Time.deltaTime);
+            yield return null;
+        }
+    }
+
+    IEnumerator VerticalMovement()
+    {
+        float moveSpeed = 0f;
+        float startTime = 0f;
+        
+        while (isUpMove)
+        {
+            startTime += Time.deltaTime;
+            moveSpeed = Mathf.Sin(1f * startTime) * 0.5f;
+
+            transform.Translate(Vector3.up * moveSpeed * Time.deltaTime);
 
             yield return null;
         }

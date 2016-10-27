@@ -8,7 +8,7 @@ public class SoundMgr : MonoBehaviour {
 
     private AudioSource[] source;
     public static SoundMgr instance;
-    private List<AudioSource> sourceList = new List<AudioSource>();
+    public List<AudioSource> sourceList = new List<AudioSource>();
 
 	void Start () {
         instance = this;
@@ -16,7 +16,7 @@ public class SoundMgr : MonoBehaviour {
         source = GetComponents<AudioSource>();
     }
     // 사운드 실행
-    public void PlayAudio(string audioName)
+    public void PlayAudio(string audioName, bool isLoop)
     {
         AudioClip newClip = FindAudioClip(audioName);
         if (!GetPlayingClip(newClip))
@@ -26,6 +26,7 @@ public class SoundMgr : MonoBehaviour {
             {
                 sourceList[sourceList.Count - 1].clip = newClip;
                 sourceList[sourceList.Count - 1].Play();
+                sourceList[sourceList.Count - 1].loop = isLoop;
             }
         }
     }
@@ -35,7 +36,9 @@ public class SoundMgr : MonoBehaviour {
     {
         for (int i = 0; i < sourceList.Count; i++)
         {
-            if (sourceList[i].clip == clipName)
+            if (sourceList[i] == null)
+                sourceList.RemoveAt(i);
+            else if (sourceList[i].clip == clipName)
                 return true;
         }
         return false;
@@ -56,7 +59,9 @@ public class SoundMgr : MonoBehaviour {
     {
         for (int i = 0; i < sourceList.Count; i++)
         {
-            if (sourceList[i].clip.name == clipName)
+            if(sourceList[i] == null)
+                sourceList.RemoveAt(i);
+            else if (sourceList[i].clip.name == clipName)
             {
                 Destroy(sourceList[i].GetComponent<AudioSource>());
                 sourceList.RemoveAt(i);

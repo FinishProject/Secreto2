@@ -99,8 +99,6 @@ public class CameraCtrl_6 : MonoBehaviour
         teleportTrigger = false;
     }
 
-
-
     #region Update 함수
 
     void FixedUpdate()

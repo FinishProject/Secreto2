@@ -66,8 +66,9 @@ public class Hold_Switch_Show : MonoBehaviour {
     IEnumerator Play;
     void OnCollisionEnter(Collision col)
     {
-        if (col.collider.CompareTag("OBJECT"))
+        if (col.collider.CompareTag("OBJECT") && !isActive)
         {
+            isActive = true;
             isOnBox = true;
             scriptArea.SetActive(false);
             StopAllCoroutines();

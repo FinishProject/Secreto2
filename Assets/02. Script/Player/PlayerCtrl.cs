@@ -122,7 +122,7 @@ public class PlayerCtrl : MonoBehaviour
         }
         else if (!controller.isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Space) && currentAnim.nameHash.Equals(JumpUpState))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 anim.SetBool("Dash", true);
             }
@@ -149,7 +149,7 @@ public class PlayerCtrl : MonoBehaviour
         // 지상에 있을 시
         if (controller.isGrounded)
         {
-            curGravity = 20f;
+            curGravity = 50f;
             //이동
             moveDir = Vector3.right * inputAxis;
             // 점프
@@ -209,7 +209,7 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (coll.CompareTag("DeadLine"))
         {
-            //PlayerDie();
+            PlayerDie();
         }
         else if (coll.CompareTag("StartPoint"))
         {

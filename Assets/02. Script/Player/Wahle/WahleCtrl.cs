@@ -26,8 +26,8 @@ public class WahleCtrl : MonoBehaviour {
     public static IEnumerator curState;
     public static WahleCtrl instance;
 
-    public GameObject lunaModel;
-    public GameObject playerMgr;
+    public AudioClip[] clips;
+    private AudioSource source;
 
     bool isActive = true;
 
@@ -37,6 +37,7 @@ public class WahleCtrl : MonoBehaviour {
         anim = gameObject.GetComponentInChildren<Animator>();
         camTr = GameObject.FindGameObjectWithTag("MainCamera").transform;
         playerTr = GameObject.Find("Luna_Head_Point").transform;
+        source = GetComponent<AudioSource>();
 
         meet = GetComponent<WahleMeet>();
         idle = GetComponent<WahleIdle>();
@@ -47,6 +48,7 @@ public class WahleCtrl : MonoBehaviour {
     {
         curState = meet.CurStateUpdate();
         StartCoroutine(CoroutineUpdate());
+        StartCoroutine(PlayVoice());
     }
 
     protected virtual IEnumerator CurStateUpdate() { yield return null; }
@@ -65,6 +67,19 @@ public class WahleCtrl : MonoBehaviour {
             case WahleState.MOVE:
                 curState = move.CurStateUpdate();
                 break;
+        }
+    }
+
+    private IEnumerator PlayVoice()
+    {
+        float[] rndValue = { 90, 10 };
+        while (true)
+        {
+
+            yield return new WaitForSeconds(15f);
+
+            PlayRandomSound();
+            yield return null;
         }
     }
 
@@ -111,6 +126,14 @@ public class WahleCtrl : MonoBehaviour {
             //    10f * Time.deltaTime);
             yield return null;
         }
+    }
+
+    private void PlayRandomSound()
+    {
+        int rndValue = Random.Range(0, clips.Length);
+
+        if (!source.isPlaying)
+            source.PlayOneShot(clips[rndValue]);
     }
 
     // 이동 속도 증가

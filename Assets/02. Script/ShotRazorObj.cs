@@ -25,6 +25,11 @@ public class ShotRazorObj : MonoBehaviour {
 
     private bool isActive = false;
 
+    void Start()
+    {
+        StartCoroutine(SetLazer());
+    }
+
 	void Update () {
         if(alpha >= 0.9f)
             ShotRay();
@@ -35,7 +40,6 @@ public class ShotRazorObj : MonoBehaviour {
         if (col.CompareTag("Player") && !isActive)
         {
             isActive = true;
-            StartCoroutine(SetLazer());
         }
     }
 
@@ -54,7 +58,7 @@ public class ShotRazorObj : MonoBehaviour {
         Color setColor = meshRender.material.color;
 
         bool isUp = true;
-        while (isActive)
+        while (true)
         {
             alpha += fadeDir * fadeSpeed * Time.deltaTime;
             alpha = Mathf.Clamp01(alpha);
@@ -67,7 +71,8 @@ public class ShotRazorObj : MonoBehaviour {
                 fadeDir *= -1f;
                 if (fadeDir == 1f)
                 {
-                    SoundMgr.instance.StopAudio("Laser");
+                    if (isActive)
+                        SoundMgr.instance.StopAudio("Laser");
                     isUp = true;
                     fadeSpeed = upSpeed;
                 }
@@ -80,7 +85,8 @@ public class ShotRazorObj : MonoBehaviour {
             if (isUp && fadeSpeed <= 1f && setColor.a >= 0.2f)
             {
                 yield return new WaitForSeconds(chargeWaitTime);
-                SoundMgr.instance.PlayAudio("Laser");
+                if (isActive)
+                    SoundMgr.instance.PlayAudio("Laser", false);
                 isUp = false;
                 fadeSpeed = 5f;
             }
