@@ -1,4 +1,5 @@
-﻿Shader "RealBright/RB_Custom" {
+﻿Shader "RealBright/RB_Custom_island
+" {
 
 	Properties {
 	
@@ -53,9 +54,13 @@
 
 	SubShader {
 
+
 		Tags { "RenderType"="Opaque" }
 		LOD 200
-		Cull Off
+		Cull back
+		 Fog { Mode Off }
+
+
 
 		CGPROGRAM
  		#pragma surface surf Standard fullforwardshadows // noambient
@@ -186,5 +191,5 @@
 
 	}
 
-	FallBack "Diffuse"
+	FallBack "Unlit/Texture"
 }
