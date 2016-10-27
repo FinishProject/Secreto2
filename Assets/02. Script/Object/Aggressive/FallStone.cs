@@ -10,6 +10,7 @@ public class FallStone : MonoBehaviour {
     private bool isActive = false;
 
     public GameObject stoneObject;
+    public Transform[] points;
     private GameObject[] fallStone;
 
     public static FallStone instance;
@@ -18,6 +19,8 @@ public class FallStone : MonoBehaviour {
 
 	void Start () {
         instance = this;
+
+        //points = GetComponentsInChildren<Transform>();
 	}
 	
     void OnTriggerEnter(Collider col)
@@ -42,27 +45,64 @@ public class FallStone : MonoBehaviour {
         while (isActive)
         {
             CameraCtrl_6.instance.StartShake(0.5f);
+            SoundMgr.instance.PlayAudio("Earthquake");
 
             yield return new WaitForSeconds(0.5f);
 
-            SoundMgr.instance.PlayAudio("Earthquake");
+            int spawnIndxe = GetDistance();
 
-            GameObject stone = (GameObject)Instantiate(stoneObject,
-                new Vector3(PlayerCtrl.instance.transform.position.x + 1f,
-                PlayerCtrl.instance.transform.position.y + 10f,
-                PlayerCtrl.instance.transform.position.z), 
-                new Quaternion(180f, 0f, 0f, 0));
+            GameObject stone = (GameObject)Instantiate(
+                stoneObject, points[spawnIndxe].position,
+               new Quaternion(0, 0, 0, 0));
 
-            
+            yield return new WaitForSeconds(5f);
 
-            yield return new WaitForSeconds(6f);
+            Destroy(stone, 5f);
+            //StartCoroutine(DestroyObject(stone));
+            SoundMgr.instance.StopAudio("Earthquake");
+
+            yield return new WaitForSeconds(1f);
 
             yield return null;
         }
     }
 
-    void DestroyObject(GameObject obj)
+    int GetDistance()
     {
-        Destroy(obj, 5f);
+        float firstDis = (points[0].position - PlayerCtrl.instance.transform.position).sqrMagnitude;
+        for(int i=1; i<points.Length; i++)
+        {
+            float secondDis = (points[i].position - PlayerCtrl.instance.transform.position).sqrMagnitude;
+
+            if (firstDis >= secondDis)
+                return i;
+        }
+
+        return 0;
+    }
+
+    IEnumerator DestroyObject(GameObject obj)
+    {
+        MeshRenderer[] childObj = obj.GetComponentsInChildren<MeshRenderer>();
+        Color color = childObj[0].GetComponent<Renderer>().material.color;
+        float alpha = 1f;
+
+        while (true)
+        {
+            alpha -= 1f * Time.deltaTime;
+            alpha = Mathf.Clamp01(alpha);
+            color.a = alpha;
+
+            for (int i = 0; i < childObj.Length; i++)
+                childObj[i].GetComponent<Renderer>().material.color = color;
+
+            if (alpha <= 0)
+            {
+                Destroy(obj);
+                break;
+            }
+
+            yield return null;
+        }
     }
 }

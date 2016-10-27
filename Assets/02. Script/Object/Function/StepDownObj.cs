@@ -12,21 +12,24 @@ public class StepDownObj : MonoBehaviour {
     private Vector3 originPos;
 
     private Shader standard;
-    public Shader trans;
+    public Shader transparent;
 
     void Start()
     {
         originPos = this.transform.position;
 
         standard = Shader.Find("Standard");
+
+        if (transparent == null)
+            transparent = Shader.Find("Custom/balpan_trans");
     }
 
     void OnTriggerStay(Collider col)
     {
         if (col.CompareTag("Player"))
         {
-            if (GetComponent<Renderer>().material.shader != trans)
-                GetComponent<Renderer>().material.shader = trans;
+            if (transparent != null && GetComponent<Renderer>().material.shader != transparent)
+                GetComponent<Renderer>().material.shader = transparent;
 
             isBack = false;
 

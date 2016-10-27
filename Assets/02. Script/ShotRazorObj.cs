@@ -71,7 +71,7 @@ public class ShotRazorObj : MonoBehaviour {
                 fadeDir *= -1f;
                 if (fadeDir == 1f)
                 {
-                    if(isActive)
+                    if (isActive)
                         SoundMgr.instance.StopAudio("Laser");
                     isUp = true;
                     fadeSpeed = upSpeed;
@@ -85,7 +85,8 @@ public class ShotRazorObj : MonoBehaviour {
             if (isUp && fadeSpeed <= 1f && setColor.a >= 0.2f)
             {
                 yield return new WaitForSeconds(chargeWaitTime);
-                SoundMgr.instance.PlayAudio("Laser");
+                if (isActive)
+                    SoundMgr.instance.PlayAudio("Laser");
                 isUp = false;
                 fadeSpeed = 5f;
             }

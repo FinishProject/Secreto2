@@ -38,7 +38,9 @@ public class WanderFireball : MonoBehaviour {
                 isUpMove = true;
                 fireEyes.SetActive(true);
                 StartCoroutine(VerticalMovement());
-                yield return new WaitForSeconds(8f);
+
+                yield return new WaitForSeconds(6f);
+
                 fireEyes.SetActive(false);
                 moveSpeed = 0f;
                 isUpMove = false;

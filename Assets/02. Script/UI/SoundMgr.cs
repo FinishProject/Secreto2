@@ -35,7 +35,9 @@ public class SoundMgr : MonoBehaviour {
     {
         for (int i = 0; i < sourceList.Count; i++)
         {
-            if (sourceList[i] != null && sourceList[i].clip == clipName)
+            if (sourceList[i] == null)
+                sourceList.RemoveAt(i);
+            else if (sourceList[i].clip == clipName)
                 return true;
         }
         return false;
@@ -56,10 +58,11 @@ public class SoundMgr : MonoBehaviour {
     {
         for (int i = 0; i < sourceList.Count; i++)
         {
-            if (sourceList[i] != null && sourceList[i].clip.name == clipName)
+            if(sourceList[i] == null)
+                sourceList.RemoveAt(i);
+            else if (sourceList[i].clip.name == clipName)
             {
                 Destroy(sourceList[i].GetComponent<AudioSource>());
-                Debug.Log(sourceList[i]);
                 sourceList.RemoveAt(i);
             }
         }
