@@ -48,7 +48,7 @@ public class WahleCtrl : MonoBehaviour {
     {
         curState = meet.CurStateUpdate();
         StartCoroutine(CoroutineUpdate());
-        StartCoroutine(PlayVoice());
+        //StartCoroutine(PlayVoice());
     }
 
     protected virtual IEnumerator CurStateUpdate() { yield return null; }
@@ -128,7 +128,7 @@ public class WahleCtrl : MonoBehaviour {
         }
     }
 
-    private void PlayRandomSound()
+    public void PlayRandomSound()
     {
         int rndValue = Random.Range(0, clips.Length);
 

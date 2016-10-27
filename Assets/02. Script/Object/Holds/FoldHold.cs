@@ -9,8 +9,9 @@ public class FoldHold : MonoBehaviour {
 
     private float moveSpeed = 0f;
     private float moveDir = -1f;
-    private float startTime = 0f;
     private bool isOn = false;
+    public bool isActive = false;
+    float startTime = 0f;
 
     private Transform playerTr;
     private Vector3 originPos, finishPos;
@@ -28,18 +29,28 @@ public class FoldHold : MonoBehaviour {
             speed *= moveDir;
     }
 
-    void Update()
+    IEnumerator Movement()
     {
-        startTime += Time.deltaTime;
 
-        moveSpeed = (Mathf.Sin(startTime * speed) * length);
-
-        transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
-
-        if (isOn)
+        while (isActive)
         {
-            playerTr.Translate(Vector3.forward * (moveSpeed * -PlayerCtrl.focusRight) * Time.deltaTime);
+            startTime += Time.deltaTime;
+
+            moveSpeed = (Mathf.Sin(startTime * speed) * length);
+
+            transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+
+            if (isOn)
+                playerTr.Translate(Vector3.forward * (moveSpeed * -PlayerCtrl.focusRight) * Time.deltaTime);
+
+            yield return null;
         }
+    }
+
+    public void StartMove()
+    {
+        isActive = true;
+        StartCoroutine(Movement());
     }
 
     void OnTriggerEnter(Collider col)

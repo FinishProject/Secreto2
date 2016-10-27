@@ -17,10 +17,13 @@ public class ScriptArea : MonoBehaviour {
         {
             isActive = true;
 
-            if(isLoad)
+            if (isLoad)
                 ScriptMgr.instance.GetScript(setId);
             else
-            ScriptMgr.instance.SetActiveUI(true, context);
+            {
+                WahleCtrl.instance.PlayRandomSound();
+                ScriptMgr.instance.SetActiveUI(true, context);
+            }
         }
     }
 
