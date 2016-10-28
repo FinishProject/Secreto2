@@ -1,4 +1,4 @@
-﻿Shader "RealBright/RB_Custom_island
+﻿Shader "RealBright/RB_Custom
 " {
 
 	Properties {
@@ -58,7 +58,7 @@
 		Tags { "RenderType"="Opaque" }
 		LOD 200
 		Cull back
-		 Fog { Mode Off }
+		
 
 
 
@@ -191,5 +191,5 @@
 
 	}
 
-	FallBack "Unlit/Texture"
+	FallBack "Diffuse"
 }

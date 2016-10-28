@@ -24,6 +24,10 @@ public class ShotRazorObj : MonoBehaviour {
     public bool isLand = true;
 
     private bool isActive = false;
+    private bool isSound = false;
+
+    public AudioClip clip;
+    public AudioSource source;
 
     void Start()
     {
@@ -39,6 +43,7 @@ public class ShotRazorObj : MonoBehaviour {
     {
         if (col.CompareTag("Player") && !isActive)
         {
+            source.volume = 1f;
             isActive = true;
         }
     }
@@ -47,6 +52,7 @@ public class ShotRazorObj : MonoBehaviour {
     {
         if (col.CompareTag("Player"))
         {
+            source.volume = 0f;
             isActive = false;
         }
     }
@@ -72,7 +78,8 @@ public class ShotRazorObj : MonoBehaviour {
                 if (fadeDir == 1f)
                 {
                     if (isActive)
-                        SoundMgr.instance.StopAudio("Laser");
+                        source.Stop();
+
                     isUp = true;
                     fadeSpeed = upSpeed;
                 }
@@ -85,8 +92,14 @@ public class ShotRazorObj : MonoBehaviour {
             if (isUp && fadeSpeed <= 1f && setColor.a >= 0.2f)
             {
                 yield return new WaitForSeconds(chargeWaitTime);
-                if (isActive)
-                    SoundMgr.instance.PlayAudio("Laser", false);
+                if (!source.isPlaying)
+                    source.PlayOneShot(clip);
+
+                if (!isActive)
+                    source.volume = 0f;
+                //if (isActive)
+                //    SoundMgr.instance.PlayAudio("Laser", false, 0.8f);
+                yield return new WaitForSeconds(0.5f);
                 isUp = false;
                 fadeSpeed = 5f;
             }
