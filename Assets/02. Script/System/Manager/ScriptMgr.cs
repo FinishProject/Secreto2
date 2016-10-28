@@ -7,13 +7,9 @@ using UnityEngine.UI;
 // 스크립트 정보들
 public class Script
 {
-    public string name;
+    public string id;
     public string context;
-    public int scriptType;
     public int speaker;
-    public string questType;
-    public string questTarget;
-    public int completeNum;
 }
 
 public class SpokeNpc
@@ -22,150 +18,146 @@ public class SpokeNpc
     public bool isQuestClear;
 }
 
-enum ScriptState
-{
-    basic, answer, refuse, end,
-}
-
 public class ScriptMgr : MonoBehaviour {
 
     public Text[] txtUi; // 대사 텍스트 출력 UI
     public GameObject[] bgUi; // 대사 출력 배경 UI
     
-    public bool isQuest = false; // 퀘스트 완료 여부
     public static bool isSpeak = false;
 
     private List<Script> scriptData = new List<Script>(); //XML 데이터 저장
     private List<SpokeNpc> spokeNpc = new List<SpokeNpc>(); // 만난 NPC이름 저장
-    private QuestInfo questInfo; // 퀘스트 정보 저장
 
     public static ScriptMgr instance;
-
-    public bool isAnimQuest = false;
 
     void Awake()
     {
         instance = this;
         scriptData =  DataSaveLoad.LoadScript(); // 대사 XML 문서 불러오기
-        spokeNpc = DataSaveLoad.LoadNpcName(); // 이미 대화한 NPC 이름 불러오기
+        //spokeNpc = DataSaveLoad.LoadNpcName(); // 이미 대화한 NPC 이름 불러오기
     }
 
     // NPC 이름에 해당하는 대사들과 퀘스트 정보를 가져옴
-    public void GetScript(string name)
+    public void GetScript(string curId)
     {
-        List<Script> curScript = new List<Script>(); //현재 NPC의 대사를 저장
+        List<Script> curScript = new List<Script>(); //현재 NPC의 대사를 저장할 리스트
         isSpeak = true;
 
-        // 이전에 대화를 하지 않는 NPC일 경우 대화를 위해 정보들을 가져옴
-        if (!GetSpeakName(name))
+        for (int i = 0; i < scriptData.Count; i++)
         {
-            for (int i = 0; i < scriptData.Count; i++)
+            if (scriptData[i].id == curId)
             {
-                if (scriptData[i].name == name && scriptData[i].scriptType == 0)
+                // 대사 정보들을 저장
+                curScript.Add(new Script
                 {
-                    // 대사 정보들을 저장
-                    curScript.Add(new Script
-                    {
-                        name = name,
-                        context = scriptData[i].context,
-                        scriptType = scriptData[i].scriptType,
-                        speaker = scriptData[i].speaker,
-                    });
-                    // 퀘스트 정보를 저장
-                    questInfo = (new QuestInfo
-                    {
-                        questType = scriptData[0].questType,
-                        targetName = scriptData[0].questTarget,
-                        completNum = scriptData[0].completeNum,
-                    });
-                }
+                    id = scriptData[i].id,
+                    context = scriptData[i].context,
+                    speaker = scriptData[i].speaker,
+                });
             }
-            // NPC 이름과 퀘스트 달성 여부를 저장
-            spokeNpc.Add(new SpokeNpc
-            {
-                NpcName = name,
-                isQuestClear = false
-            });
+        }
+        if (curScript[0].id.Equals("meet") || curScript[0].id.Equals("ending"))
+            StartCoroutine(ShowScript(curScript));
 
-            QuestMgr.instance.GetQuestInfo(questInfo);
-            StartCoroutine(ShowScript(curScript));
-        }
-        // 퀘스트 수락 후 완료 시
-        else if (GetSpeakName(name) && isQuest)
-        {
-            for (int i = 0; i < scriptData.Count; i++)
-            {
-                if (scriptData[i].name == name && scriptData[i].scriptType == 1)
-                {
-                    // 대사 정보들을 저장
-                    curScript.Add(new Script
-                    {
-                        name = name,
-                        context = scriptData[i].context,
-                        scriptType = scriptData[i].scriptType,
-                        speaker = scriptData[i].speaker,
-                    });
-                }
-            }
-            // 퀘스트 완료후 퀘스트 달성 여부 수정 저장
-            for(int i=0; i<spokeNpc.Count; i++)
-            {
-                if(spokeNpc[i].NpcName == name)
-                {
-                    spokeNpc[i].isQuestClear = true;
-                }
-            }
-            isQuest = false;
-            StartCoroutine(ShowScript(curScript));
-        }
-        else if (GetSpeakName(name) && !isQuest) 
-        {
-            Debug.Log("END SPEAK");
-        }
+        else
+            ActiveUI(curScript[0].speaker, curScript[0].context);
     }
 
     IEnumerator ShowScript(List<Script> ShowScript)
     {
+        
         int arrIndex = 0;
+        PlayerCtrl.instance.isMove = false;
+        PlayerCtrl.instance.animReset();
         while (true)
         {
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
             {
                 if (arrIndex >= ShowScript.Count - 1)
                 {
                     PlayerCtrl.instance.isMove = true;
                     isSpeak = false;
-                    for (int i = 0; i < 2; i++)
-                    {
+                    for (int i = 0; i < bgUi.Length; i++)
                         bgUi[i].SetActive(false);
-                    }
                     break;
                 }
                 else
-                {
                     arrIndex++;
-                }
             }
             ActiveUI(ShowScript[arrIndex].speaker, ShowScript[arrIndex].context);
             yield return null;
         }
     }
 
+
     void ActiveUI(int spekerNum, string script)
     {
-        if (spekerNum == 0)
+        // UI  초기화
+        for (int i = 0; i < bgUi.Length; i++)
         {
-            bgUi[1].SetActive(false);
-            bgUi[0].SetActive(true);
-            txtUi[0].text = script;
+            bgUi[i].SetActive(false);
         }
-        else if (spekerNum == 1)
+        // UI 출력
+        switch (spekerNum)
         {
-            bgUi[0].SetActive(false);
-            bgUi[1].SetActive(true);
-            txtUi[1].text = script;
+            case 0: // 플레이어
+                bgUi[0].SetActive(true);
+                txtUi[0].text = script;
+                break;
+            case 1: // 올라
+                bgUi[1].SetActive(true);
+                bgUi[4].SetActive(true);
+                txtUi[1].text = script;
+                break;
+            case 3:
+                bgUi[1].SetActive(true);
+                bgUi[3].SetActive(true);
+                txtUi[1].text = script;
+                break;
         }
     }
+
+    public void SetActiveUI(bool isActive, string context)
+    {
+        if (isActive)
+        {
+            bgUi[2].SetActive(isActive);
+            txtUi[2].text = context;
+
+            StartCoroutine(Fade(1, 0));
+        }
+        else
+        {
+            StartCoroutine(Fade(-1, 1));
+        }
+    }
+
+    IEnumerator Fade(float fadeDir, float alpha)
+    {
+        while (true)
+        {
+            Color color = txtUi[2].color;
+
+            alpha += fadeDir * 1f * Time.deltaTime;
+            alpha = Mathf.Clamp01(alpha);
+
+            color.a = alpha;
+            bgUi[2].GetComponent<Image>().color = color;
+            txtUi[2].color = color;
+           
+            if (alpha == 0 || alpha == 1)
+                break;
+
+            yield return null;
+        }
+
+        if(alpha == 0)
+        {
+            bgUi[2].SetActive(false);
+        }
+    }
+
+    
 
     public bool GetSpeakName(string name)
     {

@@ -78,7 +78,7 @@ public class InGameUI : MonoBehaviour
     // UI들의 수치값을 최신화
     public void InitUIValue()
     {
-        ChangeHpBar();
+        //ChangeHpBar();
         ChangeEnhance();
         //        ChangeAttribute();
     }
@@ -90,10 +90,10 @@ public class InGameUI : MonoBehaviour
     }
 
     // HP바 수치를 바꿔줌 (외부 호출)
-    public void ChangeHpBar()
-    {
-        hpBar.fillAmount = PlayerCtrl.instance.ProportionHP;
-    }
+    //public void ChangeHpBar()
+    //{
+    //    hpBar.fillAmount = PlayerCtrl.instance.ProportionHP;
+    //}
 
 
     // 인핸스 수치 변경 (외부 호출)

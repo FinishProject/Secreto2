@@ -13,6 +13,7 @@ public class Hold_Switch_Show : MonoBehaviour {
     public float nextExecutionLevel = 0.65f;
 
     public GameObject elevatorParent;
+    public GameObject scriptArea;
     struct ElevatorInfo
     {
         public GameObject elevator;     // 엘레베이터 본체
@@ -26,25 +27,56 @@ public class Hold_Switch_Show : MonoBehaviour {
     }
     ElevatorInfo[] elevators;
 
+    GameObject holdObj;
+    private Shader standard;
 
     void Start () {
         isActive = false;
         curIdx = 0;
         elevatorsInit();
+
+        standard = Shader.Find("Standard");
     }
+
+    IEnumerator SetObjectAlpha()
+    {
+        float alpha = 0f;
+        float speed = 2f;
+        Color objColor = holdObj.GetComponent<Renderer>().material.color;
+        while (true)
+        {
+            // alpha가 Clamp01 함수를 사용하여 1까지만 올라가도록 함.
+            alpha += speed * Time.deltaTime;
+            alpha = Mathf.Clamp01(alpha);
+
+            // 현재 오브젝트의 알파값 변경
+            objColor.a = alpha;
+            holdObj.GetComponent<Renderer>().material.color = objColor;
+
+            // 알파값이 1이고 현재 셰이더가 스탠다드 셰이더가 아닐 시 스탠다드 셰이더로 변경
+            if (alpha == 0 && holdObj.GetComponent<Renderer>().material.shader != standard)
+            {
+                holdObj.GetComponent<Renderer>().material.shader = standard;
+            }
+
+            yield return null;
+        }
+    }
+    
     IEnumerator Play;
     void OnCollisionEnter(Collision col)
     {
-        if (col.collider.CompareTag("OBJECT"))
+        if (col.collider.CompareTag("OBJECT") && !isActive)
         {
+            isActive = true;
             isOnBox = true;
-
+            scriptArea.SetActive(false);
             StopAllCoroutines();
             StartCoroutine(TimeAboutPlay(true));
         }
     }
 
-
+    /*
     void OnCollisionExit(Collision col)
     {
         if (col.collider.CompareTag("OBJECT") && isOnBox)
@@ -54,7 +86,9 @@ public class Hold_Switch_Show : MonoBehaviour {
             StartCoroutine(TimeAboutPlay(false));
         }
     }
+    */
 
+        /*
     void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("Player") && !isOnBox)
@@ -63,8 +97,9 @@ public class Hold_Switch_Show : MonoBehaviour {
             StartCoroutine(TimeAboutPlay(true));
         }
     }
+    */
 
-
+    /*
     void OnTriggerExit(Collider col)
     {
         if (col.CompareTag("Player") && !isOnBox)
@@ -73,7 +108,8 @@ public class Hold_Switch_Show : MonoBehaviour {
             StartCoroutine(TimeAboutPlay(false));
         }
     }
-    
+    */
+
     IEnumerator TimeAboutPlay(bool isMoveUp)
     {
         /*
@@ -83,6 +119,8 @@ public class Hold_Switch_Show : MonoBehaviour {
             StartCoroutine(moveUP(curIdx, false));
             curIdx--;
         }*/
+        CameraCtrl_6.instance.StartViewTargetCam();
+        yield return new WaitForSeconds(2f);
         int curIdx = 0;
         while (true)
         { 

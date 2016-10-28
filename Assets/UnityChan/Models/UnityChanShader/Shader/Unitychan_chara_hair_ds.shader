@@ -13,14 +13,15 @@ Shader "UnityChan/Hair - Double-sided"
 		_SpecularReflectionSampler ("Specular / Reflection Mask", 2D) = "white" {}
 		_EnvMapSampler ("Environment Map", 2D) = "" {} 
 		_NormalMapSampler ("Normal Map", 2D) = "" {} 
+		[HideinInspector]_Cutoff("cutout",float) = 0.5
 	}
 
 	SubShader
 	{
 		Tags
 		{
-			"RenderType"="Opaque"
-			"Queue"="Geometry"
+			"RenderType"="TransparentCutout"
+			"Queue"="AlphaTest"
 			"LightMode"="ForwardBase"
 		}		
 
@@ -38,17 +39,17 @@ CGPROGRAM
 ENDCG
 		}
 
-		Pass
-		{
-			Cull Front
-			ZTest Less
-CGPROGRAM
-#pragma vertex vert
-#pragma fragment frag
-#include "UnityCG.cginc"
-#include "CharaOutline.cg"
-ENDCG
-		}
+//		Pass
+//		{
+//			Cull Front
+//			ZTest Less
+//CGPROGRAM
+//#pragma vertex vert
+//#pragma fragment frag
+//#include "UnityCG.cginc"
+//#include "CharaOutline.cg"
+//ENDCG
+//		}
 
 	}
 

@@ -96,6 +96,9 @@ Material:
         name: _Metallic
       second: 0
     - first:
+        name: _MinY
+      second: 0
+    - first:
         name: _Mode
       second: 1
     - first:
@@ -105,10 +108,16 @@ Material:
         name: _Parallax
       second: 0.02
     - first:
+        name: _Scale
+      second: 1
+    - first:
         name: _SmoothnessTextureChannel
       second: 0
     - first:
         name: _SpecularHighlights
+      second: 1
+    - first:
+        name: _Speed
       second: 1
     - first:
         name: _SrcBlend
@@ -117,8 +126,17 @@ Material:
         name: _UVSec
       second: 0
     - first:
+        name: _WorldScale
+      second: 1
+    - first:
         name: _ZWrite
       second: 1
+    - first:
+        name: _xScale
+      second: 0.5
+    - first:
+        name: _yScale
+      second: 0.5
     m_Colors:
     - first:
         name: _Color
@@ -126,3 +144,6 @@ Material:
     - first:
         name: _EmissionColor
       second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
+        name: _MainColor
+      second: {r: 1, g: 1, b: 1, a: 1}

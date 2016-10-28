@@ -7,6 +7,9 @@ public class PauseUI_2 : MonoBehaviour
     public Image YesImg;
     public Image NoImg;
 
+    public AudioSource source;
+    public AudioClip clip;
+
     private bool isSelectYes;
     public bool IsSelectYes // 현재 선택된 메뉴
     {
@@ -43,6 +46,7 @@ public class PauseUI_2 : MonoBehaviour
         Time.timeScale = 1;
     }
 
+
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.LeftArrow))
@@ -53,8 +57,10 @@ public class PauseUI_2 : MonoBehaviour
         {
             IsSelectYes = false;
         }
-        else if (Input.GetKeyDown(KeyCode.Space))
+        else if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
         {
+            //SoundMgr.instance.PlaySelectSound();
+            source.PlayOneShot(clip);
             if (IsSelectYes)
                 ToTitleScene();
             else
@@ -77,7 +83,6 @@ public class PauseUI_2 : MonoBehaviour
     // 예 버튼 눌렀을 때
     public void selectYesButton()
     {
-        Debug.Log(1123);
         if (IsSelectYes)
             ToTitleScene();
         else
@@ -87,7 +92,6 @@ public class PauseUI_2 : MonoBehaviour
     // 아니오 버튼 눌렀을 때
     public void selectNoButton()
     {
-        Debug.Log(1233123);
         if (!IsSelectYes)
             ClosePauseUI();
         else

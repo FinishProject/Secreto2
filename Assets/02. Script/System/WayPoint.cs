@@ -7,6 +7,8 @@ public class WayPoint : MonoBehaviour
     public delegate void SaveSystem();
     public static event SaveSystem OnSave;
 
+    public Transform saveTr;
+
     public GameObject[] effect;
 
     void OnTriggerEnter(Collider col)
@@ -17,20 +19,25 @@ public class WayPoint : MonoBehaviour
         }
         else if (col.CompareTag("Player") && !PlayerCtrl.dying)
         {
-            OnSave();
+            //saveTr = col.transform;
+            //OnSave();
+            PlayerCtrl.instance.Save();
             InGameUI_2.instance.AvtiveSave();
 
-            StartCoroutine(SetEffect());
+            if(effect.Length > 0)
+                StartCoroutine(SetEffect());
         }
 
     }
 
     IEnumerator SetEffect()
     {
-        for(int i=0; i<effect.Length; i++)
+        SoundMgr.instance.PlayAudio("Save_Point", false, 0.3f);
+        for (int i = 0; i < effect.Length; i++)
             effect[i].SetActive(true);
 
         yield return new WaitForSeconds(2.5f);
         effect[0].SetActive(false);
+        SoundMgr.instance.StopAudio("Save_Point");
     }
 }

@@ -32,18 +32,18 @@ public class TraceMon : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter(Collider col)
-    {
-        if(col.CompareTag("Player"))
-        {
-            PlayerCtrl.instance.getDamage(damage);
-        }
-    }
+    //void OnTriggerEnter(Collider col)
+    //{
+    //    if(col.CompareTag("Player"))
+    //    {
+    //        PlayerCtrl.instance.getDamage(damage);
+    //    }
+    //}
 
-    void OnEnable()
-    {
-        this.transform.position = startPos;
-        time = 0f;
-    }
+    //void OnEnable()
+    //{
+    //    this.transform.position = startPos;
+    //    time = 0f;
+    //}
 }
 

@@ -155,7 +155,6 @@ public class CameraCtrl_7 : MonoBehaviour
             curRange = Mathf.Round((prevNode.position.x - tr.position.x) * 100) / 100;
         }
 
-
         ratio = 1 - (curRange / totalRange);                                  // (다음노드 까지 거리 / 총거리의) 비율
         nodePointPos = curNode.position - (playerTr.position + camAddPos);    // curNode.position - (playerTr.position + camAddPos) 로 바꿔주면 정말 루트 대로 움직임
         nodePointRot = curNode.eulerAngles;
@@ -168,6 +167,12 @@ public class CameraCtrl_7 : MonoBehaviour
 
         tr.eulerAngles = nodePointRot + (quat * ratio);
 
+
+
+        ratio = 1 - (curRange / totalRange);                                  
+        nodePointPos = curNode.position - (playerTr.position + camAddPos);    
+        nodePointRevision = nodePointPos + (nodeVector * ratio);
+        tr.position = playerTr.position + camAddPos + nodePointRevision;
     }
 }
 

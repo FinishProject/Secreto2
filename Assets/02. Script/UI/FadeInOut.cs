@@ -42,7 +42,7 @@ public class FadeInOut : MonoBehaviour {
     public Fade_PlayerDead fade_PlayerDead_Info;
     public static FadeInOut instance;
 
-    void Start()
+    void Awake()
     {
         instance = this;
         trigger = false;
@@ -83,6 +83,7 @@ public class FadeInOut : MonoBehaviour {
             PlayerCtrl.instance.isMove = false;
 
         alpha = 0;
+        
         while (alpha < 1 && fadeInTime > 0)
         {
             alpha += (1 / fadeInTime) * Time.deltaTime;

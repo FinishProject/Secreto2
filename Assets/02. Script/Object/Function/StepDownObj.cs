@@ -3,26 +3,41 @@ using System.Collections;
 
 public class StepDownObj : MonoBehaviour {
 
-    public float downLenth = 0.3f;
-    public float speed = 4f;
+    public float maxLength = 10f;
+    public float downSpeed = 3f;
+    public float upSpeed = 2f;
+    public float fadeSpeed = 1f;
+    private bool isBack = false;
 
-    private bool isStep = true;
+    private Vector3 originPos;
 
-    private Vector3 targetPos, originPos;
+    private Shader standard;
+    public Shader transparent;
 
-    void Awake()
+    void Start()
     {
-        // 초기 위치와 타겟 위치 초기화
-        originPos = transform.position;
-        targetPos = new Vector3(originPos.x, originPos.y - downLenth, originPos.z);
+        originPos = this.transform.position;
+
+        standard = Shader.Find("Standard");
+
+        if (transparent == null)
+            transparent = Shader.Find("Custom/balpan_trans");
     }
 
-    void OnTriggerEnter(Collider col)
+    void OnTriggerStay(Collider col)
     {
         if (col.CompareTag("Player"))
         {
-            isStep = true;
-            StartCoroutine(MoveDown());
+            if (transparent != null && GetComponent<Renderer>().material.shader != transparent)
+                GetComponent<Renderer>().material.shader = transparent;
+
+            isBack = false;
+
+            float curAlpha = Fade(-1);
+            if (curAlpha <= 0f)
+                GetComponent<Collider>().isTrigger = true;
+
+            transform.position += Vector3.down * downSpeed * Time.deltaTime;
         }
     }
 
@@ -30,30 +45,39 @@ public class StepDownObj : MonoBehaviour {
     {
         if (col.CompareTag("Player"))
         {
-            isStep = false;
-            StartCoroutine(BackOriginPos());
+            isBack = true;
+            StartCoroutine(ReturnPosition());
         }
     }
 
-    // 아래로 이동
-    IEnumerator MoveDown()
+    float Fade(float fadeDir)
     {
-        while (transform.position.y >= (targetPos.y + 0.1f) && isStep)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, 
-                targetPos, speed * Time.deltaTime);
+        Color color = this.GetComponent<Renderer>().material.color;
+        float alpha = color.a;
 
-            yield return null;
-        }
+        alpha += fadeDir * fadeSpeed * Time.deltaTime;
+        alpha = Mathf.Clamp01(alpha);
+
+        color.a = alpha;
+        this.GetComponent<Renderer>().material.color = color;
+
+        return alpha;
     }
 
-    // 초기 위치로 돌아감
-    IEnumerator BackOriginPos()
+    IEnumerator ReturnPosition()
     {
-        while (transform.position.y <= (originPos.y - 0.1f) && !isStep)
+        while (isBack)
         {
-            transform.position = Vector3.MoveTowards(transform.position, 
-                originPos, speed * Time.deltaTime);
+            float curAlpha = Fade(1);
+            if (curAlpha == 1f)
+                GetComponent<Renderer>().material.shader = standard;
+            else if(curAlpha >= 0.5f)
+                GetComponent<Collider>().isTrigger = false;
+
+            transform.position = Vector3.MoveTowards(transform.position, originPos, upSpeed * Time.deltaTime);
+
+            if (this.transform.position.y >= originPos.y - 0.05f)
+                break;
 
             yield return null;
         }

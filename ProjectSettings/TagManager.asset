@@ -17,6 +17,9 @@ TagManager:
   - WAHLE
   - BULLET
   - ChaseLine
+  - Statue
+  - Hold
+  - Hold2
   layers:
   - Default
   - TransparentFX

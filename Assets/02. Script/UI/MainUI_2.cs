@@ -35,8 +35,13 @@ public class MainUI_2 : MonoBehaviour
     public float menuFadeSpeed = 0.3f;
     public float pressKeyFadeSpeed = 1f;
 
+    new AudioSource audio;
+    public AudioClip selectButtonSound;
+
+
     void Awake()
     {
+        audio = GetComponent<AudioSource>();
         rectTr = GetComponent<RectTransform>();
         anim = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animator>();
     }
@@ -55,7 +60,6 @@ public class MainUI_2 : MonoBehaviour
 
     void Update()
     {
-
         CloudeMove();
         OlaMove();
     }
@@ -206,7 +210,11 @@ public class MainUI_2 : MonoBehaviour
             else if ((Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) && curSelectIdx < 2)
                 curSelectIdx++;
             else if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+            {   
+                audio.PlayOneShot(selectButtonSound);
+                //yield return new WaitForSeconds(1f);
                 ConnectFunction(curSelectIdx);
+            }
 
             else
             {
