@@ -31,7 +31,7 @@ public class FoldHold : MonoBehaviour {
 
     IEnumerator Movement()
     {
-
+        yield return new WaitForSeconds(2f);
         while (isActive)
         {
             startTime += Time.deltaTime;

@@ -15,6 +15,9 @@ public class FallStone : MonoBehaviour {
 
     public static FallStone instance;
 
+    public AudioClip clip;
+    public AudioSource source;
+
     private Queue<int> stoneIndex = new Queue<int>();
 	
     void OnTriggerEnter(Collider col)
@@ -38,24 +41,26 @@ public class FallStone : MonoBehaviour {
     {
         while (isActive)
         {
-            CameraCtrl_6.instance.StartShake(0.5f);
-            SoundMgr.instance.PlayAudio("Earthquake", false);
-
-            yield return new WaitForSeconds(0.5f);
+            //CameraCtrl_6.instance.StartShake(0.5f);
+            //SoundMgr.instance.PlayAudio("Earthquake", false, 1f);
+            source.PlayOneShot(clip);
+            yield return new WaitForSeconds(1f);
 
             int spawnIndxe = GetDistance();
 
-            Debug.Log(spawnIndxe);
-
             GameObject stone = (GameObject)Instantiate(
-                stoneObject, points[spawnIndxe].position,
+                stoneObject, 
+                new Vector3(points[spawnIndxe].position.x,
+                points[spawnIndxe].position.y,
+                PlayerCtrl.instance.transform.position.z - 1f),
                new Quaternion(0, 0, 0, 0));
 
             Destroy(stone, 5f);
-            yield return new WaitForSeconds(5f);
-            SoundMgr.instance.StopAudio("Earthquake");
+            yield return new WaitForSeconds(5.1f);
+            source.Stop();
+            //SoundMgr.instance.StopAudio("Earthquake");
 
-            yield return new WaitForSeconds(1f);
+            //yield return new WaitForSeconds(1f);
 
             yield return null;
         }

@@ -2131,9 +2131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 576234977abddda459b6b999c70b4dc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: 1.5
-  length: 40
-  recTr: {fileID: 1602443180}
 --- !u!1 &960026577
 GameObject:
   m_ObjectHideFlags: 0
@@ -6111,9 +6108,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 576234977abddda459b6b999c70b4dc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: 0.4
-  length: 80
-  recTr: {fileID: 1602443180}
 --- !u!1 &1356215992
 GameObject:
   m_ObjectHideFlags: 0
@@ -6558,14 +6552,14 @@ MonoBehaviour:
   menu: {fileID: 797893227}
   menuFadeSpeed: 0.55
   pressKeyFadeSpeed: 1
-  selectButtonSound: {fileID: 8300000, guid: 0bf29162449e98444aebc245afbcd80a, type: 3}
+  selectButtonSound: {fileID: 8300000, guid: 81a3ccb704b21da4e935f3aebf4badb4, type: 3}
 --- !u!82 &1602443183
 AudioSource:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1602443179}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -6727,9 +6721,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 576234977abddda459b6b999c70b4dc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: 3
-  length: 30
-  recTr: {fileID: 1602443180}
 --- !u!1 &1679707625
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,9 @@ public class InGameUI_2 : MonoBehaviour {
     public Image loadImg;
     public Image circleImg;
 
+    public AudioSource source;
+        public AudioClip clip;
+
     [System.Serializable]
     public struct SaveInfo
     {
@@ -35,6 +38,7 @@ public class InGameUI_2 : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !pauseUI.activeSelf)
         {
+            source.PlayOneShot(clip);
             pauseUI.SetActive(true);
         }
         else if (Input.GetKeyDown(KeyCode.Escape) && pauseUI.activeSelf)

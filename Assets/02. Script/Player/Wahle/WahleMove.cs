@@ -8,7 +8,7 @@ public class WahleMove : WahleCtrl
 
     public float stateChangeTime = 8f;
     public float lookSpeed = 5f;
-    private float changeTime = 20f;
+    private float changeTime = 0f;
     private float focusDir = 1f; // 봐라보고 있는 방향 오른쪽 : 1, 왼쪽 : -1
 
     //    private float startTime = Time.time;
@@ -21,7 +21,7 @@ public class WahleMove : WahleCtrl
     protected override IEnumerator CurStateUpdate()
     {
         anim.SetBool("Move", true);
-        initSpeed = 0f;
+        initSpeed = 1f;
         while (true)
         {
             focusDir = PlayerCtrl.focusRight;
