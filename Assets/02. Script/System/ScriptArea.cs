@@ -8,6 +8,7 @@ public class ScriptArea : MonoBehaviour {
     public string context;
 
     public bool isLoad = true;
+    public bool isReroad = true;
     private bool isActive = false;
     private bool isActive2 = false;
 
@@ -15,12 +16,17 @@ public class ScriptArea : MonoBehaviour {
     {
         if (col.CompareTag("Player") && !isActive)
         {
-            isActive = true;
+            WahleCtrl.instance.PlayRandomSound();
+            if(!isReroad)
+                isActive = true;
 
-            if(isLoad)
+            if (isLoad)
                 ScriptMgr.instance.GetScript(setId);
             else
-            ScriptMgr.instance.SetActiveUI(true, context);
+            {
+                //WahleCtrl.instance.PlayRandomSound();
+                ScriptMgr.instance.SetActiveUI(true, context);
+            }
         }
     }
 
@@ -30,22 +36,10 @@ public class ScriptArea : MonoBehaviour {
         {
             if (!isLoad && !isActive2)
             {
-                isActive2 = true;
+                if (!isReroad)
+                    isActive2 = true;
                 ScriptMgr.instance.SetActiveUI(false, null);
-                //StartCoroutine(Off());
             }
         }
-    }
-
-    IEnumerator Off()
-    {
-        yield return new WaitForSeconds(1.5f);
-        this.gameObject.SetActive(false);
-    }
-
-    IEnumerator WaitScript()
-    {
-        yield return new WaitForSeconds(0.5f);
-        ScriptMgr.instance.GetScript(setId);
     }
 }

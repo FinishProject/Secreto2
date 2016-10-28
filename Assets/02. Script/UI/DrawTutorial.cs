@@ -8,13 +8,15 @@ public class DrawTutorial : MonoBehaviour {
     public Text txt;
 
     private bool isActive = false;
+    public bool isSound = true;
 	
 	void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("Player") && !isActive)
         {
             isActive = true;
-
+            if(isSound)
+                WahleCtrl.instance.PlayRandomSound();
             for (int i = 0; i < imgs.Length; i++)
                 imgs[i].gameObject.SetActive(true);
             txt.gameObject.SetActive(true);

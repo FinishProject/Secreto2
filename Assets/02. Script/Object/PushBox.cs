@@ -4,22 +4,31 @@ using UnityEngine.UI;
 
 public class PushBox : MonoBehaviour {
 
-    public float speed = 1f;
+    public float speed = 2f;
     public float uiPosY = 1f;
     private Vector3 moveDir = Vector3.zero;
 
     bool isRight = true;
     bool isActive = false;
 
+    public AudioClip clip;
+    public AudioSource source;
+
     // PlayerCtrl 에서 플레이어가 밀때 실행
     public void PushObject(Transform playerTr, bool isPlayerRight)
     {
         isRight = isPlayerRight;
 
+        //PlayerCtrl.instance.SetPushAnim(true);
+
+        // 플레이어 정면으로 밀린다.
+        moveDir = playerTr.forward;
+        transform.position += moveDir * speed * Time.deltaTime;
+
         if (!isActive)
         {
             isActive = true;
-            StartCoroutine(Push(playerTr));
+            StartCoroutine(Pushing(playerTr));
         }
     }
 
@@ -38,6 +47,35 @@ public class PushBox : MonoBehaviour {
         {
             ShowUI.instanace.OnImage(false);
         }
+    }
+    IEnumerator Pushing(Transform playerTr)
+    {
+        PlayerCtrl.instance.SetPushAnim(true);
+        ShowUI.instanace.OnImage(false);
+
+        while (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
+                Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
+            // Shitf 키를 누르지 않거나, 플레이어 위치가 박스보다 높으면 밀기 종료
+            if (Input.GetKeyUp(KeyCode.LeftShift) || transform.position.y < playerTr.position.y
+                || isRight != PlayerCtrl.isFocusRight)
+            {
+                break;
+            }
+
+            // 사운드 재생
+            //SoundMgr.instance.PlayAudio("rock_push", false, 1f);
+            if (!source.isPlaying)
+                source.PlayOneShot(clip);
+
+            yield return null;
+        }
+        source.Stop();
+        //SoundMgr.instance.StopAudio("rock_push");
+        ShowUI.instanace.OnImage(true);
+        PlayerCtrl.instance.SetPushAnim(false);
+        ShowUI.instanace.SetPosition(this.transform, uiPosY);
+        isActive = false;
     }
 
     // 밀기
@@ -63,7 +101,7 @@ public class PushBox : MonoBehaviour {
             transform.position += moveDir * speed * Time.deltaTime;
 
             // 사운드 재생
-            SoundMgr.instance.PlayAudio("rock_push",false);
+            SoundMgr.instance.PlayAudio("rock_push",false, 1f);
 
             yield return null;
         }

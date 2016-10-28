@@ -11,6 +11,8 @@ public class FallMonster : MonoBehaviour {
     private int fallCount = 0;
     public GameObject worldCanvas;
 
+    public AudioSource source;
+
     void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("Player"))
@@ -63,9 +65,23 @@ public class FallMonster : MonoBehaviour {
             if (!ScriptMgr.isSpeak)
             {
                 FadeInOut.instance.StartFadeInOut(1f, 3f, 1f);
+                StartCoroutine(SetVloume());
                 yield return new WaitForSeconds(3f);
                 Application.LoadLevel("EndCutScene");
             }
+
+            yield return null;
+        }
+    }
+
+    IEnumerator SetVloume()
+    {
+        float volume = source.volume;
+        while (true)
+        {
+            volume -= 0.3f * Time.deltaTime;
+            volume = Mathf.Clamp01(volume);
+            source.volume = volume;
 
             yield return null;
         }

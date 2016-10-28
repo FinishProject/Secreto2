@@ -48,7 +48,7 @@ public class WahleCtrl : MonoBehaviour {
     {
         curState = meet.CurStateUpdate();
         StartCoroutine(CoroutineUpdate());
-        StartCoroutine(PlayVoice());
+        //StartCoroutine(PlayVoice());
     }
 
     protected virtual IEnumerator CurStateUpdate() { yield return null; }
@@ -128,7 +128,25 @@ public class WahleCtrl : MonoBehaviour {
         }
     }
 
-    private void PlayRandomSound()
+    public IEnumerator StepHold2()
+    {
+        while (true)
+        {
+
+
+
+            relativePos = (playerTr.position - transform.position); // 두 객체간의 거리 차
+            lookRot = Quaternion.LookRotation(relativePos);
+
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, lookRot, 5f * Time.deltaTime);
+            // 선형 보간을 사용한 캐릭터 추격
+            transform.position = Vector3.Lerp(transform.position, playerTr.position - (playerTr.forward),
+                10f * Time.deltaTime);
+            yield return null;
+        }
+    }
+
+    public void PlayRandomSound()
     {
         int rndValue = Random.Range(0, clips.Length);
 

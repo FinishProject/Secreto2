@@ -39,7 +39,7 @@ public class WanderFireball : MonoBehaviour {
                 fireEyes.SetActive(true);
                 StartCoroutine(VerticalMovement());
 
-                yield return new WaitForSeconds(6f);
+                yield return new WaitForSeconds(3f);
 
                 fireEyes.SetActive(false);
                 moveSpeed = 0f;
@@ -51,7 +51,7 @@ public class WanderFireball : MonoBehaviour {
                     targetLocation = originLocation;
             }
 
-            moveSpeed += speed * Time.deltaTime;
+            moveSpeed = IncrementSpeed(moveSpeed, 2f, 0.2f);
 
             transform.position = Vector3.Lerp(transform.position, targetLocation, moveSpeed * Time.deltaTime);
 

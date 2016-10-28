@@ -20,7 +20,7 @@ public class VerticalHold : MonoBehaviour {
         maxLengthPos.y = originPos.y + length; //최대 이동 길이(상)
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (transform.position.y >= maxLengthPos.y && speed >= 1) { speed *= -1; }
         else if (transform.position.y <= originPos.y && speed <= -1) { speed *= -1; }

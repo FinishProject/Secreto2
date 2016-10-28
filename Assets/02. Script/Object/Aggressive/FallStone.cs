@@ -15,13 +15,10 @@ public class FallStone : MonoBehaviour {
 
     public static FallStone instance;
 
+    public AudioClip clip;
+    public AudioSource source;
+
     private Queue<int> stoneIndex = new Queue<int>();
-
-	void Start () {
-        instance = this;
-
-        //points = GetComponentsInChildren<Transform>();
-	}
 	
     void OnTriggerEnter(Collider col)
     {
@@ -44,25 +41,26 @@ public class FallStone : MonoBehaviour {
     {
         while (isActive)
         {
-            CameraCtrl_6.instance.StartShake(0.5f);
-            SoundMgr.instance.PlayAudio("Earthquake", false);
-
-            yield return new WaitForSeconds(0.5f);
+            //CameraCtrl_6.instance.StartShake(0.5f);
+            //SoundMgr.instance.PlayAudio("Earthquake", false, 1f);
+            source.PlayOneShot(clip);
+            yield return new WaitForSeconds(1f);
 
             int spawnIndxe = GetDistance();
 
             GameObject stone = (GameObject)Instantiate(
-                stoneObject, points[spawnIndxe].position,
+                stoneObject, 
+                new Vector3(points[spawnIndxe].position.x,
+                points[spawnIndxe].position.y,
+                PlayerCtrl.instance.transform.position.z - 1f),
                new Quaternion(0, 0, 0, 0));
 
             Destroy(stone, 5f);
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(5.1f);
+            source.Stop();
+            //SoundMgr.instance.StopAudio("Earthquake");
 
-            
-            //StartCoroutine(DestroyObject(stone));
-            SoundMgr.instance.StopAudio("Earthquake");
-
-            yield return new WaitForSeconds(1f);
+            //yield return new WaitForSeconds(1f);
 
             yield return null;
         }
@@ -71,7 +69,7 @@ public class FallStone : MonoBehaviour {
     int GetDistance()
     {
         float firstDis = (points[0].position - PlayerCtrl.instance.transform.position).sqrMagnitude;
-        for(int i=1; i<points.Length; i++)
+        for(int i=1; i < points.Length; i++)
         {
             float secondDis = (points[i].position - PlayerCtrl.instance.transform.position).sqrMagnitude;
 
@@ -80,30 +78,5 @@ public class FallStone : MonoBehaviour {
         }
 
         return 0;
-    }
-
-    IEnumerator DestroyObject(GameObject obj)
-    {
-        MeshRenderer[] childObj = obj.GetComponentsInChildren<MeshRenderer>();
-        Color color = childObj[0].GetComponent<Renderer>().material.color;
-        float alpha = 1f;
-
-        while (true)
-        {
-            alpha -= 1f * Time.deltaTime;
-            alpha = Mathf.Clamp01(alpha);
-            color.a = alpha;
-
-            for (int i = 0; i < childObj.Length; i++)
-                childObj[i].GetComponent<Renderer>().material.color = color;
-
-            if (alpha <= 0)
-            {
-                Destroy(obj);
-                break;
-            }
-
-            yield return null;
-        }
     }
 }

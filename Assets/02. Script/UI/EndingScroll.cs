@@ -10,6 +10,7 @@ public class EndingScroll : MonoBehaviour {
     float speed;
     Vector3 t;
 
+    public AudioSource source;
 
     RectTransform textTr;
     float orign;
@@ -78,9 +79,22 @@ public class EndingScroll : MonoBehaviour {
 
             if (alpha >= 1f)
             {
-                yield return new WaitForSeconds(1f);
+                StartCoroutine(SetVloume());
+                yield return new WaitForSeconds(3f);
                 Application.LoadLevel("MainScene 1");
             }
+
+            yield return null;
+        }
+    }
+    IEnumerator SetVloume()
+    {
+        float volume = source.volume;
+        while (true)
+        {
+            volume -= 0.3f * Time.deltaTime;
+            volume = Mathf.Clamp01(volume);
+            source.volume = volume;
 
             yield return null;
         }
@@ -95,6 +109,8 @@ public class EndingScroll : MonoBehaviour {
             blackImg.color = new Color(0, 0, 0, alpha);
             yield return true;
         }
+        StartCoroutine(SetVloume());
+        yield return new WaitForSeconds(3f);
         Application.LoadLevel("MainScene 1");
     }
 }

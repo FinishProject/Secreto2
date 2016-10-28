@@ -71,7 +71,7 @@ public class ScriptMgr : MonoBehaviour {
         PlayerCtrl.instance.animReset();
         while (true)
         {
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
             {
                 if (arrIndex >= ShowScript.Count - 1)
                 {

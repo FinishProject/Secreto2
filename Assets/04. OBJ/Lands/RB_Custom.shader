@@ -1,4 +1,5 @@
-﻿Shader "RealBright/RB_Custom" {
+﻿Shader "RealBright/RB_Custom
+" {
 
 	Properties {
 	
@@ -53,9 +54,13 @@
 
 	SubShader {
 
+
 		Tags { "RenderType"="Opaque" }
 		LOD 200
-		Cull Off
+		Cull back
+		
+
+
 
 		CGPROGRAM
  		#pragma surface surf Standard fullforwardshadows // noambient
