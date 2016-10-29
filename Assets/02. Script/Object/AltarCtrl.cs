@@ -44,7 +44,7 @@ public class AltarCtrl : MonoBehaviour {
     {
         if (col.collider.CompareTag("OBJECT"))
         {
-            PlayerCtrl.instance.animReset();
+            PlayerCtrl.instance.ResetAnim();
             SoundMgr.instance.StopAudio("rock_push");
             StartCoroutine(ShowUI());
             isDraw = true;

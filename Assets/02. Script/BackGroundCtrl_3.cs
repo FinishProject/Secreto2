@@ -34,9 +34,9 @@ public class BackGroundCtrl_3 : MonoBehaviour {
 
     void MoveBg_X(GameObject gameObj, float moveValue)
     {
-        tempPos = gameObj.transform.position;
-        if(PlayerCtrl.instance.isMove && Mathf.Abs(PlayerCtrl.controller.velocity.x) > 0)
-            tempPos.x -= PlayerCtrl.controller.velocity.x * moveValue;
-        gameObj.transform.position = tempPos;
+        //tempPos = gameObj.transform.position;
+        //if(PlayerCtrl.instance.isMove && Mathf.Abs(PlayerCtrl.controller.velocity.x) > 0)
+        //    tempPos.x -= PlayerCtrl.controller.velocity.x * moveValue;
+        //gameObj.transform.position = tempPos;
     }
 }

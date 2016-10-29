@@ -117,7 +117,7 @@ public class ShotRazorObj : MonoBehaviour {
         {
             if (hit.collider.CompareTag("Player"))
             {
-                PlayerCtrl.instance.PlayerDie();
+                StartCoroutine(PlayerCtrl.instance.PlayerDie());
             }
         }
     }

@@ -75,18 +75,5 @@ public class TeleportGate : MonoBehaviour {
         CameraCtrl_6.instance.EndTeleport(isRight);
 
     }
-
-    IEnumerator Movement()
-    {
-        int playingAnim = PlayerCtrl.instance.GetPlayingAnimation();
-
-        if(playingAnim == Animator.StringToHash("Base Layer.Jump"))
-            Debug.Log(playingAnim);
-        while (true)
-        {
-            
-            yield return null;
-        }
-    }
 }
 
