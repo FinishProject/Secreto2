@@ -16,6 +16,9 @@ public class MovieMgr : MonoBehaviour
 
     private MeshRenderer meshRenderer;
     private AudioSource audio;
+
+    public AudioSource source;
+    public AudioClip clip;
     private bool trigger;
     void Start()
     {
@@ -27,9 +30,7 @@ public class MovieMgr : MonoBehaviour
 
     IEnumerator StartMovie()
     {
-        FadeInOut.instance.StartFadeInOut(0, 1, 2.5f);
         StartCoroutine(fadeSkip(true));
-        yield return new WaitForSeconds(2f);
 
         audio.Play();
         movieclips.Play();
@@ -40,9 +41,10 @@ public class MovieMgr : MonoBehaviour
             if (Input.GetKey(KeyCode.Escape) || !movieclips.isPlaying && !trigger)
             {
                 trigger = true;
+                source.PlayOneShot(clip);
                 StartCoroutine(fadeSkip(false));
-                FadeInOut.instance.StartFadeInOut(1.5f, 3, 1.5f);
-                yield return new WaitForSeconds(1.5f);
+                FadeInOut.instance.StartFadeInOut(1.5f, 5f, 1.5f);
+                yield return new WaitForSeconds(2f);
                 Application.LoadLevel("LoadingScene");
                 break;
             }

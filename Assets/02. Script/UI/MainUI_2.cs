@@ -212,7 +212,7 @@ public class MainUI_2 : MonoBehaviour
             else if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
             {   
                 audio.PlayOneShot(selectButtonSound);
-                yield return new WaitForSeconds(2f);
+                //yield return new WaitForSeconds(1f);
                 ConnectFunction(curSelectIdx);
             }
 

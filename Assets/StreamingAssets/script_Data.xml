@@ -2,32 +2,32 @@
 <UniSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<info>
 		<id>meet</id>
-		<context>어머! 작은 하늘 고래야 어째서 혼자 이런 곳에 있는 거니?</context>
+		<context>작은 하늘 고래야 어째서 혼자 이런 곳에 있는 거니?</context>
 		<speaker>0</speaker>
 	</info>
 	<info>
 		<id>meet</id>
-		<context>어라.. 날 볼 수 있는 거야? 넌 흰 올빼미 족의 사람인가 보구나!</context>
+		<context>날 볼 수 있다니, 넌 흰 올빼미 족의 사람인가 보구나!</context>
 		<speaker>1</speaker>
 	</info>
 	<info>
 		<id>meet</id>
-		<context>다른 하늘 고래들이 모두 봉인 당해 버렸어..</context>
+		<context>마신의 봉인이 풀렸어, 난 가까스로 도망쳤지만</context>
 		<speaker>1</speaker>
 	</info>
 	<info>
 		<id>meet</id>
-		<context>난 가까스로 도망쳐 나와 이 곳에 숨을 수 있었지만..</context>
+		<context>어른 하늘 고래들은 마신에 의해 봉인되었어...</context>
 		<speaker>1</speaker>
 	</info>
 	<info>
 		<id>meet</id>
-		<context>내가 도움을 줄 순 없을까? </context>
+		<context>그래서 세상이 황폐해진 거구나…</context>
 		<speaker>0</speaker>
 	</info>
 	<info>
 		<id>meet</id>
-		<context>이 산 꼭대기에 하늘 고래가 봉인되어있어</context>
+		<context>이 산 꼭대기에 마신이 하늘 고래들을 봉인했어…</context>
 		<speaker>1</speaker>
 	</info>
 	<info>
@@ -37,7 +37,12 @@
 	</info>
 	<info>
 		<id>meet</id>
-		<context>하지만 정말 위험 할 꺼야 괜찮겠니?</context>
+		<context>내가 같이 가줄게!</context>
+		<speaker>0</speaker>
+	</info>
+	<info>
+		<id>meet</id>
+		<context>하지만 정말 위험 할 거야 괜찮겠니?</context>
 		<speaker>1</speaker>
 	</info>
 	<info>
@@ -47,22 +52,22 @@
 	</info>
 	<info>
 		<id>meet</id>
-		<context>넌 이름이 뭐니?</context>
-		<speaker>0</speaker>
+		<context>고마워! 어린 소녀야, 네 이름을 알고 싶어.</context>
+		<speaker>1</speaker>
 	</info>
 	<info>
 		<id>meet</id>
 		<context>내 이름은 루나야</context>
+		<speaker>0</speaker>
+	</info>
+	<info>
+		<id>meet</id>
+		<context>예쁜 이름이구나! 나는 올라라고해.</context>
 		<speaker>1</speaker>
 	</info>
 	<info>
 		<id>meet</id>
-		<context>예쁜 이름이구나! 나는 올라 라고 불러줘</context>
-		<speaker>1</speaker>
-	</info>
-	<info>
-		<id>meet</id>
-		<context>잘 부탁해 올라..!</context>
+		<context>잘 부탁해 올라!</context>
 		<speaker>0</speaker>
 	</info>
 	<info>
@@ -92,12 +97,12 @@
 	</info>
 	<info>
 		<id>push</id>
-		<context>이 상자 밀어볼 수 있지 않을까? Shift 키와 방향키를 함께 눌러보자!</context>
+		<context>이 돌, 밀어볼 수 있지 않을까? Shift 키와 방향키를 함께 눌러보자!</context>
 		<speaker>2</speaker>
 	</info>
 	<info>
 		<id>altar1</id>
-		<context>상자와 제단이 어딘가 비슷한 분위기인걸..? 분명 연관이 있을 것 같은데…</context>
+		<context>돌과 제단이 어딘가 비슷한 분위기인걸..? 분명 연관이 있을 것 같은데…</context>
 		<speaker>2</speaker>
 	</info>
 	<info>

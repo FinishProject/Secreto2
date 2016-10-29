@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class FallStone : MonoBehaviour {
 
@@ -9,28 +10,22 @@ public class FallStone : MonoBehaviour {
     private bool isActive = false;
 
     public GameObject stoneObject;
+    public Transform[] points;
     private GameObject[] fallStone;
 
     public static FallStone instance;
 
-	void Start () {
-        instance = this;
+    public AudioClip clip;
+    public AudioSource source;
 
-        fallStone = new GameObject[spawnNum];
-
-        for (int i = 0; i < spawnNum; i++)
-        {
-            fallStone[i] = (GameObject)Instantiate(stoneObject, this.transform.position, Quaternion.identity);
-            fallStone[i].SetActive(false);
-        }
-	}
+    private Queue<int> stoneIndex = new Queue<int>();
 	
     void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("Player") && !isActive)
         {
             isActive = true;
-            StartCoroutine(FallStoneSpawn());
+            StartCoroutine(SpawnStone());
         }
     }
     
@@ -42,29 +37,46 @@ public class FallStone : MonoBehaviour {
         }
     }
 
-    IEnumerator FallStoneSpawn()
+    IEnumerator SpawnStone()
     {
         while (isActive)
         {
-            if (arrayIndex < spawnNum && !fallStone[arrayIndex].activeSelf)
-            {
-                fallStone[arrayIndex].SetActive(true);
+            //CameraCtrl_6.instance.StartShake(0.5f);
+            //SoundMgr.instance.PlayAudio("Earthquake", false, 1f);
+            source.PlayOneShot(clip);
+            yield return new WaitForSeconds(1f);
 
-                Vector3 spawnPos = new Vector3 (
-                    PlayerCtrl.instance.transform.position.x + 5f, 
-                    PlayerCtrl.instance.transform.position.y + 20f,
-                    PlayerCtrl.instance.transform.position.z);
+            int spawnIndxe = GetDistance();
 
-                fallStone[arrayIndex].transform.position = spawnPos;
-                Debug.Log(fallStone[arrayIndex].transform.position);
-                arrayIndex++;
-                yield return new WaitForSeconds(2f);
-            }
+            GameObject stone = (GameObject)Instantiate(
+                stoneObject, 
+                new Vector3(points[spawnIndxe].position.x,
+                points[spawnIndxe].position.y,
+                PlayerCtrl.instance.transform.position.z - 1f),
+               new Quaternion(0, 0, 0, 0));
 
-            if (arrayIndex >= spawnNum)
-                arrayIndex = 0;
+            Destroy(stone, 5f);
+            yield return new WaitForSeconds(5.1f);
+            source.Stop();
+            //SoundMgr.instance.StopAudio("Earthquake");
+
+            //yield return new WaitForSeconds(1f);
 
             yield return null;
         }
+    }
+
+    int GetDistance()
+    {
+        float firstDis = (points[0].position - PlayerCtrl.instance.transform.position).sqrMagnitude;
+        for(int i=1; i < points.Length; i++)
+        {
+            float secondDis = (points[i].position - PlayerCtrl.instance.transform.position).sqrMagnitude;
+
+            if (firstDis >= secondDis)
+                return i;
+        }
+
+        return 0;
     }
 }

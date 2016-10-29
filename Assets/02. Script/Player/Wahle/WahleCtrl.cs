@@ -26,23 +26,29 @@ public class WahleCtrl : MonoBehaviour {
     public static IEnumerator curState;
     public static WahleCtrl instance;
 
+    public AudioClip[] clips;
+    private AudioSource source;
+
+    bool isActive = true;
+
     void Awake()
     {
         instance = this;
         anim = gameObject.GetComponentInChildren<Animator>();
         camTr = GameObject.FindGameObjectWithTag("MainCamera").transform;
         playerTr = GameObject.Find("Luna_Head_Point").transform;
+        source = GetComponent<AudioSource>();
 
         meet = GetComponent<WahleMeet>();
         idle = GetComponent<WahleIdle>();
         move = GetComponent<WahleMove>();
     }
 
-    private void Start()
+    protected void Start()
     {
-        //curState = meet.CurStateUpdate();
-        ChangeState(WahleState.MEET);
+        curState = meet.CurStateUpdate();
         StartCoroutine(CoroutineUpdate());
+        //StartCoroutine(PlayVoice());
     }
 
     protected virtual IEnumerator CurStateUpdate() { yield return null; }
@@ -64,6 +70,19 @@ public class WahleCtrl : MonoBehaviour {
         }
     }
 
+    private IEnumerator PlayVoice()
+    {
+        float[] rndValue = { 90, 10 };
+        while (true)
+        {
+
+            yield return new WaitForSeconds(15f);
+
+            PlayRandomSound();
+            yield return null;
+        }
+    }
+
     // 현재 상태를 코루틴을 사용하여 Update 함
     public IEnumerator CoroutineUpdate()
     {
@@ -81,6 +100,41 @@ public class WahleCtrl : MonoBehaviour {
     {
         while (true)
         {
+
+            relativePos = playerTr.position - transform.position;
+            lookRot = Quaternion.LookRotation(relativePos);
+            distance = relativePos.sqrMagnitude;
+
+            //if(distance <= 3f)
+            //{
+            //    transform.parent = PlayerCtrl.instance.transform;
+            //}
+
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, lookRot,
+            1f * Time.deltaTime);
+            transform.Translate(Vector3.forward * 2f * Time.deltaTime);
+
+            transform.position = Vector3.Lerp(transform.position, 
+                new Vector3(transform.position.x, playerTr.position.y, transform.position.z), 3f * Time.deltaTime);
+
+            //relativePos = (playerTr.position - transform.position); // 두 객체간의 거리 차
+            //lookRot = Quaternion.LookRotation(relativePos);
+
+            //transform.localRotation = Quaternion.Slerp(transform.localRotation, lookRot, 5f * Time.deltaTime);
+            //// 선형 보간을 사용한 캐릭터 추격
+            //transform.position = Vector3.Lerp(transform.position, playerTr.position - (playerTr.forward),
+            //    10f * Time.deltaTime);
+            yield return null;
+        }
+    }
+
+    public IEnumerator StepHold2()
+    {
+        while (true)
+        {
+
+
+
             relativePos = (playerTr.position - transform.position); // 두 객체간의 거리 차
             lookRot = Quaternion.LookRotation(relativePos);
 
@@ -90,6 +144,14 @@ public class WahleCtrl : MonoBehaviour {
                 10f * Time.deltaTime);
             yield return null;
         }
+    }
+
+    public void PlayRandomSound()
+    {
+        int rndValue = Random.Range(0, clips.Length);
+
+        if (!source.isPlaying)
+            source.PlayOneShot(clips[rndValue]);
     }
 
     // 이동 속도 증가

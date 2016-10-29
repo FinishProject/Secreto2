@@ -38,6 +38,7 @@
 			float4 tex : TEXCOORD1;
 		};
 
+		// VERTEX SHADER
 		v2f vert(Input input)
 		{
 			v2f output;
@@ -47,18 +48,18 @@
 			return output;
 		}
 
+		// FRAGMENT SHADER
 		float4 frag(v2f input) : COLOR
 		{
-			// 플레이어와 버텍스의 거리를 구한다.
+			// Calculate distance to player position
 			float dist = distance(input.position_in_world_space, _PlayerPosition);
 
-			// 범위 안에 있다면 텍스쳐를 그린다.
+			// Return appropriate colour
 			if (dist < _VisibleDistance) {
-				return tex2D(_MainTex, float4(input.tex));
+				return tex2D(_MainTex, float4(input.tex)); // Visible
 			}
-			// 범위 밖에 있다면 텍스쳐의 알파값을 0으로하여 보이지 않도록 한다.
 			else {
-				float4 tex = tex2D(_MainTex, float4(input.tex));
+				float4 tex = tex2D(_MainTex, float4(input.tex)); // Outside visible range
 				tex.a = 0.0;
 				return tex;
 			}

@@ -9,6 +9,11 @@ public class WahleIdle : WahleCtrl
 
     public Transform targetPoint;
 
+    new void Start()
+    {
+        //base.Start();
+    }
+
     protected override IEnumerator CurStateUpdate()
     {
         anim.SetBool("Move", true);

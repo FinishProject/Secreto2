@@ -23,7 +23,7 @@ public class RotationMoveHold : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void LateUpdate () {
+	void Update () {
         angle += speed;
         if (angle > 360)
             angle = 0;
@@ -60,7 +60,6 @@ public class RotationMoveHold : MonoBehaviour {
         if (coll.CompareTag("Player"))
         {
             isOn = false;
-            WahleCtrl.instance.ChangeState(WahleState.MOVE);
         }
     }
 

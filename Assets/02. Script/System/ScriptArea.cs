@@ -8,23 +8,23 @@ public class ScriptArea : MonoBehaviour {
     public string context;
 
     public bool isLoad = true;
+    public bool isReroad = true;
     private bool isActive = false;
+    private bool isActive2 = false;
 
 	void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("Player") && !isActive)
         {
-            isActive = true;
+            WahleCtrl.instance.PlayRandomSound();
+            if(!isReroad)
+                isActive = true;
 
-            if (setId.Equals("narration"))
-                StartCoroutine(WaitScript());
-            
-            else if (isLoad)
-            {
+            if (isLoad)
                 ScriptMgr.instance.GetScript(setId);
-            }
-            else if (!isLoad)
+            else
             {
+                //WahleCtrl.instance.PlayRandomSound();
                 ScriptMgr.instance.SetActiveUI(true, context);
             }
         }
@@ -34,16 +34,12 @@ public class ScriptArea : MonoBehaviour {
     {
         if (col.CompareTag("Player"))
         {
-            if (!isLoad)
+            if (!isLoad && !isActive2)
             {
+                if (!isReroad)
+                    isActive2 = true;
                 ScriptMgr.instance.SetActiveUI(false, null);
             }
         }
-    }
-
-    IEnumerator WaitScript()
-    {
-        yield return new WaitForSeconds(0.5f);
-        ScriptMgr.instance.GetScript(setId);
     }
 }

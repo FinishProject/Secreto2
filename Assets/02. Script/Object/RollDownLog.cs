@@ -31,6 +31,7 @@ public class RollDownLog : MonoBehaviour {
         isMoving = false;
         LogMesh.enabled = false;
         collider.enabled = false;
+        isShaking = false;
 
         transform.position = orignPos;
         transform.rotation = orignRot;
@@ -62,10 +63,10 @@ public class RollDownLog : MonoBehaviour {
     {
         if(isMoving)
         {
+            
             rigidbody.AddForce(Vector3.right * LogSpeed, ForceMode.Force);
             if (!isShaking && Vector3.Distance(transform.position, PlayerCtrl.instance.transform.position) < startShakeRange)
             {
-                Debug.Log(3);
                 isShaking = true;
                 CameraCtrl_6.instance.ShakeStart(transform, startShakeRange + 1);
             }
