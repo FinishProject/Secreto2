@@ -19,6 +19,7 @@ public class Hold_Switch_Show : MonoBehaviour {
         public GameObject elevator;     // 엘레베이터 본체
         public MeshRenderer meshRender; // 색정보 변경을 위한 변수
         public Color color;             // 색정보 (오퍼시티 값을 조절하기 위해)
+        public Shader shader;           // 쉐이터 변경
         public BoxCollider[] colliders; // 콜리더 ( 한 발판에 콜리더 여러개 붙어 있는 경우가 있음)
         public Vector3 orignPos;        // 기본 위치
         public Vector3 destinationPos;  // 목표 위치
@@ -28,14 +29,18 @@ public class Hold_Switch_Show : MonoBehaviour {
     ElevatorInfo[] elevators;
 
     GameObject holdObj;
-    private Shader standard;
+    private Shader standardShader;
+    private Shader transparentShader;
 
     void Start () {
         isActive = false;
         curIdx = 0;
+        standardShader = Shader.Find("Standard");
+        transparentShader = Shader.Find("Custom/balpan_trans");
+
         elevatorsInit();
 
-        standard = Shader.Find("Standard");
+        
     }
 
     IEnumerator SetObjectAlpha()
@@ -52,12 +57,6 @@ public class Hold_Switch_Show : MonoBehaviour {
             // 현재 오브젝트의 알파값 변경
             objColor.a = alpha;
             holdObj.GetComponent<Renderer>().material.color = objColor;
-
-            // 알파값이 1이고 현재 셰이더가 스탠다드 셰이더가 아닐 시 스탠다드 셰이더로 변경
-            if (alpha == 0 && holdObj.GetComponent<Renderer>().material.shader != standard)
-            {
-                holdObj.GetComponent<Renderer>().material.shader = standard;
-            }
 
             yield return null;
         }
@@ -76,49 +75,9 @@ public class Hold_Switch_Show : MonoBehaviour {
         }
     }
 
-    /*
-    void OnCollisionExit(Collision col)
-    {
-        if (col.collider.CompareTag("OBJECT") && isOnBox)
-        {
-            isOnBox = false;
-            StopAllCoroutines();
-            StartCoroutine(TimeAboutPlay(false));
-        }
-    }
-    */
-
-        /*
-    void OnTriggerEnter(Collider col)
-    {
-        if (col.CompareTag("Player") && !isOnBox)
-        {
-            StopAllCoroutines();
-            StartCoroutine(TimeAboutPlay(true));
-        }
-    }
-    */
-
-    /*
-    void OnTriggerExit(Collider col)
-    {
-        if (col.CompareTag("Player") && !isOnBox)
-        {
-            StopAllCoroutines();
-            StartCoroutine(TimeAboutPlay(false));
-        }
-    }
-    */
-
     IEnumerator TimeAboutPlay(bool isMoveUp)
     {
-        /*
-        if(!isMoveUp)
-        {
-            StartCoroutine(OpacityUp(curIdx, false));
-            StartCoroutine(moveUP(curIdx, false));
-            curIdx--;
-        }*/
+        
         CameraCtrl_6.instance.StartViewTargetCam();
         yield return new WaitForSeconds(2f);
         int curIdx = 0;
@@ -163,20 +122,6 @@ public class Hold_Switch_Show : MonoBehaviour {
                         break;
                 }
                 
-                /*
-                if (curIdx > 0 && elevators[curIdx + 1].executionLevel < -nextExecutionLevel) 
-                {
-                    StartCoroutine(OpacityUp(curIdx, false));
-                    StartCoroutine(moveUP(curIdx, false));
-                    curIdx--;
-                }
-                else if (curIdx == 0)
-                {
-                    StartCoroutine(OpacityUp(curIdx, false));
-                    StartCoroutine(moveUP(curIdx, false));
-                    break;
-                }
-                */
             }
             yield return null;
         } 
@@ -216,6 +161,7 @@ public class Hold_Switch_Show : MonoBehaviour {
                                            elevators[i].meshRender.material.color.b,
                                            -1);
             elevators[i].meshRender.material.color = elevators[i].color;
+            elevators[i].meshRender.material.shader = transparentShader;
             elevators[i].colliders = elevators[i].elevator.GetComponentsInChildren<BoxCollider>();
 
             for(int j = 0; j < elevators[i].colliders.Length; j++)
@@ -273,6 +219,7 @@ public class Hold_Switch_Show : MonoBehaviour {
                 {
                     for (int i = 0; i < elevators[idx].colliders.Length; i++)
                     {
+                        elevators[idx].meshRender.material.shader = standardShader;
                         elevators[idx].colliders[i].enabled = true;
                     }
                     break;
