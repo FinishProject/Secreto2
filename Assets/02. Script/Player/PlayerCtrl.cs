@@ -24,7 +24,7 @@ public class PlayerCtrl : MonoBehaviour
     private bool isMove = true;       // 현재 이동 여부
     private bool isJumping = false;   // 현재 점프중인지 확인
 
-    public static float focusRight = 1f;
+    public static float focusRight = -1f;
     private float lockPosZ = 0f;
 
     public static Vector3 moveDir = Vector3.zero; // 이동 벡터
@@ -77,6 +77,7 @@ public class PlayerCtrl : MonoBehaviour
     void Update()
     {
         transform.position = new Vector3(transform.position.x, transform.position.y, lockPosZ);
+
         // 플레이어에게 조작권한이 있다면 움직임
         if (isMove)
             Movement();
@@ -91,6 +92,9 @@ public class PlayerCtrl : MonoBehaviour
         if (inputAxis < 0 && isFocusRight) { TurnPlayer(); }
         // 오른쪽 회전
         else if (inputAxis > 0 && !isFocusRight) { TurnPlayer(); }
+
+        // 추락 애니메이션
+        anim.SetFloat("Velocity", controller.velocity.y);
     }
 
     void SetAnimator()
@@ -99,7 +103,6 @@ public class PlayerCtrl : MonoBehaviour
         {
             anim.SetBool("Jump", false);
             anim.SetBool("Dash", false);
-            anim.SetBool("Fall", false);
 
             // 달리기 중
             if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
@@ -125,13 +128,8 @@ public class PlayerCtrl : MonoBehaviour
             // 2단 점프 애니메이션
             if (Input.GetKeyDown(KeyCode.Space))
                 anim.SetBool("Dash", true);
-            // 추락 애니메이션
-            else if(controller.velocity.y <= -15f && 
-                currentAnim.nameHash.Equals(runState) || currentAnim.nameHash.Equals(idleState))
-            {
-                if(!currentAnim.nameHash.Equals(fallState))
-                    anim.SetBool("Fall", true);
-            }
+            
+            
         }
     }
 
@@ -199,10 +197,10 @@ public class PlayerCtrl : MonoBehaviour
         moveDir.y = dashJumpHight;
 
         if (source.isPlaying)
-        {
             source.Stop();
-            source.PlayOneShot(soundClips[1]);
-        }
+
+        source.PlayOneShot(soundClips[1]);
+
     }
 
     //캐릭터 방향 회전
@@ -267,16 +265,19 @@ public class PlayerCtrl : MonoBehaviour
             clothModel.SetActive(false);
             pEffect.StartEffect(PlayerEffectList.DIE);
 
+            
             yield return new WaitForSeconds(1.5f);
-            controller.enabled = true;
+            
             //ObjectPosResetMgr.instance.ResetPos();
             
             lunaModel.SetActive(true);
             clothModel.SetActive(true);
+            controller.enabled = true;
+            
             GetPlayerData();
-            ResetAnim();
 
             yield return new WaitForSeconds(3f);
+            ResetAnim();
             isMove = true;
             dying = false;
         }
@@ -285,9 +286,9 @@ public class PlayerCtrl : MonoBehaviour
     public void ResetAnim()
     {
         anim.Play("Idle", 0);
-        //anim.SetBool("Run", false);
-        //anim.SetBool("Jump", false);
-        //anim.SetBool("Dash", false);
+        anim.SetBool("Run", false);
+        anim.SetBool("Jump", false);
+        anim.SetBool("Dash", false);
     }
 
     void OnEnable()
