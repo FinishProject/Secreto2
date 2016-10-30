@@ -42,8 +42,6 @@ public class FallStone : MonoBehaviour {
     {
         while (isActive)
         {
-            //CameraCtrl_6.instance.StartShake(0.5f);
-            //SoundMgr.instance.PlayAudio("Earthquake", false, 1f);
             source.PlayOneShot(clip);
             yield return new WaitForSeconds(1f);
 
