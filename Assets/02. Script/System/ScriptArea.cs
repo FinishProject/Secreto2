@@ -24,7 +24,6 @@ public class ScriptArea : MonoBehaviour {
                 ScriptMgr.instance.GetScript(setId);
             else
             {
-                //WahleCtrl.instance.PlayRandomSound();
                 ScriptMgr.instance.SetActiveUI(true, context);
             }
         }

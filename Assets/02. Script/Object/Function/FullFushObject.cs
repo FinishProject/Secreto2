@@ -15,7 +15,6 @@ public class FullFushObject : MonoBehaviour {
 
             Vector3 relativePos = wahle.position - transform.position;
             transform.position = Vector3.Lerp(transform.position, wahle.position, speed * Time.deltaTime);
-            //transform.Translate(relativePos.normalized * 20f * Time.deltaTime);
         }
     }
 
@@ -26,8 +25,6 @@ public class FullFushObject : MonoBehaviour {
         Vector3 relativePos = wahle.position - transform.position;
         transform.position = Vector3.Lerp(new Vector3(transform.position.x, 2f, 0f), 
             new Vector3(relativePos.x, 0f, 0f), 1f * Time.deltaTime);
-        //transform.Translate(new Vector3(-relativePos.normalized.x * speed * Time.deltaTime,
-        //    -relativePos.normalized.x * speed * Time.deltaTime, 0f));
     }
 
     void OnTriggerStay(Collider col)
