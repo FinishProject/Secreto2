@@ -4,21 +4,21 @@ using System.Collections.Generic;
 
 public class FallStone : MonoBehaviour {
 
-    public int spawnNum = 2;
-    private int arrayIndex = 0;
 
     private bool isActive = false;
 
     public GameObject stoneObject;
     public Transform[] points;
-    private GameObject[] fallStone;
 
     public static FallStone instance;
 
     public AudioClip clip;
-    public AudioSource source;
+    private AudioSource source;
 
-    private Queue<int> stoneIndex = new Queue<int>();
+    void Start()
+    {
+        source = GetComponent<AudioSource>();
+    }
 	
     void OnTriggerEnter(Collider col)
     {
@@ -37,12 +37,11 @@ public class FallStone : MonoBehaviour {
         }
     }
 
+    // 돌 생성
     IEnumerator SpawnStone()
     {
         while (isActive)
         {
-            //CameraCtrl_6.instance.StartShake(0.5f);
-            //SoundMgr.instance.PlayAudio("Earthquake", false, 1f);
             source.PlayOneShot(clip);
             yield return new WaitForSeconds(1f);
 
@@ -57,26 +56,29 @@ public class FallStone : MonoBehaviour {
 
             Destroy(stone, 5f);
             yield return new WaitForSeconds(5.1f);
-            source.Stop();
-            //SoundMgr.instance.StopAudio("Earthquake");
 
-            //yield return new WaitForSeconds(1f);
+            source.Stop();
 
             yield return null;
         }
     }
-
+     
+    // 플레이어와 가장 가까운 위치 구하기
     int GetDistance()
     {
-        float firstDis = (points[0].position - PlayerCtrl.instance.transform.position).sqrMagnitude;
-        for(int i=1; i < points.Length; i++)
+        float firstDis = (PlayerCtrl.instance.transform.position - points[0].position).sqrMagnitude;
+        int spawnIndex = 0;
+
+        for (int i = 0; i < points.Length; i++)
         {
-            float secondDis = (points[i].position - PlayerCtrl.instance.transform.position).sqrMagnitude;
+            float secondDis = (PlayerCtrl.instance.transform.position - points[i].position).sqrMagnitude;
 
-            if (firstDis >= secondDis)
-                return i;
+            if (firstDis > secondDis)
+            {
+                firstDis = secondDis;
+                spawnIndex = i;
+            }
         }
-
-        return 0;
+        return spawnIndex;
     }
 }

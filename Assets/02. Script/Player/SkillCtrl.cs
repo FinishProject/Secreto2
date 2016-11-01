@@ -44,10 +44,9 @@ public class SkillCtrl : MonoBehaviour {
     }
 
     public static SkillCtrl instance;
-
     void Awake()
     {
-//        instance = this;
+        instance = this;
         curAttribute = AttributeState.noraml;
         _countDownForAttribute = attributeDuration;
     }
@@ -196,34 +195,4 @@ public class SkillCtrl : MonoBehaviour {
         yield return new WaitForSeconds(1f);
         enhanceBullet.SetActive(false);
     }
-
-    /*
-    void OnGUI()
-    {
-        string tempText;
-        tempText = "현재 인핸스 : " + curEnhance.ToString();
-        tempText += "\n적용 속성  : " + curAttribute.ToString();
-
-
-        if(!curAttribute.Equals(AttributeState.noraml))
-        {
-            tempText += "\n남은 시간 : " + Mathf.Round(_countDownForAttribute).ToString();
-        }
-
-        GUI.TextField(new Rect(0, 0, 300.0f, 60.0f), tempText);
-    }
-    */
-
-    //public void StartReset(int curIndex)
-    //{
-    //    bulletInfo[curIndex].Bullet.SetActive(false);
-    //    //StartCoroutine(ResetBullet(curIndex));
-    //}
-    //// 탄환 발사 후 사라질 수 재생성
-    //IEnumerator ResetBullet(int index)
-    //{
-    //    yield return new WaitForSeconds(initTime);
-    //    bullet[count].SetActive(true);
-    //}
-
 }

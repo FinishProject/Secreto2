@@ -35,13 +35,6 @@ public class Elevator : MonoBehaviour
             // 목표지점 도착
             if (transform.position.y.Equals(finishPos.y))
             {
-                // 캐릭터가 발판에 머물러 있을 시
-                // 카메라 속도를 0으로 설정
-                //                if (isStep)
-                //                    CameraCtrl_5.instance.ChangeCamSpeed(0f);
-                // 캐릭터가 발판을 떠났을 시
-                // 카메라 속도를 초기화 함
-                //                else if (!isStep)
                 if (!isStep)
                     StartCoroutine(ChangeTargetPos());
             }
@@ -66,7 +59,6 @@ public class Elevator : MonoBehaviour
     {
         if (col.CompareTag("Player") && !isActive)
         {
- //           CameraCtrl_5.instance.ChangeCamSpeed(100f);
             isActive = true;
             targetPos = finishPos;
             WahleCtrl.curState = WahleCtrl.instance.StepHold();
@@ -84,7 +76,6 @@ public class Elevator : MonoBehaviour
 
     void OnTriggerExit(Collider col)
     {
-//        CameraCtrl_5.instance.ResetCameSpeed();
         WahleCtrl.instance.ChangeState(WahleState.MOVE);
         isStep = false;
     }
