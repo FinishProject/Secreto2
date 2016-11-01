@@ -7,7 +7,7 @@ public class SideSmashObj : MonoBehaviour {
     {
         if (col.CompareTag("Player"))
         {
-            PlayerCtrl.instance.PlayerDie();
+            StartCoroutine(PlayerCtrl.instance.PlayerDie());
         }
     }
 }

@@ -3,18 +3,25 @@ using System.Collections;
 
 public class FoldHold : MonoBehaviour {
 
-    public float length = 10f;
-    public float speed = 2f;
-    public bool isRight = true;
 
-    private float moveSpeed = 0f;
-    private float moveDir = -1f;
-    private bool isOn = false;
-    public bool isActive = false;
+    public float speed = 1f;
+    public float length = 3f;
+    public float moveDir = 1;
+
+    private bool isPlayerOn = false;
+
+    private Vector3 originPos;
     float startTime = 0f;
 
+    public bool isActive = false;
+
+    private float moveSpeed = 0f;
     private Transform playerTr;
-    private Vector3 originPos, finishPos;
+
+    Vector3 finishPos;
+
+    public bool isRight = true;
+    private bool isOn = false;
 
     void Start()
     {
@@ -31,7 +38,7 @@ public class FoldHold : MonoBehaviour {
 
     IEnumerator Movement()
     {
-        yield return new WaitForSeconds(2f);
+        //yield return new WaitForSeconds(2f);
         while (isActive)
         {
             startTime += Time.deltaTime;
@@ -41,7 +48,7 @@ public class FoldHold : MonoBehaviour {
             transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
 
             if (isOn)
-                playerTr.Translate(Vector3.forward * (moveSpeed * -PlayerCtrl.focusRight) * Time.deltaTime);
+                playerTr.Translate(Vector3.forward * (moveSpeed * PlayerCtrl.focusRight) * Time.deltaTime);
 
             yield return null;
         }
@@ -71,3 +78,41 @@ public class FoldHold : MonoBehaviour {
         }
     }
 }
+
+    //void Start()
+    //{
+    //    originPos = transform.position;
+    //}
+
+    //void Update()
+    //{
+
+    //        float moveSpeed = Mathf.Sin(speed * Time.time) * length;
+
+    //        transform.Translate(Vector3.right * -moveSpeed * Time.deltaTime);
+
+    //        if (isPlayerOn)
+    //            PlayerCtrl.instance.transform.Translate(Vector3.forward * (moveSpeed * PlayerCtrl.focusRight) * Time.deltaTime);
+
+    //        //transform.position = new Vector3(moveVector, transform.position.y, transform.position.z);
+  
+    //}
+
+
+    //void OnTriggerEnter(Collider col)
+    //{
+    //    if (col.CompareTag("Player"))
+    //    {
+    //        isPlayerOn = true;
+    //    }
+    //}
+
+    //void OnTriggerExit(Collider col)
+    //{
+    //    if (col.CompareTag("Player"))
+    //    {
+    //        isPlayerOn = false;
+    //    }
+    //}
+
+//}

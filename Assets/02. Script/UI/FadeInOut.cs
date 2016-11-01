@@ -80,7 +80,7 @@ public class FadeInOut : MonoBehaviour {
     {
         trigger = true;
         if (PlayerCtrl.instance != null)
-            PlayerCtrl.instance.isMove = false;
+            PlayerCtrl.instance.SetStopMove(false);
 
         alpha = 0;
         
@@ -93,7 +93,7 @@ public class FadeInOut : MonoBehaviour {
 
         if (PlayerCtrl.instance != null)
         {
-            PlayerCtrl.instance.animReset();
+            PlayerCtrl.instance.ResetAnim();
         }
 
         if (waitTime > 0)
@@ -109,7 +109,7 @@ public class FadeInOut : MonoBehaviour {
         }
         trigger = false;
         if (PlayerCtrl.instance != null)
-            PlayerCtrl.instance.isMove = true;
+            PlayerCtrl.instance.SetStopMove(true);
     }
 
     IEnumerator Load_Dead()

@@ -18,9 +18,6 @@ public class PushBox : MonoBehaviour {
     public void PushObject(Transform playerTr, bool isPlayerRight)
     {
         isRight = isPlayerRight;
-
-        //PlayerCtrl.instance.SetPushAnim(true);
-
         // 플레이어 정면으로 밀린다.
         moveDir = playerTr.forward;
         transform.position += moveDir * speed * Time.deltaTime;
@@ -64,7 +61,6 @@ public class PushBox : MonoBehaviour {
             }
 
             // 사운드 재생
-            //SoundMgr.instance.PlayAudio("rock_push", false, 1f);
             if (!source.isPlaying)
                 source.PlayOneShot(clip);
 

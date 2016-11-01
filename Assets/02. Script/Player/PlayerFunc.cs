@@ -30,26 +30,4 @@ public class PlayerFunc : MonoBehaviour {
             hitColl[i].SendMessage("GetDamage");
         }
     }
-
-    //펫 타기
-    public void RidePet()
-    {
-        Debug.Log("Riding Pet");
-    }
-
-    //ScriptMgr에서 NPC이름을 찾아서 대화 생성
-    public void ShowScript(string name)
-    {
-        if (name != null)
-        {
-            if (!ScriptMgr.instance.bgUi[1].activeSelf)
-            {
-                //대화 중이면 true, 캐릭터 정지
-                PlayerCtrl.inputAxis = 0f;
-                PlayerCtrl.instance.isMove = ScriptMgr.instance.bgUi[1].activeSelf;
-                ScriptMgr.instance.GetScript(name);
-                //NPCQuestMgr.instance.SetQuest();
-            }
-        }
-    }
 }
