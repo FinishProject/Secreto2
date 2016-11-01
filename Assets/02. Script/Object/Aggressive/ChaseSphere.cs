@@ -3,15 +3,25 @@ using System.Collections;
 
 public class ChaseSphere : MonoBehaviour {
 
+    enum ChaseState
+    {
+        IDLE, CHARGE, SHOT,
+    }
+
+    ChaseState state = ChaseState.IDLE;
+
     public Transform laser;
     public Renderer laserRender;
     public Transform[] blocks;
     public Transform finishPoint;
 
     private Transform playerTr;
+    private Vector3[] gapPos;
+    private Vector3[] originPos;
 
     private float laserSpeed = 100f;
     public float[] blockSpeed;
+    public float shakeAmount = 0.1f;
     private float moveDir = 1f;
     private bool isShot = false;
 
@@ -22,21 +32,25 @@ public class ChaseSphere : MonoBehaviour {
     {
         playerTr = PlayerCtrl.instance.transform;
 
+        originPos = new Vector3[blocks.Length];
+        for (int i = 0; i < originPos.Length; i++)
+        {
+            originPos[i] = blocks[i].position;
+        }
+
+        gapPos = new Vector3[blocks.Length];
+
+        gapPos[0] = new Vector3(blocks[0].position.x - 0.3f, blocks[0].position.y + 0.3f, blocks[0].position.z);
+        gapPos[1] = new Vector3(blocks[1].position.x - 0.3f, blocks[1].position.y - 0.3f, blocks[1].position.z);
+        gapPos[2] = new Vector3(blocks[2].position.x + 0.3f, blocks[2].position.y, blocks[2].position.z);
+
         StartCoroutine(MovementBlock());
     }
 
-    //void Update()
-    //{
-    //    MovementBlock();
-
-    //    if(isShot)
-    //        ShotLaser();
-    //}
-
     IEnumerator ShotLaser()
     {
+        laser.gameObject.SetActive(true);
         Vector3 targetPos = playerTr.position;
-        isMove = false;
 
         while (true)
         {
@@ -48,24 +62,28 @@ public class ChaseSphere : MonoBehaviour {
             laser.transform.rotation = Quaternion.Slerp(laser.rotation, targetRot, laserSpeed * Time.deltaTime);
 
             // 레이저 생성 및 타겟 방향을 종료 방향으로 바꿈
-            if (!isMove)
+            if (state == ChaseState.IDLE)
             {
+                //state = ChaseState.CHARGE;
+
                 yield return FadeLaser(1, 0);
-                isMove = true;
                 targetPos = finishPoint.position;
                 laserSpeed = 0.5f;
+
+                state = ChaseState.SHOT;
             }
 
             // 레이저와 타겟에 각도를 구함
             float angle = Vector3.Angle(laser.transform.right, (laser.position - targetPos));
 
             // 일정 각도 안에 들어왔을 시 레이저 삭제
-            if(angle <= 97f && isMove)
+            if(angle <= 97f && state == ChaseState.SHOT)
             {
+                state = ChaseState.IDLE;
+
                 yield return FadeLaser(-1, 1);
 
                 laser.gameObject.SetActive(false);
-                isMove = false;
                 laserSpeed = 100f;
                 targetPos = playerTr.position;
 
@@ -73,7 +91,7 @@ public class ChaseSphere : MonoBehaviour {
                 if (!isShot)
                     break;
 
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(4f);
                 laser.gameObject.SetActive(true);
             }
 
@@ -84,8 +102,11 @@ public class ChaseSphere : MonoBehaviour {
     IEnumerator FadeLaser(float fadeDir, float alpha)
     {
         Color color = laserRender.material.color;
+        Vector3 origin = transform.localPosition;
         while (true)
         {
+            transform.localPosition = origin + Random.insideUnitSphere * shakeAmount;
+
             alpha += fadeDir * 0.6f * Time.deltaTime;
             alpha = Mathf.Clamp01(alpha);
             color.a = alpha;
@@ -96,6 +117,8 @@ public class ChaseSphere : MonoBehaviour {
 
             yield return null;
         }
+
+        transform.localPosition = origin;
     }
 
 
@@ -103,6 +126,24 @@ public class ChaseSphere : MonoBehaviour {
     {
 
         while (true)
+        {
+            switch (state)
+            {
+                case ChaseState.IDLE:
+                    yield return IdleMove();
+                    break;
+                case ChaseState.SHOT:
+                    yield return ShotMove();
+                    break;
+            }
+
+            yield return null;
+        }
+    }
+
+    IEnumerator IdleMove()
+    {
+        while (state == ChaseState.IDLE)
         {
             float moveSpeed = Mathf.Sin(Time.time);
 
@@ -114,6 +155,32 @@ public class ChaseSphere : MonoBehaviour {
                 moveDir *= -1f;
             }
             moveDir = 1f;
+
+            yield return null;
+        }
+    }
+
+    IEnumerator ShotMove()
+    {
+        float countTime = 0f;
+        while (true)
+        {
+            if (state == ChaseState.SHOT)
+            {
+                for (int i = 0; i < blocks.Length; i++)
+                    blocks[i].position = Vector3.Lerp(blocks[i].position, gapPos[i], 5f * Time.deltaTime);
+            }
+            else if(state == ChaseState.IDLE)
+            {
+                for (int i = 0; i < blocks.Length; i++)
+                    blocks[i].position = Vector3.Lerp(blocks[i].position, originPos[i], 2f * Time.deltaTime);
+
+                countTime += Time.deltaTime;
+
+                if (countTime >= 1f)
+                    break;
+            }
+
             yield return null;
         }
     }
@@ -123,7 +190,7 @@ public class ChaseSphere : MonoBehaviour {
         if (col.CompareTag("Player"))
         {
             isShot = true;
-            laser.gameObject.SetActive(true);
+            
             StartCoroutine(ShotLaser());
         }
     }
