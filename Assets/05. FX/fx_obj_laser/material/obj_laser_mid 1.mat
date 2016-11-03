@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: obj_laser_mid 1
+  m_Shader: {fileID: 4800000, guid: 3074a0f6fdca45e4aaf2795005052844, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: 3000
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 2800000, guid: c42bfb7d48e255f4f901576f32d60519, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MainTex2
+      second:
+        m_Texture: {fileID: 2800000, guid: c42bfb7d48e255f4f901576f32d60519, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MainTex3
+      second:
+        m_Texture: {fileID: 2800000, guid: 6b0086d6248e4624d81d8862fc49cb26, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: _DstBlend
+      second: 1
+    - first:
+        name: _InvFade
+      second: 1
+    - first:
+        name: _SrcBlend
+      second: 5
+    - first:
+        name: _Zwrite
+      second: 0
+    - first:
+        name: _rot1
+      second: 0
+    - first:
+        name: _rot2
+      second: 0
+    - first:
+        name: _tex1U
+      second: 0
+    - first:
+        name: _tex1V
+      second: -1.2
+    - first:
+        name: _tex2U
+      second: 0
+    - first:
+        name: _tex2V
+      second: 1
+    - first:
+        name: _tex3U
+      second: 0.2
+    - first:
+        name: _tex3V
+      second: -1
+    - first:
+        name: _tex3pow
+      second: 0.02
+    m_Colors:
+    - first:
+        name: _Color
+      second: {r: 0.625, g: 0.62758625, b: 1, a: 1}
+    - first:
+        name: _TintColor
+      second: {r: 0.75294137, g: 0.3602941, b: 1, a: 0.5}
