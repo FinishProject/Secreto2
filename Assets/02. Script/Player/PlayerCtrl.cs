@@ -48,6 +48,7 @@ public class PlayerCtrl : MonoBehaviour
     static int jumpDownState = Animator.StringToHash("Base Layer.Jump_Down");
     static int JumpUpState = Animator.StringToHash("Base Layer.Jump_Up(5~25)");
     static int fallState = Animator.StringToHash("Base Layer.Jump_DownLoop");
+    static int landJump = Animator.StringToHash("Base Layer.Jump_Land(43~50)");
 
     public static PlayerCtrl instance;
 
@@ -104,14 +105,22 @@ public class PlayerCtrl : MonoBehaviour
             anim.SetBool("Jump", false);
             anim.SetBool("Dash", false);
 
+            if (currentAnim.nameHash.Equals(landJump))
+            {
+                source.PlayOneShot(soundClips[6]);
+            }
+
             // 달리기 중
-            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
+            else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
                 Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
             {
                 anim.SetBool("Run", true);
 
                 if (!source.isPlaying)
-                    source.PlayOneShot(soundClips[2]);
+                {
+                    int index = Random.Range(2, 5);
+                    source.PlayOneShot(soundClips[index]);
+                }
             }
             // 달리기 멈춤
             else
@@ -128,8 +137,6 @@ public class PlayerCtrl : MonoBehaviour
             // 2단 점프 애니메이션
             if (Input.GetKeyDown(KeyCode.Space))
                 anim.SetBool("Dash", true);
-            
-            
         }
     }
 
@@ -276,7 +283,10 @@ public class PlayerCtrl : MonoBehaviour
             
             GetPlayerData();
 
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(1.5f);
+            source.PlayOneShot(soundClips[7]);
+            yield return new WaitForSeconds(1.5f);
+
             ResetAnim();
             isMove = true;
             dying = false;

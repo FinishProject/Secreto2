@@ -32,12 +32,14 @@ public class ChaseSphere : MonoBehaviour {
     {
         playerTr = PlayerCtrl.instance.transform;
 
+        // 초기 위치 설정
         originPos = new Vector3[blocks.Length];
         for (int i = 0; i < originPos.Length; i++)
         {
             originPos[i] = blocks[i].position;
         }
 
+        // 벌어질 위치 설정
         gapPos = new Vector3[blocks.Length];
 
         gapPos[0] = new Vector3(blocks[0].position.x - 0.3f, blocks[0].position.y + 0.3f, blocks[0].position.z);
@@ -99,6 +101,7 @@ public class ChaseSphere : MonoBehaviour {
         }
     }
 
+    // 레이저 알파값 조절
     IEnumerator FadeLaser(float fadeDir, float alpha)
     {
         Color color = laserRender.material.color;
@@ -121,10 +124,9 @@ public class ChaseSphere : MonoBehaviour {
         transform.localPosition = origin;
     }
 
-
+    // 블럭 움직이기
     IEnumerator MovementBlock()
     {
-
         while (true)
         {
             switch (state)
@@ -141,6 +143,7 @@ public class ChaseSphere : MonoBehaviour {
         }
     }
 
+    // 대기 상태에서 반복하여 움직임
     IEnumerator IdleMove()
     {
         while (state == ChaseState.IDLE)
@@ -160,9 +163,9 @@ public class ChaseSphere : MonoBehaviour {
         }
     }
 
+    // 레이저 발사 시 블록들 외각으로 벌어짐
     IEnumerator ShotMove()
     {
-        float countTime = 0f;
         while (true)
         {
             if (state == ChaseState.SHOT)
@@ -175,9 +178,9 @@ public class ChaseSphere : MonoBehaviour {
                 for (int i = 0; i < blocks.Length; i++)
                     blocks[i].position = Vector3.Lerp(blocks[i].position, originPos[i], 2f * Time.deltaTime);
 
-                countTime += Time.deltaTime;
+                float exitDis = (originPos[0] - blocks[0].position).sqrMagnitude;
 
-                if (countTime >= 1f)
+                if (exitDis <= 0.0003f)
                     break;
             }
 

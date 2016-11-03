@@ -28,8 +28,7 @@ public class ShotRazorObj : MonoBehaviour {
 
     IEnumerator ShotLaser()
     {
-        Renderer laserRender = laserObj.GetComponent<Renderer>();
-        Color laserColor = laserRender.material.color;
+        Color laserColor = laserObj.GetComponent<Renderer>().material.color;
 
         float alpha = 1f;
         float fadeDir = -1f;
@@ -41,7 +40,7 @@ public class ShotRazorObj : MonoBehaviour {
             alpha = Mathf.Clamp01(alpha);
             // 레이저 알파값 변경
             laserColor.a = alpha;
-            laserRender.material.color = laserColor;
+            laserObj.GetComponent<Renderer>().material.color = laserColor;
 
             // 0 or 1이면 알파값 방향 및 속도 변경
             if(alpha == 0f || alpha == 1f)
