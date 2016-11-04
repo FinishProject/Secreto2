@@ -6,9 +6,6 @@ using System.Collections.Generic;
 
     인벤토리
 
-    사용방법 :
-
-
 *************************************************************/
 
 public class Inventory : MonoBehaviour {

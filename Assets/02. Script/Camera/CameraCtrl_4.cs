@@ -132,7 +132,6 @@ public class CameraCtrl_4 : MonoBehaviour, Sensorable_Return, Sensorable_Somethi
     }
 
     // 시네마틱 뷰
-
     public void SetCinematicView(bool isCinematicView, Vector3 cinemaPos, Vector3 cinemaFocusPos)
     {
         this.isCinematicView = isCinematicView;
@@ -190,6 +189,7 @@ public class CameraCtrl_4 : MonoBehaviour, Sensorable_Return, Sensorable_Somethi
         sensorArea.rotation = Quaternion.Lerp(sensorArea.rotation, Quaternion.identity, camSpeed * Time.deltaTime);
     }
 
+    // 하위 오브젝트의 충돌 체크
     float player_L_EndPos;
     float player_R_EndPos;
     public void ActiveSensor_Retuen(int index, GameObject returnObjet)
@@ -220,11 +220,6 @@ public class CameraCtrl_4 : MonoBehaviour, Sensorable_Return, Sensorable_Somethi
                     NearWallDistance.x = wall_L_EndPos - sensor_L_EndPos;
                     player_L_EndPos = playerTr.position.x;
 
-                    /*
-                    NearWallDistance.x +=
-                        (returnObjet.transform.position.x - returnObjet.transform.localScale.x * 0.5f)
-                        - (sensorWall_R.position.x - sensorWall_R.localScale.x * 0.5f);
-                    */
                 }
 
                 break;
@@ -243,18 +238,12 @@ public class CameraCtrl_4 : MonoBehaviour, Sensorable_Return, Sensorable_Somethi
                     float wall_R_EndPos = returnObjet.transform.position.x - (returnObjet.transform.localScale.x * 0.5f);
                     NearWallDistance.x = -(sensor_R_EndPos - wall_R_EndPos);
                     player_R_EndPos = playerTr.position.x;
-                    /*
-                    NearWallDistance.x += 
-                        (returnObjet.transform.position.x - returnObjet.transform.localScale.x * 0.5f)
-                        -(sensorWall_R.position.x + sensorWall_R.localScale.x * 0.5f);
-                    */
                 }
                 break;
         }
-
-
-
     }
+
+    // 하위 오브젝트의 충돌 체크
     public bool ActiveSensor_Something(int index)
     {
         switch (index)

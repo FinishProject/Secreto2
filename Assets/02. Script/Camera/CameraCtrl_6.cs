@@ -99,6 +99,8 @@ public class CameraCtrl_6 : MonoBehaviour
         teleportTrigger = false;
     }
 
+
+
     #region Update 함수
 
     void FixedUpdate()
@@ -168,8 +170,6 @@ public class CameraCtrl_6 : MonoBehaviour
     #endregion
 
 
-
-
     #region 카메라 이동 관련 함수
     // x축 속도 가속 (방향이 바뀔 시 바로 바뀌면 이상하니)
     void Speed_X_Ctrl()
@@ -202,8 +202,6 @@ public class CameraCtrl_6 : MonoBehaviour
             correctionValue = (groundPos_Box_L.y - groundPos_Player.y) * 0.5f;
     }
     #endregion
-
-
 
 
     #region 레이 캐스트
@@ -254,51 +252,7 @@ public class CameraCtrl_6 : MonoBehaviour
         if (approx != 999f)
             posY = tempPosY[approxIdx];
     }
-        // 기준 위치에서 레이를 쏴서 충동한 바닥의 위치를 알기위한 함수
-        /*
-        void ChackGround_ByRay(Transform objTr, ref float posY)
-        {
-            Debug.DrawRay(objTr.position, -Vector3.up * rayRange, Color.yellow);
-            hits = Physics.RaycastAll(objTr.position, -Vector3.up, rayRange);
-
-            // Ignore를 가진 오브젝트가 있으면 예외 처리
-            for (int i = 0; i < hits.Length; i++)
-            {
-                RaycastHit hit = hits[i];
-                if (hit.transform.CompareTag("Ignore"))
-                {
-                    return;
-                }
-            }
-
-            // 레이를 쏴서 충돌한 지형들의 Y좌표를 저장 ( 지형이 겹쳐 있으면 여러개 잡히기 때문)
-            float[] tempPosY = new float[hits.Length];
-            int idx = 0;
-            for (int i = 0; i < hits.Length; i++)
-            {
-                RaycastHit hit = hits[i];
-
-                if (hit.transform.CompareTag("Land"))
-                {
-                    tempPosY[idx++] = hit.point.y;
-                    posY = hit.point.y;
-                }
-            }
-
-            // 레이를 쏘는 위치 기준 제일 높은 위치에 있는 지형(Land)을 기준으로 Y축 위치를 저장하기 위함
-            float maxY = 0;
-            for (int i = idx; i > 0; i--)
-            {
-                if (maxY < tempPosY[i - 1])
-                    maxY = tempPosY[i - 1];
-            }
-
-            if (maxY != 0)
-                posY = maxY;
-
-        }
-        */
-
+        
     // 추락시 카메라 추적할 때 필요한 콜리더 체크 ( 기본적으로 지형의 높이에 따른 카메라라서 빠르게 추적하기 위해 이런 콜리더가 필요함 )
     void ChackChaseLine_ByRay()
     {
@@ -369,6 +323,7 @@ public class CameraCtrl_6 : MonoBehaviour
 
     #endregion
 
+
     #region 타켓을 바라보는 카메라
     public void StartViewTargetCam()
     {
@@ -388,6 +343,7 @@ public class CameraCtrl_6 : MonoBehaviour
         hasCamTarget = false;
     }
     #endregion
+
 
     #region 카메라 쉐이킹
     public GameObject shakeObject;
@@ -432,6 +388,7 @@ public class CameraCtrl_6 : MonoBehaviour
         shakeVal = new Vector3(0, 0, 0);
     }
     #endregion
+
 
     #region 포탈 관련 함수
     public void StartTeleport()

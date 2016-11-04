@@ -5,6 +5,13 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
+/*************************   정보   **************************
+
+    CSV파일을 읽도록 하는 부모 클래스
+    제어는 CSVParser 에서 한다
+
+*************************************************************/
+
 public abstract class CSVReader
 {
     public CSVReader() { }

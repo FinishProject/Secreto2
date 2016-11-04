@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*************************   정보   **************************
+
+    드랍되는 아이템들의 부모 클래스
+
+*************************************************************/
+
 public abstract class WasteItem : MonoBehaviour {
     public float removeTime = 5.0f;         // 아이템이 사라지는데 걸리는 시간
     public float chaseRange = 5f;           // 추격 거리

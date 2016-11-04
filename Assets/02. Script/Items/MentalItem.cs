@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*************************   정보   **************************
+
+   인핸스( MP ) 아이템 
+
+*************************************************************/
+
 public class MentalItem : WasteItem
 {
 

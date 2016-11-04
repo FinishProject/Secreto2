@@ -1,6 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/********************************************** 사용 방법 ***************************************************
+
+    RollDownLog를 사용하기 위해 필요한 스크립트
+    구간에 들어가면 통나무를 생성
+    
+    ※ 사용 방법
+    1. 오브젝트 구조
+    부모오브젝트
+        └ 통나무           <- RollDownLog 스크립트 추가
+        └ 구역(Collider)   <- 현 스크립트 추가
+
+
+************************************************************************************************************/
+
 public class RollDownLog_Trigger : MonoBehaviour {
     public GameObject log;
     public GameObject log2;
@@ -11,9 +25,7 @@ public class RollDownLog_Trigger : MonoBehaviour {
     void Start()
     {
         roll = log.GetComponent<RollDownLog>().loopRollDown();
-        roll2 = log2.GetComponent<RollDownLog>().loopRollDown();
-
-        
+        roll2 = log2.GetComponent<RollDownLog>().loopRollDown();   
     }
 
 	void OnTriggerEnter(Collider col)
@@ -21,7 +33,7 @@ public class RollDownLog_Trigger : MonoBehaviour {
         if(col.CompareTag("Player"))
         {
             isStarted = true;
-            StartCoroutine(a());
+            StartCoroutine(RollingLog());
         }
     }
 
@@ -33,7 +45,7 @@ public class RollDownLog_Trigger : MonoBehaviour {
         }
     }
 
-    IEnumerator a()
+    IEnumerator RollingLog()
     {
         while(true)
         {
