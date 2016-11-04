@@ -41,7 +41,7 @@ public class NpcMgr : MonoBehaviour {
             ScriptMgr.instance.GetSpeakName(npcName))
         {
             ScriptMgr.instance.GetScript(npcName);
-            PlayerCtrl.instance.SetStopMove();
+            //PlayerCtrl.instance.SetStopMove();
         }
     }
 }

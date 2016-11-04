@@ -21,31 +21,26 @@ public class PlayerCtrl : MonoBehaviour
     public static bool isFocusRight = true; // 우측을 봐라보는 여부
 
     public static bool dying;      // 죽는중
+    private bool isMove = true;       // 현재 이동 여부
+    private bool isJumping = false;   // 현재 점프중인지 확인
 
-    [System.NonSerialized]
-    public bool isMove = true;       // 현재 이동 여부
-    [System.NonSerialized]
-    public bool isJumping = false;   // 현재 점프중인지 확인
-
-    public static float focusRight = 1f;
+    public static float focusRight = -1f;
     private float lockPosZ = 0f;
 
     public static Vector3 moveDir = Vector3.zero; // 이동 벡터
     public static CharacterController controller; // 캐릭터컨트롤러
     private Animator anim;
 
+    private Vector3 saveLocation;
 
     public GameObject lunaModel;
     public GameObject clothModel;
-    public Transform headPoint;
+
     private PlayerEffect pEffect;
     private WahleMove wahleMove;
-    public AudioClip runSound;
-    public AudioClip stopRun;
-    public AudioClip die;
-    public AudioClip jump;
-    private AudioSource audioSource;
-    public AudioSource source;
+
+    public AudioClip[] soundClips;
+    private AudioSource source;
 
     private AnimatorStateInfo currentAnim;
     static int idleState = Animator.StringToHash("Base Layer.Idle");
@@ -56,14 +51,12 @@ public class PlayerCtrl : MonoBehaviour
 
     public static PlayerCtrl instance;
 
-    private Vector3 saveTr;
-
     void Awake()
     {
         instance = this;
         controller = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
+        source = GetComponent<AudioSource>();
         pEffect = GetComponent<PlayerEffect>();
         wahleMove = GameObject.FindGameObjectWithTag("WAHLE").GetComponent<WahleMove>();
     }
@@ -75,7 +68,6 @@ public class PlayerCtrl : MonoBehaviour
         lockPosZ = transform.position.z;
     }
 
-
     void FixedUpdate()
     {
         currentAnim = anim.GetCurrentAnimatorStateInfo(0);
@@ -85,21 +77,24 @@ public class PlayerCtrl : MonoBehaviour
     void Update()
     {
         transform.position = new Vector3(transform.position.x, transform.position.y, lockPosZ);
-        
+
         // 플레이어에게 조작권한이 있다면 움직임
-        if (isMove) Movement();
+        if (isMove)
+            Movement();
         else if (!isMove)
         {
             moveDir.x = 0f;
             moveDir.y -= curGravity * Time.deltaTime;
             controller.Move(moveDir * moveSpeed * Time.deltaTime);
         }
-
         //캐릭터 방향 회전
         // 왼쪽 회전
         if (inputAxis < 0 && isFocusRight) { TurnPlayer(); }
         // 오른쪽 회전
         else if (inputAxis > 0 && !isFocusRight) { TurnPlayer(); }
+
+        // 추락 애니메이션
+        anim.SetFloat("Velocity", controller.velocity.y);
     }
 
     void SetAnimator()
@@ -108,7 +103,6 @@ public class PlayerCtrl : MonoBehaviour
         {
             anim.SetBool("Jump", false);
             anim.SetBool("Dash", false);
-            anim.SetBool("Fall", false);
 
             // 달리기 중
             if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
@@ -116,19 +110,15 @@ public class PlayerCtrl : MonoBehaviour
             {
                 anim.SetBool("Run", true);
 
-                if (!audioSource.isPlaying)
-                {
-                    audioSource.PlayOneShot(runSound);
-                }
+                if (!source.isPlaying)
+                    source.PlayOneShot(soundClips[2]);
             }
             // 달리기 멈춤
             else
             {
                 anim.SetBool("Run", false);
-                audioSource.Stop();
-                //audioSource.PlayOneShot(stopRun);
+                source.Stop();
             }
-
             // 기본 점프 애니메이션
             if (Input.GetKeyDown(KeyCode.Space))
                 anim.SetBool("Jump", true);
@@ -138,12 +128,8 @@ public class PlayerCtrl : MonoBehaviour
             // 2단 점프 애니메이션
             if (Input.GetKeyDown(KeyCode.Space))
                 anim.SetBool("Dash", true);
-            // 추락 애니메이션
-            else if(controller.velocity.y <= -13f && currentAnim.nameHash.Equals(runState))
-            {
-                if(!currentAnim.nameHash.Equals(fallState))
-                    anim.SetBool("Fall", true);
-            }
+            
+            
         }
     }
 
@@ -168,9 +154,8 @@ public class PlayerCtrl : MonoBehaviour
             moveDir = Vector3.right * inputAxis;
             // 점프
             if (Input.GetKeyDown(KeyCode.Space))
-            {
                 StartBasicJump();
-            }
+
         }
         // 공중에 있을 시
         else if (!controller.isGrounded)
@@ -190,26 +175,32 @@ public class PlayerCtrl : MonoBehaviour
 
     void StartBasicJump()
     {
-        if (!source.isPlaying)
-            source.PlayOneShot(jump);
-
+        if (source.isPlaying)
+        {
+            source.Stop();
+            source.PlayOneShot(soundClips[1]);
+        }
         curGravity = upGravity;
         //isJumping = true;
         anim.SetBool("Jump", true);
-        pEffect.StartEffect(PlayerEffectList.BASIC_JUMP);
-
         moveDir.y += basicJumpHight;
+        // 기본 점프 이펙트
+        pEffect.StartEffect(PlayerEffectList.BASIC_JUMP);
     }
 
     void StartDashJump()
     {
-        if (!audioSource.isPlaying)
-            audioSource.PlayOneShot(jump);
         curGravity = upGravity;
         isJumping = false;
         anim.SetBool("Dash", true);
         
         moveDir.y = dashJumpHight;
+
+        if (source.isPlaying)
+            source.Stop();
+
+        source.PlayOneShot(soundClips[1]);
+
     }
 
     //캐릭터 방향 회전
@@ -219,7 +210,6 @@ public class PlayerCtrl : MonoBehaviour
         focusRight *= -1f;
 
         transform.Rotate(new Vector3(0, 1, 0), 180);
-
         wahleMove.ResetSpeed();
     }
 
@@ -227,31 +217,18 @@ public class PlayerCtrl : MonoBehaviour
     void OnTriggerEnter(Collider coll)
     {
         if (coll.CompareTag("DeadLine"))
-        {
-            PlayerDie();
-        }
+            StartCoroutine(PlayerDie());
         else if (coll.CompareTag("StartPoint"))
-        {
             Save();
-        }
         else if (coll.CompareTag("Hold"))
-        {
             WahleCtrl.curState = WahleCtrl.instance.StepHold();
-        }
         else if (coll.CompareTag("Hold2"))
-        {
             WahleCtrl.curState = WahleCtrl.instance.StepHold2();
-        }
     }
 
     void OnTriggerExit(Collider col)
     {
-        if (col.CompareTag("Hold"))
-        {
-            //WahleCtrl.instance.transform.parent = this.transform.parent;
-            WahleCtrl.instance.ChangeState(WahleState.MOVE);
-        }
-        else if (col.CompareTag("Hold2"))
+        if (col.CompareTag("Hold") || col.CompareTag("Hold2"))
         {
             WahleCtrl.instance.ChangeState(WahleState.MOVE);
         }
@@ -272,56 +249,43 @@ public class PlayerCtrl : MonoBehaviour
         }
     }
 
-    public void PlayerDie()
+    public IEnumerator PlayerDie()
     {
-        if(!dying)
-            StartCoroutine(ResetPlayer());
-    }
-
-    IEnumerator ResetPlayer()
-    {
-        dying = true;
-        if (!audioSource.isPlaying)
-            audioSource.PlayOneShot(die);
-        GetComponent<CharacterController>().enabled = false;
-        FadeInOut.instance.StartFadeInOut(1, 2, 3);
-        isMove = false;
-
-        lunaModel.SetActive(false);
-        clothModel.SetActive(false);
-        pEffect.StartEffect(PlayerEffectList.DIE);
-
-        yield return new WaitForSeconds(1.5f);
-        GetComponent<CharacterController>().enabled = true;
-        //ObjectPosResetMgr.instance.ResetPos();
-
-        GetPlayerData();
-        lunaModel.SetActive(true);
-        clothModel.SetActive(true);
-
-        isMove = true;
-
-        yield return new WaitForSeconds(1f);
-        dying = false;
-    }
-
-    void GetPlayerData()
-    {
-        Data pData = new Data(); // 플레이어 데이터 저장을 위한 클래스 변수
-        pData = DataSaveLoad.Load();
-        if (pData != null)
-            this.transform.position = saveTr;
-        //transform.position = 
-        //transform.position = pData.pPosition;
-        else
+        if (!dying)
         {
-            Save();
-            pData = DataSaveLoad.Load();
-            transform.position = pData.pPosition;
+            dying = true;
+            if (!source.isPlaying)
+                source.PlayOneShot(soundClips[0]);
+
+            controller.enabled = false;
+            FadeInOut.instance.StartFadeInOut(1, 2, 3);
+            isMove = false;
+
+            lunaModel.SetActive(false);
+            clothModel.SetActive(false);
+            pEffect.StartEffect(PlayerEffectList.DIE);
+
+            
+            yield return new WaitForSeconds(1.5f);
+            
+            //ObjectPosResetMgr.instance.ResetPos();
+            
+            lunaModel.SetActive(true);
+            clothModel.SetActive(true);
+            controller.enabled = true;
+            
+            GetPlayerData();
+
+            yield return new WaitForSeconds(3f);
+            ResetAnim();
+            isMove = true;
+            dying = false;
         }
     }
-    public void animReset()
+
+    public void ResetAnim()
     {
+        anim.Play("Idle", 0);
         anim.SetBool("Run", false);
         anim.SetBool("Jump", false);
         anim.SetBool("Dash", false);
@@ -332,48 +296,28 @@ public class PlayerCtrl : MonoBehaviour
         WayPoint.OnSave += Save;
     }
 
-    //플레이어 데이터 저장
+    // 플레이어 데이터 저장
     public void Save()
     {
-        //Data pData = new Data();
-        //if (pData != null)
-        //{
-            saveTr = this.transform.position;
-            //pData.pPosition = transform.position;
-        //    DataSaveLoad.Save(pData);
-        //}
+        saveLocation = this.transform.position;
     }
-
-
-    // 2단 점프 끝났을 때 실행
-    void SetEndAnim()
+    // 플레이어 위치값 가져오기
+    void GetPlayerData()
     {
-        anim.SetBool("Dash", false);
+        this.transform.position = saveLocation;
     }
-
-    public void SetStopMove()
-    {
-        isMove = false;
-        moveDir.x = 0f;
-        anim.SetBool("Idle", true);
-    }
-
+    // Push 애니메이션 세팅
     public void SetPushAnim(bool isPush)
     {
         anim.SetBool("Push", isPush);
     }
-
-    public int GetPlayingAnimation()
+    
+    public void SetStopMove(bool isStopMove)
     {
-        return anim.GetCurrentAnimatorStateInfo(0).nameHash;
+        isMove = isStopMove;
     }
 
-    public void SetPlayerMove(float time)
-    {
-        StartCoroutine(SetMove(time));
-    }
-
-    IEnumerator SetMove(float time)
+    public IEnumerator SetStopMoveDuration(float time)
     {
         isMove = false;
         yield return new WaitForSeconds(time);

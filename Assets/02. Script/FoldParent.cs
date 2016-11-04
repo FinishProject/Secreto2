@@ -9,12 +9,12 @@ public class FoldParent : MonoBehaviour {
 	void Start () {
         fold = gameObject.GetComponentsInChildren<FoldHold>();
 	}
-	
-	void OnTriggerEnter(Collider col)
+
+    void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("Player"))
         {
-            for(int i=0; i<fold.Length; i++)
+            for (int i = 0; i < fold.Length; i++)
             {
                 fold[i].StartMove();
             }
