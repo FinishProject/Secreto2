@@ -69,11 +69,10 @@ public class PlayerCtrl : MonoBehaviour
         lockPosZ = transform.position.z;
     }
 
-    void FixedUpdate()
-    {
-        currentAnim = anim.GetCurrentAnimatorStateInfo(0);
-        SetAnimator();
-    }
+    //void FixedUpdate()
+    //{
+        
+    //}
 
     void Update()
     {
@@ -88,6 +87,9 @@ public class PlayerCtrl : MonoBehaviour
             moveDir.y -= curGravity * Time.deltaTime;
             controller.Move(moveDir * moveSpeed * Time.deltaTime);
         }
+        currentAnim = anim.GetCurrentAnimatorStateInfo(0);
+        SetAnimator();
+
         //캐릭터 방향 회전
         // 왼쪽 회전
         if (inputAxis < 0 && isFocusRight) { TurnPlayer(); }
@@ -107,7 +109,8 @@ public class PlayerCtrl : MonoBehaviour
 
             if (currentAnim.nameHash.Equals(landJump))
             {
-                source.PlayOneShot(soundClips[6]);
+                if(!source.isPlaying)
+                    source.PlayOneShot(soundClips[6]);
             }
 
             // 달리기 중
@@ -128,15 +131,6 @@ public class PlayerCtrl : MonoBehaviour
                 anim.SetBool("Run", false);
                 source.Stop();
             }
-            // 기본 점프 애니메이션
-            if (Input.GetKeyDown(KeyCode.Space))
-                anim.SetBool("Jump", true);
-        }
-        else if (!controller.isGrounded)
-        {
-            // 2단 점프 애니메이션
-            if (Input.GetKeyDown(KeyCode.Space))
-                anim.SetBool("Dash", true);
         }
     }
 
@@ -183,14 +177,12 @@ public class PlayerCtrl : MonoBehaviour
     void StartBasicJump()
     {
         if (source.isPlaying)
-        {
             source.Stop();
-            source.PlayOneShot(soundClips[1]);
-        }
+        source.PlayOneShot(soundClips[1]);
         curGravity = upGravity;
-        //isJumping = true;
-        anim.SetBool("Jump", true);
         moveDir.y += basicJumpHight;
+
+        anim.SetBool("Jump", true);
         // 기본 점프 이펙트
         pEffect.StartEffect(PlayerEffectList.BASIC_JUMP);
     }
@@ -199,13 +191,13 @@ public class PlayerCtrl : MonoBehaviour
     {
         curGravity = upGravity;
         isJumping = false;
-        anim.SetBool("Dash", true);
-        
+
         moveDir.y = dashJumpHight;
 
         if (source.isPlaying)
             source.Stop();
 
+        anim.SetBool("Dash", true);
         source.PlayOneShot(soundClips[1]);
 
     }

@@ -4,8 +4,9 @@ using System.Collections;
 public class ShotRazorObj : MonoBehaviour {
 
     public GameObject laserObj;
-    public AudioClip cilp;
     private AudioSource audioSource;
+    public Transform startPoint;
+    public Collider childColider;
 
     private float fadeSpeed = 1f;
     public float upSpeed = 2f;
@@ -18,6 +19,8 @@ public class ShotRazorObj : MonoBehaviour {
     private bool isWait = true;
     private bool isActive = false;
 
+    float alpha = 1f;
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -26,11 +29,17 @@ public class ShotRazorObj : MonoBehaviour {
         StartCoroutine(ShotLaser());
     }
 
+    void Update()
+    {
+        if (alpha == 1f)
+            ShotRay();
+    }
+
     IEnumerator ShotLaser()
     {
         Color laserColor = laserObj.GetComponent<Renderer>().material.color;
 
-        float alpha = 1f;
+        
         float fadeDir = -1f;
 
         while (true)
@@ -42,8 +51,10 @@ public class ShotRazorObj : MonoBehaviour {
             laserColor.a = alpha;
             laserObj.GetComponent<Renderer>().material.color = laserColor;
 
+            childColider.enabled = false;
+
             // 0 or 1이면 알파값 방향 및 속도 변경
-            if(alpha == 0f || alpha == 1f)
+            if (alpha == 0f || alpha == 1f)
             {
                 fadeDir *= -1f;
                 isWait = true;
@@ -52,6 +63,8 @@ public class ShotRazorObj : MonoBehaviour {
 
                 if (alpha == 0)
                     audioSource.Stop();
+                else if (alpha == 1f)
+                    childColider.enabled = true;
 
                 yield return new WaitForSeconds(durationTime);
             }
@@ -70,7 +83,21 @@ public class ShotRazorObj : MonoBehaviour {
         }
     }
 
-    void OnTriggerStay(Collider col)
+    void ShotRay()
+    {
+        RaycastHit hit;
+        // 발사할 방향을 로컬 좌표에서 월드 좌표로 변환한다.
+        Vector3 forward = startPoint.TransformDirection(Vector3.right);
+        Debug.DrawRay(startPoint.position, forward, Color.blue, 1f);
+        if (Physics.Raycast(startPoint.position, forward, out hit, 100f))
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                StartCoroutine(PlayerCtrl.instance.PlayerDie());
+            }
+        }
+    }
+    void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("Player"))
         {
@@ -109,120 +136,4 @@ public class ShotRazorObj : MonoBehaviour {
         }
         isActive = false;
     }
-
- //   private float fadeSpeed = 1f;
- //   public float upSpeed = 0.3f;
- //   public float downSpeed = 2f;
- //   public float chargeWaitTime = 2.5f;
- //   public float fullWaitTime = 5f;
-
-    //   public GameObject startObj;
-    //   public GameObject lazerObj;
-    //   public Transform startPoint;
-
-    //   public GameObject lazerMat;
-    //   private Vector3 shotPoint;
-
-    //   private float fadeDir = -1f;
-    //   private float alpha = 0f;
-
-    //   public bool isLand = true;
-
-    //   private bool isActive = false;
-    //   private bool isSound = false;
-
-    //   public AudioClip clip;
-    //   public AudioSource source;
-
-    //   void Start()
-    //   {
-    //       StartCoroutine(SetLazer());
-    //   }
-
-    //void Update () {
-    //       if(alpha >= 0.9f)
-    //           ShotRay();
-    //}
-
-    //   void OnTriggerEnter(Collider col)
-    //   {
-    //       if (col.CompareTag("Player") && !isActive)
-    //       {
-    //           source.volume = 1f;
-    //           isActive = true;
-    //       }
-    //   }
-
-    //   void OnTriggerExit(Collider col)
-    //   {
-    //       if (col.CompareTag("Player"))
-    //       {
-    //           source.volume = 0f;
-    //           isActive = false;
-    //       }
-    //   }
-
-
-    //   IEnumerator SetLazer()
-    //   {
-    //       Renderer meshRender = lazerMat.GetComponent<Renderer>();
-    //       Color setColor = meshRender.material.color;
-
-    //       bool isUp = true;
-    //       while (true)
-    //       {
-    //           alpha += fadeDir * fadeSpeed * Time.deltaTime;
-    //           alpha = Mathf.Clamp01(alpha);
-
-    //           setColor.a = alpha;
-    //           meshRender.material.color = setColor;
-
-    //           if (alpha == 0f || alpha == 1f)
-    //           {
-    //               fadeDir *= -1f;
-    //               if (fadeDir == 1f)
-    //               {
-    //                   if (isActive)
-    //                       source.Stop();
-
-    //                   isUp = true;
-    //                   fadeSpeed = upSpeed;
-    //               }
-    //               else
-    //                   fadeSpeed = downSpeed;
-
-    //               yield return new WaitForSeconds(fullWaitTime);
-    //           }
-
-    //           if (isUp && fadeSpeed <= 1f && setColor.a >= 0.2f)
-    //           {
-    //               yield return new WaitForSeconds(chargeWaitTime);
-    //               if (!source.isPlaying)
-    //                   source.PlayOneShot(clip);
-
-    //               if (!isActive)
-    //                   source.volume = 0f;
-
-    //               yield return new WaitForSeconds(0.5f);
-    //               isUp = false;
-    //               fadeSpeed = 5f;
-    //           }
-
-    //           yield return null;
-    //       }
-    //   }
-
-    //   void ShotRay()
-    //   {
-    //       RaycastHit hit;
-    //       // 발사할 방향을 로컬 좌표에서 월드 좌표로 변환한다.
-    //       Vector3 forward = transform.TransformDirection(-Vector3.up);
-    //       if (Physics.Raycast(startPoint.position, forward, out hit, 100f))
-    //       {
-    //           if (hit.collider.CompareTag("Player"))
-    //           {
-    //               StartCoroutine(PlayerCtrl.instance.PlayerDie());
-    //           }
-    //       }
-    //   }
 }

@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WahleMeet : WahleCtrl
-{
+public class WahleMeet : WahleCtrl {
+
     public Transform targetPoint;
 
     public float waitTime = 1f;
@@ -78,7 +78,7 @@ public class WahleMeet : WahleCtrl
         isActive = true;
         yield return new WaitForSeconds(waitTime);
         isStop = true;
-        
+
 
         while (true)
         {

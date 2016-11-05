@@ -59,6 +59,7 @@ public class TeleportGate : MonoBehaviour {
         exitPoint -= Vector3.up * 4.5f;
         //StartCoroutine(Movement());
         //CameraCtrl_6.instance.StartTeleport();
+        CameraCtrl_1.instance.StartTeleport();
         yield return new WaitForSeconds(1f);
 
         // 오브젝트가 있을 시 오브젝트 이동
@@ -72,6 +73,7 @@ public class TeleportGate : MonoBehaviour {
         if(!isRight)
             PlayerCtrl.instance.TurnPlayer();
 
+        CameraCtrl_1.instance.EndTeleport(isRight);
         //CameraCtrl_6.instance.EndTeleport(isRight);
 
     }

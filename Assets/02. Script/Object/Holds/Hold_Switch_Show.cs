@@ -14,6 +14,7 @@ public class Hold_Switch_Show : MonoBehaviour {
 
     public GameObject elevatorParent;
     public GameObject scriptArea;
+    public Transform targetCam;
     struct ElevatorInfo
     {
         public GameObject elevator;     // 엘레베이터 본체
@@ -119,7 +120,7 @@ public class Hold_Switch_Show : MonoBehaviour {
             StartCoroutine(moveUP(curIdx, false));
             curIdx--;
         }*/
-        CameraCtrl_6.instance.StartViewTargetCam();
+        CameraCtrl_1.instance.StartViewTargetCam(targetCam);
         yield return new WaitForSeconds(2f);
         int curIdx = 0;
         while (true)
