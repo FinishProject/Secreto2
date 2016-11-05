@@ -20,6 +20,7 @@ TagManager:
   - Statue
   - Hold
   - Hold2
+  - Coin
   layers:
   - Default
   - TransparentFX

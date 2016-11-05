@@ -43,12 +43,10 @@ public class PlayerCtrl : MonoBehaviour
     private AudioSource source;
 
     private AnimatorStateInfo currentAnim;
-    static int idleState = Animator.StringToHash("Base Layer.Idle");
-    static int runState = Animator.StringToHash("Base Layer.Run");
-    static int jumpDownState = Animator.StringToHash("Base Layer.Jump_Down");
-    static int JumpUpState = Animator.StringToHash("Base Layer.Jump_Up(5~25)");
     static int fallState = Animator.StringToHash("Base Layer.Jump_DownLoop");
     static int landJump = Animator.StringToHash("Base Layer.Jump_Land(43~50)");
+
+    private ScoreUI scroreUI;
 
     public static PlayerCtrl instance;
 
@@ -60,6 +58,7 @@ public class PlayerCtrl : MonoBehaviour
         source = GetComponent<AudioSource>();
         pEffect = GetComponent<PlayerEffect>();
         wahleMove = GameObject.FindGameObjectWithTag("WAHLE").GetComponent<WahleMove>();
+
     }
 
     void Start()
@@ -68,11 +67,6 @@ public class PlayerCtrl : MonoBehaviour
         curGravity = dropGravity;
         lockPosZ = transform.position.z;
     }
-
-    //void FixedUpdate()
-    //{
-        
-    //}
 
     void Update()
     {
@@ -219,10 +213,16 @@ public class PlayerCtrl : MonoBehaviour
             StartCoroutine(PlayerDie());
         else if (coll.CompareTag("StartPoint"))
             Save();
+        else if (coll.CompareTag("Coin"))
+        {
+            coll.gameObject.SetActive(false);
+            GameManager.instance.SetScore();
+        }
         else if (coll.CompareTag("Hold"))
             WahleCtrl.curState = WahleCtrl.instance.StepHold();
         else if (coll.CompareTag("Hold2"))
             WahleCtrl.curState = WahleCtrl.instance.StepHold2();
+        
     }
 
     void OnTriggerExit(Collider col)

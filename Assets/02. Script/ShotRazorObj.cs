@@ -29,12 +29,6 @@ public class ShotRazorObj : MonoBehaviour {
         StartCoroutine(ShotLaser());
     }
 
-    void Update()
-    {
-        if (alpha == 1f)
-            ShotRay();
-    }
-
     IEnumerator ShotLaser()
     {
         Color laserColor = laserObj.GetComponent<Renderer>().material.color;
@@ -83,20 +77,6 @@ public class ShotRazorObj : MonoBehaviour {
         }
     }
 
-    void ShotRay()
-    {
-        RaycastHit hit;
-        // 발사할 방향을 로컬 좌표에서 월드 좌표로 변환한다.
-        Vector3 forward = startPoint.TransformDirection(Vector3.right);
-        Debug.DrawRay(startPoint.position, forward, Color.blue, 1f);
-        if (Physics.Raycast(startPoint.position, forward, out hit, 100f))
-        {
-            if (hit.collider.CompareTag("Player"))
-            {
-                StartCoroutine(PlayerCtrl.instance.PlayerDie());
-            }
-        }
-    }
     void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("Player"))

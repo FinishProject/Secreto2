@@ -68,7 +68,7 @@ public class RollDownLog : MonoBehaviour {
             if (!isShaking && Vector3.Distance(transform.position, PlayerCtrl.instance.transform.position) < startShakeRange)
             {
                 isShaking = true;
-                CameraCtrl_6.instance.ShakeStart(transform, startShakeRange + 1);
+                CameraCtrl_1.instance.ShakeStart(transform, startShakeRange + 1);
             }
         }
     } 

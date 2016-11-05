@@ -68,9 +68,11 @@ public class ChaseSphereFire : MonoBehaviour {
             if(state == ChaseState.IDLE)
             {
                 state = ChaseState.CHARGE;
-                
+
+                source.Play();
                 yield return FadeFire(1, 0);
 
+                source.Stop();
                 state = ChaseState.SHOT;
                 Vector3 targetPos = playerTr.position;
                 shotFire.GetTarget(targetPos);
@@ -81,6 +83,10 @@ public class ChaseSphereFire : MonoBehaviour {
 
                 yield return new WaitForSeconds(5f);
             }
+
+            if (!isShot)
+                break;
+
             yield return null;
         }
     }
@@ -182,7 +188,6 @@ public class ChaseSphereFire : MonoBehaviour {
 
             if (alpha == 1)
             {
-                yield return new WaitForSeconds(2f);
                 break;
             }
                
