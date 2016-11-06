@@ -101,22 +101,21 @@ public class PlayerCtrl : MonoBehaviour
             anim.SetBool("Jump", false);
             anim.SetBool("Dash", false);
 
-            if (currentAnim.nameHash.Equals(landJump))
-            {
-                if(!source.isPlaying)
-                    source.PlayOneShot(soundClips[6]);
-            }
+            //if (currentAnim.nameHash.Equals(landJump))
+            //{
+            //    if(!source.isPlaying)
+            //        source.PlayOneShot(soundClips[6]);
+            //}
 
             // 달리기 중
-            else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
+            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
                 Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
             {
                 anim.SetBool("Run", true);
 
                 if (!source.isPlaying)
                 {
-                    int index = Random.Range(2, 5);
-                    source.PlayOneShot(soundClips[index]);
+                    source.PlayOneShot(soundClips[3]);
                 }
             }
             // 달리기 멈춤
@@ -242,7 +241,7 @@ public class PlayerCtrl : MonoBehaviour
                 if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
                 Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
                 {
-                    hit.gameObject.GetComponent<PushBox>().PushObject(this.transform, isFocusRight);
+                   hit.gameObject.GetComponent<PushBox>().PushObject(this.transform, isFocusRight);
                 }
             }
         }
@@ -276,7 +275,7 @@ public class PlayerCtrl : MonoBehaviour
             GetPlayerData();
 
             yield return new WaitForSeconds(1.5f);
-            source.PlayOneShot(soundClips[7]);
+            source.PlayOneShot(soundClips[2]);
             yield return new WaitForSeconds(1.5f);
 
             ResetAnim();

@@ -61,6 +61,7 @@ public class ChaseSphere : MonoBehaviour {
         laser.gameObject.SetActive(true);
         Vector3 targetPos = playerTr.position;
         float curDir = 0f;
+
         while (true)
         {
             // 타겟 추적
@@ -73,6 +74,7 @@ public class ChaseSphere : MonoBehaviour {
             // 레이저 생성 및 타겟 방향을 종료 방향으로 바꿈
             if (state == ChaseState.IDLE)
             {
+                // 충전
                 state = ChaseState.CHARGE;
 
                 curDir = Mathf.Sign(playerTr.position.x - transform.position.x);
@@ -83,10 +85,13 @@ public class ChaseSphere : MonoBehaviour {
                     finishPoint.position += Vector3.right * 10f;
 
                 yield return FadeLaser(1, 0);
+
+                // 발사
+                state = ChaseState.SHOT;
+
                 targetPos = finishPoint.position;
                 laserSpeed = 0.5f;
 
-                state = ChaseState.SHOT;
                 source.Play();
                 childCol.enabled = true;
             }
@@ -96,20 +101,26 @@ public class ChaseSphere : MonoBehaviour {
 
             // 일정 각도 안에 들어왔을 시 레이저 삭제
             if ((curDir == 1 && angle >= 87f
-                || curDir == -1 && angle <= 97f) && state == ChaseState.SHOT)
+                || curDir == -1 && angle <= 97f) && state == ChaseState.SHOT || !isShot)
             {
                 state = ChaseState.IDLE;
                 source.Stop();
                 childCol.enabled = false;
 
-                yield return FadeLaser(-1, 1);
+                if(isShot)
+                    yield return FadeLaser(-1, 1);
 
                 laser.gameObject.SetActive(false);
                 laserSpeed = 100f;
 
-                // 플레이어가 범위 안에 나갔을 시 레이저 종료
+                //플레이어가 범위 안에 나갔을 시 레이저 종료
                 if (!isShot)
+                {
+                    Color color = laserRender.material.color;
+                    color.a = 0f;
+                    laserRender.material.color = color;
                     break;
+                }
 
                 yield return new WaitForSeconds(4f);
                 targetPos = playerTr.position;
@@ -211,7 +222,7 @@ public class ChaseSphere : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.CompareTag("Player"))
+        if (col.CompareTag("Player") && !isShot)
         {
             isShot = true;
 
@@ -221,7 +232,7 @@ public class ChaseSphere : MonoBehaviour {
 
     void OnTriggerExit(Collider col)
     {
-        if (col.CompareTag("Player"))
+        if (col.CompareTag("Player") && isShot)
         {
             isShot = false;
         }

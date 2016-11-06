@@ -33,11 +33,14 @@ public class ChaseSphereFire : MonoBehaviour {
 
     public Renderer render;
     public ParticleSystem[] particle;
+    private Color[] color;
 
     void Start()
     {
         source = GetComponent<AudioSource>();
         playerTr = PlayerCtrl.instance.transform;
+
+        color = new Color[2];
 
         // 초기 위치 설정
         originPos = new Vector3[blocks.Length];
@@ -61,19 +64,17 @@ public class ChaseSphereFire : MonoBehaviour {
 
     IEnumerator ShotFireball()
     {
-        
         while (true)
         {
-
-            if(state == ChaseState.IDLE)
+            if (state == ChaseState.IDLE && !fireBall.activeSelf)
             {
                 state = ChaseState.CHARGE;
 
                 source.Play();
                 yield return FadeFire(1, 0);
 
-                source.Stop();
                 state = ChaseState.SHOT;
+                source.Stop();
                 Vector3 targetPos = playerTr.position;
                 shotFire.GetTarget(targetPos);
 
@@ -85,7 +86,10 @@ public class ChaseSphereFire : MonoBehaviour {
             }
 
             if (!isShot)
+            {
+                fireBall.gameObject.SetActive(false);
                 break;
+            }
 
             yield return null;
         }
@@ -151,16 +155,15 @@ public class ChaseSphereFire : MonoBehaviour {
 
     IEnumerator FadeFire(float fadeDir, float alpha)
     {
-        Color color = render.material.color;
-        Color[] particleColor = new Color[particle.Length];
+        
+        color[0] = render.material.color;
+        color[1] = particle[0].startColor;
 
-        for (int i = 0; i < particle.Length; i++)
+        for(int i=0; i<particle.Length; i++)
         {
-            particleColor[i] = particle[i].startColor;
-            particleColor[i].a = 0f;
-            particle[i].startColor = particleColor[i];
+            color[1].a = alpha;
+            particle[i].startColor = color[1];
         }
-        float particleAlpha = 0f;
 
         fireBall.gameObject.SetActive(true);
         fireBall.transform.position = transform.position;
@@ -169,29 +172,20 @@ public class ChaseSphereFire : MonoBehaviour {
         {
             alpha += fadeDir * 0.5f * Time.deltaTime;
             alpha = Mathf.Clamp01(alpha);
-            color.a = alpha;
+            color[0].a = alpha;
+            color[1].a = alpha;
 
-            particleAlpha += fadeDir * 1f * Time.deltaTime;
-            particleAlpha = Mathf.Clamp01(particleAlpha);
+            render.material.color = color[0];
 
-
-            for (int i = 0; i < particleColor.Length; i++)
-                particleColor[i].a = particleAlpha;
-
-            render.material.color = color;
-
-            if (particleAlpha <= 0.6f)
+            if (alpha <= 0.6f)
             {
                 for (int i = 0; i < particle.Length; i++)
-                    particle[i].startColor = particleColor[i];
+                    particle[i].startColor = color[1];
             }
 
-            if (alpha == 1)
-            {
+            if (alpha == 1 || !isShot)
                 break;
-            }
                
-
             yield return null;
         }
     }
@@ -211,7 +205,7 @@ public class ChaseSphereFire : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.CompareTag("Player"))
+        if (col.CompareTag("Player") && !isShot)
         {
             isShot = true;
 
@@ -221,7 +215,7 @@ public class ChaseSphereFire : MonoBehaviour {
 
     void OnTriggerExit(Collider col)
     {
-        if (col.CompareTag("Player"))
+        if (col.CompareTag("Player") && isShot)
         {
             isShot = false;
         }
