@@ -36,7 +36,7 @@ public class RotationMoveHold : MonoBehaviour {
         hold.transform.position = tempPos + transform.position;
         if (isOn)
         {
-            playerTr.Translate(Vector3.forward * (tempPos.x - oldX));
+            playerTr.Translate(Vector3.forward * (tempPos.x - oldX) * -PlayerCtrl.focusRight);
         }
         oldX = tempPos.x;
     }

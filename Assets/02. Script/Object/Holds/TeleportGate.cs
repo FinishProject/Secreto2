@@ -58,6 +58,7 @@ public class TeleportGate : MonoBehaviour {
         exitPoint += Vector3.right * focusDir * 3f;
         exitPoint -= Vector3.up * 4.5f;
         //StartCoroutine(Movement());
+        //CameraCtrl_6.instance.StartTeleport();
         CameraCtrl_1.instance.StartTeleport();
         yield return new WaitForSeconds(1f);
 
@@ -73,20 +74,8 @@ public class TeleportGate : MonoBehaviour {
             PlayerCtrl.instance.TurnPlayer();
 
         CameraCtrl_1.instance.EndTeleport(isRight);
+        //CameraCtrl_6.instance.EndTeleport(isRight);
 
-    }
-
-    IEnumerator Movement()
-    {
-        int playingAnim = PlayerCtrl.instance.GetPlayingAnimation();
-
-        if(playingAnim == Animator.StringToHash("Base Layer.Jump"))
-            Debug.Log(playingAnim);
-        while (true)
-        {
-            
-            yield return null;
-        }
     }
 }
 

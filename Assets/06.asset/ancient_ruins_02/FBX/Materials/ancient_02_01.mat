@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: ancient_02_01
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: e256bb0f6da74784e9f1be898b986f0c, type: 3}
   m_ShaderKeywords: _EMISSION _NORMALMAP
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
@@ -18,7 +18,13 @@ Material:
     - first:
         name: _BumpMap
       second:
-        m_Texture: {fileID: 2800000, guid: 2d999caacd7682f4e932e091608c265c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 87ae0ca2342f2c44da45289b837c89db, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _BumpTex
+      second:
+        m_Texture: {fileID: 2800000, guid: 87ae0ca2342f2c44da45289b837c89db, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -46,6 +52,18 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
+        name: _Emission_Map
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _Emission_Mask
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
         name: _MainTex
       second:
         m_Texture: {fileID: 2800000, guid: 16fc82f6ec0b5764880cc982acecbfb3, type: 3}
@@ -64,18 +82,42 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
+        name: _Occlusion_Map
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
         name: _ParallaxMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _Spec_Map
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _WarpTex
       second:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - first:
+        name: _BumpPow
+      second: 1
+    - first:
         name: _BumpScale
       second: 0.36
     - first:
+        name: _Bump_Intencity
+      second: 0
+    - first:
         name: _Cutoff
-      second: 0.5
+      second: 1
     - first:
         name: _DetailNormalMapScale
       second: 1
@@ -83,17 +125,26 @@ Material:
         name: _DstBlend
       second: 0
     - first:
+        name: _Emission_Intencity
+      second: 0
+    - first:
+        name: _Emitt
+      second: 0.178
+    - first:
         name: _GlossMapScale
       second: 1
     - first:
         name: _Glossiness
-      second: 0
+      second: 0.076
     - first:
         name: _GlossyReflections
       second: 1
     - first:
+        name: _Light_Pow
+      second: 5
+    - first:
         name: _Metallic
-      second: 0.191
+      second: 0.379
     - first:
         name: _Mode
       second: 0
@@ -101,11 +152,29 @@ Material:
         name: _OcclusionStrength
       second: 1
     - first:
+        name: _Occlusion_Power
+      second: 0
+    - first:
         name: _Parallax
       second: 0.02
     - first:
+        name: _Rim_Intencity
+      second: 0
+    - first:
+        name: _Rim_Pow
+      second: 0.01
+    - first:
+        name: _Rim_Power
+      second: 0.01
+    - first:
+        name: _Second_Spec_Power
+      second: 30
+    - first:
         name: _SmoothnessTextureChannel
       second: 0
+    - first:
+        name: _Spec_Power
+      second: 30
     - first:
         name: _SpecularHighlights
       second: 1
@@ -116,12 +185,48 @@ Material:
         name: _UVSec
       second: 0
     - first:
+        name: _UV_Offset_X
+      second: 0
+    - first:
+        name: _UV_Offset_Y
+      second: 0
+    - first:
         name: _ZWrite
       second: 1
+    - first:
+        name: _rimpow
+      second: 171.5
+    - first:
+        name: _upperpow
+      second: 4.8
     m_Colors:
     - first:
         name: _Color
-      second: {r: 0.38678637, g: 0.42505664, b: 0.53676474, a: 1}
+      second: {r: 0.37391868, g: 0.42110124, b: 0.5588235, a: 1}
     - first:
         name: _EmissionColor
       second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
+        name: _Emission_Color
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _Light_Color
+      second: {r: 0.48235294, g: 0.56078434, b: 0.78431374, a: 1}
+    - first:
+        name: _Occlusion_Color
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _Rim_Color
+      second: {r: 1, g: 0, b: 0, a: 1}
+    - first:
+        name: _Second_Specular_Color
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _Specular_Color
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _UpperColor
+      second: {r: 0.36559257, g: 0.40241346, b: 0.50735295, a: 1}
+    - first:
+        name: _rimcol
+      second: {r: 1, g: 1, b: 1, a: 1}

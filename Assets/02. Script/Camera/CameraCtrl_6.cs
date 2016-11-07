@@ -336,6 +336,7 @@ public class CameraCtrl_6 : MonoBehaviour
         hasCamTarget = true;
         yield return new WaitForSeconds(2f);
         tr.position = CamTargetPos.position;
+        //PlayerCtrl.instance.SetPlayerMove(10f);
         yield return new WaitForSeconds(3f);
         FadeInOut.instance.StartFadeInOut(1, 1, 1);
         yield return new WaitForSeconds(1f);

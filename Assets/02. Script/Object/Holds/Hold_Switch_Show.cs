@@ -2,19 +2,6 @@
 using System.Collections;
 
 
-/********************************************** 사용 방법 ***************************************************
-
-    플레이어나 오브젝트가 collider에 충돌하면 투명한 엘리베이터 발판들이 올라오며 점점 불투명으로 바뀌는 기능
-    
-    ※ 사용 방법
-    1. elevatorParent 의 구조
-    elevatorParent          <- 빈 오브젝트
-        └ elevator_01      <- 이름은 크게 상관 없지만 배치 순서에 따른 하이라키 순서는 중요하다
-        └ elevator_02
-        └ elevator_03
-        └  .....
-
-************************************************************************************************************/
 public class Hold_Switch_Show : MonoBehaviour {
 
     bool isActive;
@@ -27,6 +14,7 @@ public class Hold_Switch_Show : MonoBehaviour {
 
     public GameObject elevatorParent;
     public GameObject scriptArea;
+    public Transform targetCam;
     struct ElevatorInfo
     {
         public GameObject elevator;     // 엘레베이터 본체
@@ -38,7 +26,6 @@ public class Hold_Switch_Show : MonoBehaviour {
         public bool curMoveing;         // 움직임 상태 체크
         public float executionLevel;    // 실행정도
     }
-    public Transform viewTartgetPos;
     ElevatorInfo[] elevators;
 
     GameObject holdObj;
@@ -133,7 +120,7 @@ public class Hold_Switch_Show : MonoBehaviour {
             StartCoroutine(moveUP(curIdx, false));
             curIdx--;
         }*/
-        CameraCtrl_1.instance.StartViewTargetCam(viewTartgetPos);
+        CameraCtrl_1.instance.StartViewTargetCam(targetCam);
         yield return new WaitForSeconds(2f);
         int curIdx = 0;
         while (true)
@@ -176,6 +163,21 @@ public class Hold_Switch_Show : MonoBehaviour {
                     else
                         break;
                 }
+                
+                /*
+                if (curIdx > 0 && elevators[curIdx + 1].executionLevel < -nextExecutionLevel) 
+                {
+                    StartCoroutine(OpacityUp(curIdx, false));
+                    StartCoroutine(moveUP(curIdx, false));
+                    curIdx--;
+                }
+                else if (curIdx == 0)
+                {
+                    StartCoroutine(OpacityUp(curIdx, false));
+                    StartCoroutine(moveUP(curIdx, false));
+                    break;
+                }
+                */
             }
             yield return null;
         } 
@@ -228,6 +230,7 @@ public class Hold_Switch_Show : MonoBehaviour {
         }
     }
 
+    //0.35
     IEnumerator moveUP(int idx, bool isUp)
     {
         // 실행중인 다른 코루틴을 정지 시키기 위해
@@ -300,4 +303,203 @@ public class Hold_Switch_Show : MonoBehaviour {
             
         }
     }
+
+    /*
+    IEnumerator OpacityUp(int idx, bool isUp)
+    {
+        Color tempColor = elevators[idx].color;
+
+        if (isUp)
+        {
+//            tempColor.a = 0;
+            while (true)
+            {
+                tempColor.a += 3f * Time.deltaTime; ;
+                elevators[idx].meshRender.material.color = tempColor;
+                elevators[idx].executionLevel = tempColor.a;                   // 진행 정도를 저장하기 위해
+
+                if (tempColor.a > 1f)
+                {
+                    for (int i = 0; i < elevators[idx].colliders.Length; i++)
+                    {
+                        elevators[idx].colliders[i].enabled = true;
+                    }
+                    break;
+                }
+                yield return null;
+            }
+        }
+        else
+        {
+            //            tempColor.a = 1;
+            Debug.Log(tempColor.a);
+            while (true)
+            {
+                tempColor.a -= 3f * Time.deltaTime;
+                elevators[idx].meshRender.material.color = tempColor;
+                elevators[idx].executionLevel = tempColor.a;                   // 진행 정도를 저장하기 위해
+                Debug.Log(idx + " : " + tempColor.a);
+                if (tempColor.a < -1f)
+                {
+                    for (int i = 0; i < elevators[idx].colliders.Length; i++)
+                    {
+                        elevators[idx].colliders[i].enabled = false;
+                    }
+                    break;
+                }
+
+                yield return null;
+            }
+            
+        }
+    }*/
 }
+
+/*
+ public class Hold_Switch_Show : MonoBehaviour {
+
+    public GameObject elevator;
+    bool isOnBox;
+    MeshRenderer[] meshRender;
+    BoxCollider[] colliders;
+    GameObject[] elevators;
+
+    Vector3 orignPos;
+    Vector3 destinationPos;
+    float space = 2.5f;
+
+    void Start () {
+        meshRender = elevator.GetComponentsInChildren<MeshRenderer>();
+        colliders = elevator.GetComponentsInChildren<BoxCollider>();
+
+        for (int i = 0; i < meshRender.Length; i++)
+        {
+            meshRender[i].material.color = new Color(meshRender[0].material.color.r, meshRender[0].material.color.g, meshRender[0].material.color.b, -1);
+        }
+
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            colliders[i].enabled = false;
+        }
+
+        isOnBox = false;
+
+        destinationPos = orignPos = elevator.transform.position;
+        destinationPos.y -= space;
+        elevator.transform.position = destinationPos;
+    } 
+    
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.CompareTag("Player"))
+        {
+            StartCoroutine(changeOpacity(false));
+            StartCoroutine(moveUP(false));
+        }
+
+        if (col.CompareTag("OBJECT"))
+        {
+            isOnBox = true;
+            StartCoroutine(changeOpacity(false));
+        }
+        
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        if (col.CompareTag("Player"))
+        {
+            if(isOnBox)
+             return;
+            StartCoroutine(changeOpacity(true));
+            StartCoroutine(moveUP(true));
+        }
+        else if(col.CompareTag("OBJECT"))
+        {
+            StartCoroutine(changeOpacity(true));
+            isOnBox = false;
+        }    
+    }
+    // 0.35
+    IEnumerator moveUP(bool isUp)
+    {
+        while (true)
+        {
+            if (isUp)
+            { 
+                elevator.transform.position = Vector3.Lerp(elevator.transform.position, orignPos, 3f * Time.deltaTime);
+                if (Vector3.Distance(elevator.transform.position, orignPos) < 0.1f)
+                    break;
+
+                yield return null;
+            }
+            else
+            {
+                elevator.transform.position = Vector3.Lerp(elevator.transform.position, destinationPos, 3f * Time.deltaTime);
+                if (Vector3.Distance(elevator.transform.position, destinationPos) < 0.1f)
+                    break;
+
+                yield return null;
+            }
+        }
+    }
+    
+
+    IEnumerator changeOpacity(bool isClear)
+    {
+        Color tempColor = new Color(meshRender[0].material.color.r, meshRender[0].material.color.g, meshRender[0].material.color.b);
+
+        if (isClear)
+        {
+            tempColor.a = 1;
+            while (true)
+            {
+                Debug.Log(tempColor.a);
+                tempColor.a -= 3f * Time.deltaTime;
+                for (int i = 0; i < meshRender.Length; i++)
+                {
+                    meshRender[i].material.color = tempColor;
+                }
+
+                if(tempColor.a < -1f)
+                {
+                    for (int i = 0; i < colliders.Length; i++)
+                    {
+                        colliders[i].enabled = false;
+                    }
+                    break;
+                }
+               
+                yield return null;
+            }
+        }
+        else
+        {
+            tempColor.a = 0;
+            while (true)
+            {
+                Debug.Log("+ " + tempColor.a);
+
+                tempColor.a += 3f * Time.deltaTime; ;
+                for (int i = 0; i < meshRender.Length; i++)
+                {
+                    meshRender[i].material.color = tempColor;
+                }
+
+                if (tempColor.a > 1f)
+                {
+                    for (int i = 0; i < colliders.Length; i++)
+                    {
+                        colliders[i].enabled = true;
+                    }
+                    break;
+                }
+                yield return null;
+            }
+        }
+
+
+    }
+}
+*/
+  

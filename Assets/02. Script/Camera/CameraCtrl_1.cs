@@ -1,26 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-/************************************ 사용 방법 ****************************************
-
-    가장 기본 적인 카메라
-    플레이어와 일정거리 떨어져서 따라가는 카메라
- 
-    ※ 사용 방법
-    1. 카메라에 스크립트를 추가한다
-
-****************************************************************************************/
-
 public class CameraCtrl_1 : MonoBehaviour
 {
-
     Transform tr;                   // 현재 카메라 Transform
     Transform playerTr;             // 현재 플레이어 Transform
     Vector3 camAddPos_ViewRight;    // 플레이어와 카메라의 벡터값
     Vector3 camAddPos_ViewLeft;     // 플레이어와 카메라의 벡터값
-    public float speed_Y = 2;
+    public float speed_Y = 1;
     public float wallRayToCamGap = 6.9f;
-    float normalSpeed_Y = 2;
+    float normalSpeed_Y = 1;
     float curSpeed_X;
     float speed_X_Max = 5;
 
@@ -29,6 +18,11 @@ public class CameraCtrl_1 : MonoBehaviour
     bool oldFocusRight;             // 이전 Update에서의 진행방향
 
     public static CameraCtrl_1 instance;
+
+    Vector3 camAddPos;    // 플레이어와 카메라의 벡터값
+    public float speedY = 2;
+    float normalSpeedY = 2;
+
     void Start()
     {
         instance = this;
@@ -39,11 +33,18 @@ public class CameraCtrl_1 : MonoBehaviour
         camAddPos_ViewLeft.x = playerTr.position.x - tr.position.x;
     }
 
-    
+    void Yspeed()
+    {
+        if (PlayerCtrl.controller.velocity.y > -15f)
+            speedY = normalSpeedY;
+        else
+            speedY += 20f * Time.deltaTime;
+    }
 
     Vector3 tempPos;
     void Update()
     {
+
         if (hasCamTarget)
             return;
 
@@ -55,7 +56,7 @@ public class CameraCtrl_1 : MonoBehaviour
         if (isFocusRight)
             tempPos = Vector3.Lerp(tr.position, new Vector3(playerTr.position.x, 0, playerTr.position.z) + camAddPos_ViewRight, curSpeed_X * Time.deltaTime);
         else
-            tempPos = Vector3.Lerp(tr.position, new Vector3(playerTr.position.x, 0, playerTr.position.z) + camAddPos_ViewLeft,  curSpeed_X * Time.deltaTime);
+            tempPos = Vector3.Lerp(tr.position, new Vector3(playerTr.position.x, 0, playerTr.position.z) + camAddPos_ViewLeft, curSpeed_X * Time.deltaTime);
 
         ChackWall_ByRay();
 
@@ -213,7 +214,7 @@ public class CameraCtrl_1 : MonoBehaviour
         hasCamTarget = true;
         yield return new WaitForSeconds(2f);
         tr.position = CamTargetPos.position;
-        PlayerCtrl.instance.SetPlayerMove(10f);
+        StartCoroutine(PlayerCtrl.instance.SetStopMoveDuration(10f));
         yield return new WaitForSeconds(3f);
         FadeInOut.instance.StartFadeInOut(1, 1, 1);
         yield return new WaitForSeconds(1f);
@@ -240,39 +241,3 @@ public class CameraCtrl_1 : MonoBehaviour
     }
     #endregion
 }
-
-/*
-public class CameraCtrl_1 : MonoBehaviour
-{
-
-Transform tr;         // 현재 카메라 Transform
-Transform playerTr;   // 현재 플레이어 Transform
-Vector3 camAddPos;    // 플레이어와 카메라의 벡터값
-public float speedY = 2;
-float normalSpeedY = 2;
-void Start()
-{
-    tr = transform;
-    playerTr = PlayerCtrl.instance.transform;
-    camAddPos = tr.position - playerTr.position;
-}
-
-void Yspeed()
-{
-    if (PlayerCtrl.controller.velocity.y > -15f)
-        speedY = normalSpeedY;
-    else
-        speedY += 20f * Time.deltaTime;
-}
-
-Vector3 tempPos;
-void Update()
-{
-    Yspeed();
-    float tempSpeed = Vector3.Distance(tr.position, playerTr.position + camAddPos) * 2.5f;
-    tempPos = Vector3.Lerp(tr.position, playerTr.position + camAddPos, tempSpeed * Time.deltaTime);
-    tempPos.y = Mathf.Lerp(tr.position.y, playerTr.position.y + camAddPos.y, speedY * Time.deltaTime);
-    tr.position = tempPos;
-}
-}
-*/
