@@ -108,7 +108,7 @@ Material:
     m_Floats:
     - first:
         name: _BumpPow
-      second: 1
+      second: 0.54
     - first:
         name: _BumpScale
       second: 0.36
@@ -117,7 +117,7 @@ Material:
       second: 0
     - first:
         name: _Cutoff
-      second: 1
+      second: 0
     - first:
         name: _DetailNormalMapScale
       second: 1
@@ -129,13 +129,13 @@ Material:
       second: 0
     - first:
         name: _Emitt
-      second: 0.178
+      second: 0
     - first:
         name: _GlossMapScale
       second: 1
     - first:
         name: _Glossiness
-      second: 0.076
+      second: 0
     - first:
         name: _GlossyReflections
       second: 1
@@ -226,7 +226,7 @@ Material:
       second: {r: 1, g: 1, b: 1, a: 1}
     - first:
         name: _UpperColor
-      second: {r: 0.36559257, g: 0.40241346, b: 0.50735295, a: 1}
+      second: {r: 0.19193338, g: 0.23757331, b: 0.36764705, a: 1}
     - first:
         name: _rimcol
       second: {r: 1, g: 1, b: 1, a: 1}

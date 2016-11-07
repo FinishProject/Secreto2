@@ -22,6 +22,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
+        name: _BumpTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
         name: _DetailAlbedoMap
       second:
         m_Texture: {fileID: 0}
@@ -71,6 +77,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - first:
+        name: _BumpPow
+      second: 1
+    - first:
         name: _BumpScale
       second: 1
     - first:
@@ -81,6 +90,9 @@ Material:
       second: 1
     - first:
         name: _DstBlend
+      second: 0
+    - first:
+        name: _Emitt
       second: 0
     - first:
         name: _GlossMapScale
@@ -121,6 +133,12 @@ Material:
     - first:
         name: _ZWrite
       second: 1
+    - first:
+        name: _rimpow
+      second: 1
+    - first:
+        name: _upperpow
+      second: 1
     m_Colors:
     - first:
         name: _Color
@@ -131,3 +149,6 @@ Material:
     - first:
         name: _SpecColor
       second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - first:
+        name: _UpperColor
+      second: {r: 0.1868512, g: 0.19896193, b: 0.2352941, a: 1}
