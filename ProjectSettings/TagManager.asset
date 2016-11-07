@@ -6,20 +6,15 @@ TagManager:
   tags:
   - WALL
   - MONSTER
-  - Ignore
-  - Ground
-  - NPC
+  - Reset
   - Land
   - OBJECT
   - DeadLine
-  - StartPoint
-  - EndPoint
   - WAHLE
-  - BULLET
   - ChaseLine
-  - Statue
   - Hold
   - Hold2
+  - Coin
   layers:
   - Default
   - TransparentFX

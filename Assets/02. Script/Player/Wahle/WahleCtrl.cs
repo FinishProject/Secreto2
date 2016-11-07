@@ -201,7 +201,7 @@ public class WahleCtrl : MonoBehaviour {
         if (Physics.Raycast(rightRayPos, forward, out hit, 3f) || Physics.Raycast(leftRayPos, forward, out hit, 3f))
         {
             // 플레이어, 벽, 땅이 있을 시 우회
-            if (hit.collider.CompareTag("WALL") || hit.collider.CompareTag("Ground") || hit.collider.CompareTag("Player"))
+            if (hit.collider.CompareTag("Player"))
             {
                 return relativePos += hit.normal * 50f;
             }

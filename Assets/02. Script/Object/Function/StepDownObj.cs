@@ -3,7 +3,6 @@ using System.Collections;
 
 public class StepDownObj : MonoBehaviour {
 
-    public float maxLength = 10f;
     public float downSpeed = 3f;
     public float upSpeed = 2f;
     public float fadeSpeed = 1f;
