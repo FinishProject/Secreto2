@@ -27,6 +27,7 @@ public class ChaseSphere : MonoBehaviour {
     public float shakeAmount = 0.1f;
     private float moveDir = 1f;
     private bool isShot = false;
+    public float reloadTime = 5f;
 
     private float rndSpeed = 0f;
     private bool isMove = false;
@@ -122,7 +123,7 @@ public class ChaseSphere : MonoBehaviour {
                     break;
                 }
 
-                yield return new WaitForSeconds(4f);
+                yield return new WaitForSeconds(reloadTime);
                 targetPos = playerTr.position;
                 laser.gameObject.SetActive(true);
             }

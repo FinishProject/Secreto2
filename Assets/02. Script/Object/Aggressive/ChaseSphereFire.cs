@@ -26,6 +26,8 @@ public class ChaseSphereFire : MonoBehaviour {
     private float moveDir = 1f;
     private bool isShot = false;
 
+    public float reloadTime = 5f;
+
     private float rndSpeed = 0f;
     private bool isMove = false;
 
@@ -82,7 +84,7 @@ public class ChaseSphereFire : MonoBehaviour {
 
                 state = ChaseState.IDLE;
 
-                yield return new WaitForSeconds(5f);
+                yield return new WaitForSeconds(reloadTime);
             }
 
             if (!isShot)
