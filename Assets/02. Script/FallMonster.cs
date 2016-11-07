@@ -19,7 +19,7 @@ public class FallMonster : MonoBehaviour {
             StartCoroutine(StartEndingScript());
         if (col.CompareTag("OBJECT"))
         {   
-            PlayerCtrl.instance.SetStopMove();
+            //PlayerCtrl.instance.SetStopMove();
             if (!isActive)
             {
                 isActive = true;
@@ -35,8 +35,9 @@ public class FallMonster : MonoBehaviour {
         if (fallCount >= endNum)
             StartCoroutine(StartEndingScript());
 
-        PlayerCtrl.instance.isMove = false;
-        PlayerCtrl.instance.animReset();
+        PlayerCtrl.instance.SetStopMove(false);
+
+        PlayerCtrl.instance.ResetAnim();
 
         float waitTime = 0f;
         while (true)
@@ -52,7 +53,7 @@ public class FallMonster : MonoBehaviour {
             yield return null;
         }
 
-        PlayerCtrl.instance.isMove = true;
+        PlayerCtrl.instance.SetStopMove(true);
     }
 
     IEnumerator StartEndingScript()

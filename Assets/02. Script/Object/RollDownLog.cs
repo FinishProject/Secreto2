@@ -86,7 +86,7 @@ public class RollDownLog : MonoBehaviour {
 
         if(isMoving && col.CompareTag("Player"))
         {
-            PlayerCtrl.instance.PlayerDie();
+            StartCoroutine(PlayerCtrl.instance.PlayerDie());
         }
     }
 
