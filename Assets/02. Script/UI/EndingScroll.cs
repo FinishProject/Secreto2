@@ -11,13 +11,15 @@ public class EndingScroll : MonoBehaviour {
     Vector3 t;
 
     public AudioSource source;
-
+    public Image SkipImg;
     RectTransform textTr;
     float orign;
     float moveRange;
     
     float screenHeight;
     float textHeight;
+
+    bool escTrigger;
     // Use this for initialization
     void Start () {
         blackImg.enabled = false;
@@ -31,11 +33,31 @@ public class EndingScroll : MonoBehaviour {
         speed = 170f;
 
         StartCoroutine(Scroll());
+        StartCoroutine(SkipButton());
     }
 
+    IEnumerator SkipButton()
+    {
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(fadeSkip(true));
+        while (true)
+        {
+            if (Input.GetKey(KeyCode.Escape) && !escTrigger)
+            {
+                escTrigger = true;
+                StartCoroutine(fadeSkip(false));
+                FadeInOut.instance.transform.localScale = new Vector3(100, 100, 100);
+                FadeInOut.instance.StartFadeInOut(1.5f, 5f, 1.5f);
+                yield return new WaitForSeconds(2f);
+                Application.LoadLevel("LoadingScene");
+                break;
+            }
+            yield return null;
+        }
+    }
     IEnumerator Scroll()
     {
-        while(true)
+        while (true)
         {
             if (moveRange > textHeight + screenHeight)
             {
@@ -55,7 +77,6 @@ public class EndingScroll : MonoBehaviour {
 
             yield return null;
         }
-        
     }
 
 
@@ -112,6 +133,33 @@ public class EndingScroll : MonoBehaviour {
         StartCoroutine(SetVloume());
         yield return new WaitForSeconds(3f);
         Application.LoadLevel("MainScene 1");
+    }
+
+    IEnumerator fadeSkip(bool fadeIn)
+    {
+        Color tempAlpha = SkipImg.color;
+        float pressKeyFadeSpeed = 0.5f;
+
+        if (!fadeIn)
+        {
+            tempAlpha.a = 1;
+            pressKeyFadeSpeed *= -1;
+        }
+        else
+        {
+            tempAlpha.a = 0;
+        }
+        SkipImg.color = tempAlpha;
+
+        while (true)
+        {
+            tempAlpha.a = pressKeyFadeSpeed * Time.deltaTime;
+            SkipImg.color += tempAlpha;
+            if (SkipImg.color.a >= 1.0f || SkipImg.color.a <= 0)
+                break;
+
+            yield return null;
+        }
     }
 }
 

@@ -1,27 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraCtrl_1 : MonoBehaviour
+public class CameraCtrl_1 : MonoBehaviour, Sensorable_Return
 {
+
+    public Transform areaCubeTr;
     Transform tr;                   // 현재 카메라 Transform
     Transform playerTr;             // 현재 플레이어 Transform
     Vector3 camAddPos_ViewRight;    // 플레이어와 카메라의 벡터값
     Vector3 camAddPos_ViewLeft;     // 플레이어와 카메라의 벡터값
+
+    public float speed_X_Max = 5;
     public float speed_Y = 1;
+    public float speed_Z = 5;
     public float wallRayToCamGap = 6.9f;
     float normalSpeed_Y = 1;
     float curSpeed_X;
-    float speed_X_Max = 5;
+    
 
     bool hasCamTarget;              // 카메라 타겟 위치가 있는지
     bool isFocusRight;              // 진행방향 체크
     bool oldFocusRight;             // 이전 Update에서의 진행방향
+    bool isZoom = false;            // 줌 상태인가?
+
+    // 줌 관련 변수
+    float zoomAreaX;                    // 줌 구역 시작 X좌표 위치
+    float zoomAreaSize;                 // 줌 구역 길이
+    float zoomDeep;                     // 줌 깊이
+    float zoomHeight;                   // 줌 높이
+    float zoomStartRangePercent;        // 줌인, 아웃 시작 비율
+
+
+    float normalSpeedY = 2;
 
     public static CameraCtrl_1 instance;
-
-    Vector3 camAddPos;    // 플레이어와 카메라의 벡터값
-    public float speedY = 2;
-    float normalSpeedY = 2;
 
     void Start()
     {
@@ -30,34 +42,28 @@ public class CameraCtrl_1 : MonoBehaviour
         playerTr = PlayerCtrl.instance.transform;
         camAddPos_ViewRight = tr.position - playerTr.position;
         camAddPos_ViewLeft = camAddPos_ViewRight;
-        camAddPos_ViewLeft.x = playerTr.position.x - tr.position.x;
+        camAddPos_ViewLeft.x = playerTr.position.x - tr.position.x;       
     }
 
-    void Yspeed()
-    {
-        if (PlayerCtrl.controller.velocity.y > -15f)
-            speedY = normalSpeedY;
-        else
-            speedY += 20f * Time.deltaTime;
-    }
+
 
     Vector3 tempPos;
     void Update()
     {
-
+        areaCubeTr.position = playerTr.position;
         if (hasCamTarget)
             return;
 
         FocusChecker();
         Speed_Y_Ctrl();
         Speed_X_Ctrl();
+        Zoomed();
 
         // 카메라의 x 좌표 움직임 ( 캐릭터가 바라보는 방향에 따라 ) 
         if (isFocusRight)
-            tempPos = Vector3.Lerp(tr.position, new Vector3(playerTr.position.x, 0, playerTr.position.z) + camAddPos_ViewRight, curSpeed_X * Time.deltaTime);
+            tempPos.x = Mathf.Lerp(tr.position.x, playerTr.position.x + camAddPos_ViewRight.x, curSpeed_X * Time.deltaTime);
         else
-            tempPos = Vector3.Lerp(tr.position, new Vector3(playerTr.position.x, 0, playerTr.position.z) + camAddPos_ViewLeft, curSpeed_X * Time.deltaTime);
-
+            tempPos.x = Mathf.Lerp(tr.position.x, playerTr.position.x + camAddPos_ViewLeft.x , curSpeed_X * Time.deltaTime);
         ChackWall_ByRay();
 
         // 우측에 벽이 있으면 ( else if는 좌측에 벽이 있으면 )
@@ -66,11 +72,94 @@ public class CameraCtrl_1 : MonoBehaviour
         else if (isNeerWall_Left && wall_L_Pos_X + wallRayToCamGap > tempPos.x)
             tempPos.x = wall_L_Pos_X + wallRayToCamGap;
 
-        tempPos.y = Mathf.Lerp(tr.position.y, playerTr.position.y + camAddPos_ViewRight.y + shakeVal.y, speed_Y * Time.deltaTime);
+        // 카메라의 y 좌표 움직임 ( 카메라 쉐이킹 추가 )
+        tempPos.y = Mathf.Lerp(tr.position.y, playerTr.position.y + camAddPos_ViewRight.y + shakeVal.y + zoomPos.y, speed_Y * Time.deltaTime);
 
+        // 카메라의 z 좌표 움직임
+        tempPos.z = Mathf.Lerp(tr.position.z, playerTr.position.z + camAddPos_ViewRight.z + zoomPos.z, speed_Z * Time.deltaTime);
+
+//        tempPos = Vector3.MoveTowards(tempPos, tempPos + zoomPos, speed_Z * Time.deltaTime);
+        Debug.Log(tempPos.z+"    " + zoomPos.z);
         if (!teleportTrigger)
-            tr.position = tempPos;
+            tr.position = tempPos;   
     }
+
+
+    Vector3 zoomPos;
+    void Zoomed()
+    {
+        zoomPos = Vector3.zero;
+        if (isZoom)
+        {
+            float zoomRange = transform.position.x - zoomAreaX;
+
+            // 0이하의 값이 뜨면 안됨 ( 충돌 박스로 isZoom 체크 하기 때문에 초반에 -값이 뜬다 [ 중심 값이 필요하다 ])
+            if (zoomRange < 0) return;
+
+            float zoomPercent = Mathf.Ceil(zoomRange / zoomAreaSize * 100) * 0.01f;
+
+            // 1이상의 값이 뜨면 안됨 ( 위와 마찬가지 )
+            if (zoomPercent > 1) return;
+
+            // 시작 위치
+            if (zoomPercent < zoomStartRangePercent)
+            {
+                zoomPos.y =   (zoomHeight * (zoomPercent / zoomStartRangePercent));
+                zoomPos.z = - (zoomDeep   * (zoomPercent / zoomStartRangePercent));
+            }
+            // 중간 위치
+            else if (zoomPercent <= (1 - zoomStartRangePercent))
+            {
+                zoomPos.y =   zoomHeight;
+                zoomPos.z = - zoomDeep;
+            }
+            // 끝 위치
+            else
+            {
+                zoomPos.y =   (zoomHeight * ((1 - zoomPercent) / zoomStartRangePercent));
+                zoomPos.z = - (zoomDeep   * ((1 - zoomPercent) / zoomStartRangePercent));
+            }
+        }
+    }
+
+    // 라인 센서에 무언가가 충돌 했을 때, 충돌한 오브젝트를 받아옴 ( 라인 스크립트에 충돌할 것 지정 )
+    public void ActiveSensor_Retuen(int index, GameObject gameObjet)
+    {
+        if (gameObjet == null)
+        {
+            isZoom = false;
+            return;
+        }
+
+        if (!isZoom)
+        {
+            // 오브젝트에서 줌 정보를 가져옴 ( 구조체 그대로 썼더니 가독성이 안좋아서 각 변수에 저장함 )
+            ZoomState tempZoomState = gameObjet.transform.GetComponent<ZoomArea>().zoomState;
+            zoomAreaSize = tempZoomState.areaSize;
+            zoomAreaX = tempZoomState.areaX;
+            zoomDeep = tempZoomState.deep;
+            zoomHeight = tempZoomState.height;
+            zoomStartRangePercent = tempZoomState.startRangePercent;
+            isZoom = true;
+        }
+    }
+
+    /*
+    CameraArea_3 cameraArea;
+    public void ActiveSensor_Retuen(int index, GameObject returnObjet)
+    {
+
+        if (returnObjet != null)
+        {
+            cameraArea.correctionValue = returnObjet.GetComponent<CameraArea_3>().correctionValue;
+        }
+        else
+        {
+            cameraArea.correctionValue = CameraArea_3.ZeroCorrectionValue();
+        }
+
+    }
+    */
 
     #region 카메라 이동 관련 함수
     void Speed_Y_Ctrl()

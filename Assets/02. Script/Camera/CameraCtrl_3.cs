@@ -1,26 +1,73 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraCtrl_3 : MonoBehaviour {
-    Vector3 ori;
-    float y, z;
-    Transform playerTr;
-	// Use this for initialization
-	void Start () {
-        ori = transform.position;
-        playerTr = PlayerCtrl.instance.transform;
-        y = transform.position.y - playerTr.position.y;
-        z = transform.position.z - playerTr.position.z;
-    }
-	
-	// Update is called once per frame
-	void Update () {
-        Vector3 temp = new Vector3(0, y, z);
-        transform.position = Vector3.Lerp(transform.position, playerTr.position + temp,  2.5f * Time.deltaTime);
+public class CameraCtrl_3 : MonoBehaviour
+{
 
-        if(PlayerCtrl.controller.velocity.y > -8)
+    Transform tr;         // 현재 카메라 Transform
+    Transform playerTr;   // 현재 플레이어 Transform
+    Vector3 camAddPos;    // 플레이어와 카메라의 벡터값
+
+    float camAddPosX;
+    float camAddPosY;
+    float camAddPosUpY;
+    float camAddPosDownY;
+
+    float curYspeed;
+    float val = 20f;
+    float orignYspeed = 5f;
+    float upYspeed = 1f;
+    float downYspeed = 20f;
+
+    void Start()
+    {
+        tr = transform;
+        playerTr = PlayerCtrl.instance.transform;
+        camAddPos = tr.position - playerTr.position;
+        camAddPosY = camAddPos.y;
+        camAddPosUpY = camAddPos.y + 0.8f;
+        camAddPosDownY = camAddPos.y - 1f;
+    }
+
+    void Yspeed()
+    {
+        if (PlayerCtrl.controller.isGrounded)
         {
-            transform.position = Vector3.MoveTowards(transform.position, playerTr.position + temp, 10f * Time.deltaTime);
+            camAddPos.y = camAddPosY;
+
+            if (curYspeed - 0.1f > orignYspeed)
+            {
+                curYspeed -= orignYspeed * Time.deltaTime;
+
+            }
+            else if (curYspeed + 0.1f < orignYspeed)
+            {
+                curYspeed += orignYspeed * Time.deltaTime;
+            }
         }
+        else if (PlayerCtrl.controller.velocity.y > 0)
+        {
+            camAddPos.y = camAddPosUpY;
+
+            if (curYspeed > upYspeed)
+                curYspeed -= 30 * Time.deltaTime;
+        }
+        else
+        {
+            camAddPos.y = camAddPosDownY;
+
+            if (curYspeed < downYspeed)
+                curYspeed += downYspeed * Time.deltaTime;
+        }
+
+    }
+    Vector3 tempPos;
+    void Update()
+    {
+        Yspeed();
+        float tempSpeed = Vector3.Distance(tr.position, playerTr.position + camAddPos) * 2.5f;
+        tempPos = Vector3.Lerp(tr.position, playerTr.position + camAddPos, tempSpeed * Time.deltaTime);
+        tempPos.y = Mathf.Lerp(tr.position.y, playerTr.position.y + camAddPos.y, curYspeed * Time.deltaTime);
+        tr.position = tempPos;
     }
 }

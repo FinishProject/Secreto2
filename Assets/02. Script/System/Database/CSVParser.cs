@@ -6,6 +6,20 @@ using System.IO;
 using System.Text;
 using System;
 
+/*************************   정보   **************************
+
+    CSV파싱을 하기위한 클래스다
+
+    사용법
+    ex)
+    CSVParser skillList; 
+    skillList = new CSVParser("SkillList"); // SkillList은 파일명
+    skillList.Load();
+    SkillInit();
+
+    SkillList파일은 StreamingAssets 폴더에 있어야한다
+
+*************************************************************/
 
 public class CSVParser : CSVReader
 {
