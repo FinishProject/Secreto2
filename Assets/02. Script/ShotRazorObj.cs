@@ -5,7 +5,6 @@ public class ShotRazorObj : MonoBehaviour {
 
     public GameObject laserObj;
     private AudioSource audioSource;
-    public Transform startPoint;
     public Collider childColider;
 
     private float fadeSpeed = 1f;
@@ -18,6 +17,10 @@ public class ShotRazorObj : MonoBehaviour {
 
     private bool isWait = true;
     private bool isActive = false;
+
+    private bool isAdjust = false;
+
+    private bool isPlayer = false;
 
     float alpha = 1f;
 
@@ -32,7 +35,6 @@ public class ShotRazorObj : MonoBehaviour {
     IEnumerator ShotLaser()
     {
         Color laserColor = laserObj.GetComponent<Renderer>().material.color;
-
         
         float fadeDir = -1f;
 
@@ -45,6 +47,10 @@ public class ShotRazorObj : MonoBehaviour {
             laserColor.a = alpha;
             laserObj.GetComponent<Renderer>().material.color = laserColor;
 
+            // 사운드 볼륨 점차 감소
+            if (fadeDir <= -1f && isPlayer)
+                audioSource.volume = alpha;
+
             childColider.enabled = false;
 
             // 0 or 1이면 알파값 방향 및 속도 변경
@@ -55,24 +61,29 @@ public class ShotRazorObj : MonoBehaviour {
 
                 fadeSpeed = downSpeed;
 
-                if (alpha == 0)
+                if (alpha == 0) // 레이저가 사라지면 사운드 중지
                     audioSource.Stop();
-                else if (alpha == 1f)
+                else if (alpha == 1f) // 레이저가 최대치면 컬리더 ON
                     childColider.enabled = true;
 
                 yield return new WaitForSeconds(durationTime);
             }
-            // 알파값 증가중 일정 값에서 대기
+            // 알파값 증가 중 일정값에서 대기
             else if(alpha >= waitUpValue && isWait)
             {
                 isWait = false;
                 fadeSpeed = upSpeed;
                 yield return new WaitForSeconds(waitingTime);
 
-                if(!audioSource.isPlaying)
-                    audioSource.Play();
-            }
+                // 사운드 재생
+                if (!audioSource.isPlaying)
+                {
+                    if (!isAdjust && isPlayer)
+                        audioSource.volume = 1f;
 
+                    audioSource.Play();
+                }
+            }
             yield return null;
         }
     }
@@ -81,7 +92,8 @@ public class ShotRazorObj : MonoBehaviour {
     {
         if (col.CompareTag("Player"))
         {
-            if (isActive)
+            isPlayer = true;
+            if (isAdjust)
                 StopCoroutine(AdjustSound(audioSource.volume, 1));
 
             StartCoroutine(AdjustSound(audioSource.volume, 1));
@@ -92,7 +104,8 @@ public class ShotRazorObj : MonoBehaviour {
     {
         if (col.CompareTag("Player"))
         {
-            if (isActive)
+            isPlayer = false;
+            if (isAdjust)
                 StopCoroutine(AdjustSound(audioSource.volume, 1));
 
             StartCoroutine(AdjustSound(audioSource.volume, -1));
@@ -101,8 +114,8 @@ public class ShotRazorObj : MonoBehaviour {
 
     IEnumerator AdjustSound(float volume, float dir)
     {
-        isActive = true;
-        while (isActive)
+        isAdjust = true;
+        while (isAdjust)
         {
             volume += dir * 1f * Time.deltaTime;
             volume = Mathf.Clamp01(volume);
@@ -114,6 +127,6 @@ public class ShotRazorObj : MonoBehaviour {
 
             yield return null;
         }
-        isActive = false;
+        isAdjust = false;
     }
 }

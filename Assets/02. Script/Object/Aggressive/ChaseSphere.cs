@@ -80,6 +80,7 @@ public class ChaseSphere : MonoBehaviour {
 
                 curDir = Mathf.Sign(playerTr.position.x - transform.position.x);
 
+                // 레이저 이동 목표 방향 설정
                 if (curDir == 1 && transform.position.x <= finishPoint.position.x)
                     finishPoint.position += Vector3.right * -10f;
                 else if(curDir == -1 && transform.position.x >= finishPoint.position.x)
@@ -93,6 +94,7 @@ public class ChaseSphere : MonoBehaviour {
                 targetPos = finishPoint.position;
                 laserSpeed = 0.5f;
 
+                source.volume = 1f;
                 source.Play();
                 childCol.enabled = true;
             }
@@ -105,11 +107,12 @@ public class ChaseSphere : MonoBehaviour {
                 || curDir == -1 && angle <= 97f) && state == ChaseState.SHOT || !isShot)
             {
                 state = ChaseState.IDLE;
-                source.Stop();
                 childCol.enabled = false;
 
                 if(isShot)
                     yield return FadeLaser(-1, 1);
+
+                source.Stop();
 
                 laser.gameObject.SetActive(false);
                 laserSpeed = 100f;
@@ -136,12 +139,24 @@ public class ChaseSphere : MonoBehaviour {
     IEnumerator FadeLaser(float fadeDir, float alpha)
     {
         Color color = laserRender.material.color;
+        float fadeSpeed = 0.6f;
+        bool isCharge = true;
         while (true)
         {
-            alpha += fadeDir * 0.6f * Time.deltaTime;
+            alpha += fadeDir * fadeSpeed * Time.deltaTime;
             alpha = Mathf.Clamp01(alpha);
             color.a = alpha;
             laserRender.material.color = color;
+
+            if (fadeDir == 1f && alpha >= 0.3f && isCharge)
+            {
+                isCharge = false;
+                yield return new WaitForSeconds(1f);
+                fadeSpeed = 2f;
+            }
+
+            if (fadeDir == -1f)
+                source.volume = alpha;
 
             if (alpha == 1 || alpha == 0)
                 break;
