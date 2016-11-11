@@ -79,7 +79,6 @@ public class CameraCtrl_1 : MonoBehaviour, Sensorable_Return
         tempPos.z = Mathf.Lerp(tr.position.z, playerTr.position.z + camAddPos_ViewRight.z + zoomPos.z, speed_Z * Time.deltaTime);
 
 //        tempPos = Vector3.MoveTowards(tempPos, tempPos + zoomPos, speed_Z * Time.deltaTime);
-        Debug.Log(tempPos.z+"    " + zoomPos.z);
         if (!teleportTrigger)
             tr.position = tempPos;   
     }
