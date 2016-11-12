@@ -403,6 +403,15 @@ Prefab:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 114000012105916328, guid: e4212de147235d04b93e0cf068950982,
+        type: 2}
+      propertyPath: m_Text
+      value: "\n\n\n\uBBFC\uC790\uC601\n\n\n\n\n\n\n\n\n\n\n\uC815\uAE30\uC815\n\n\n\n\n\n\n\n\n\uBBFC\uC790\uC601
+        \   \uAE40\uC218\uC815\n\n\n\n\n\n\n\n\n\n\n\n\uAE40\uC18C\uC5F0    \r\uCD5C\uD6A8\uC815\n\n\uC774\uD604\uC815
+        \   \uC774\uD6A8\uC815\r\n\n\uC774\uD61C\uC815    \uC815\uAE30\uC815\r\n\n\uC815\uC885\uD654\r
+        \           \n\n\n\n\n\n\n\n\uC774\uC8FC\uD6C8    \uBC31\uCCA0\uC2B9\n\n\n\n\n\n\n\n\n\n\n\uC870\uD56D\uBBFC
+        \   \uAE40\uB9AC\uC815\n\n\uBBFC\uD558\uC601    \uAD6C\uBCF8\uC218\n"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e4212de147235d04b93e0cf068950982, type: 2}
   m_IsPrefabParent: 0

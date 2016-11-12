@@ -77,10 +77,10 @@ public class ChaseSphereFire : MonoBehaviour {
 
                 state = ChaseState.SHOT;
                 source.Stop();
-                Vector3 targetPos = playerTr.position;
+                Vector3 targetPos = new Vector3(playerTr.position.x, playerTr.position.y + 0.3f, playerTr.position.z);
                 shotFire.GetTarget(targetPos);
 
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.5f);
 
                 state = ChaseState.IDLE;
 
@@ -172,7 +172,7 @@ public class ChaseSphereFire : MonoBehaviour {
 
         while (true)
         {
-            alpha += fadeDir * 0.5f * Time.deltaTime;
+            alpha += fadeDir * 0.8f * Time.deltaTime;
             alpha = Mathf.Clamp01(alpha);
             color[0].a = alpha;
             color[1].a = alpha;

@@ -10,17 +10,23 @@ public class PushBox : MonoBehaviour {
 
     bool isRight = true;
     bool isActive = false;
+    bool isWall = false;
 
     public bool isPush = true;
 
     public AudioClip clip;
-    public AudioSource source;
+    private AudioSource source;
+
+    void Start()
+    {
+        source = GetComponent<AudioSource>();
+    }
 
     // PlayerCtrl 에서 플레이어가 밀때 실행
     public void PushObject(Transform playerTr, bool isFocusRight)
     {
         isRight = isFocusRight;
-        if (!isActive)
+        if (!isActive && !isWall)
         {
             isActive = true;
             StartCoroutine(Pushing(playerTr));
@@ -70,6 +76,12 @@ public class PushBox : MonoBehaviour {
             ShowUI.instanace.OnImage(true);
             ShowUI.instanace.SetPosition(this.transform, uiPosY);
         }
+        else if (col.CompareTag("MoveWall"))
+        {
+            isWall = true;
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationY;
+        }
+
     }
 
     void OnTriggerExit(Collider col)

@@ -5,7 +5,7 @@ public class ResetBox : MonoBehaviour {
 
     public Transform resetPoint;
 
-    void OnTriggerEnter(Collider col)
+    void OnTriggerExit(Collider col)
     {
         if (col.CompareTag("OBJECT"))
         {

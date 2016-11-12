@@ -288,6 +288,27 @@ public class CameraCtrl_1 : MonoBehaviour, Sensorable_Return
 
         shakeVal = new Vector3(0, 0, 0);
     }
+
+    bool isShake = false;
+    public void StartShaking()
+    {
+        if(!isShake)
+            StartCoroutine(Shaking());
+    }
+
+    IEnumerator Shaking()
+    {
+        Vector3 originPos = shakeVal;
+        isShake = true;
+        float shakeTime = 0f;
+        while (shakeTime <= 2f)
+        {
+            shakeTime += Time.deltaTime;
+            shakeVal = originPos + Random.insideUnitSphere * 1f;
+            yield return null;
+        }
+        isShake = false;
+    }
     #endregion
 
     #region 타켓을 바라보는 카메라

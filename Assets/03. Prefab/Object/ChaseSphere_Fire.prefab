@@ -1696,7 +1696,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012267196478}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.5, y: 7, z: -1.66}
+  m_LocalPosition: {x: 849.9, y: 5.2, z: -1.66}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -2183,8 +2183,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 24.88, y: 19.16, z: 2.6}
-  m_Center: {x: 0, y: -4.4, z: 0}
+  m_Size: {x: 24.88, y: 18.51, z: 2.6}
+  m_Center: {x: 0, y: -5.5, z: 0}
 --- !u!82 &82000010207773550
 AudioSource:
   m_ObjectHideFlags: 1
@@ -2268,7 +2268,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b8c18a5f144148a4bb29cb2f1d8d40bf, type: 3}
+  m_audioClip: {fileID: 8300000, guid: c89004cfb1cee324d9c81c79a5336df3, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2473,6 +2473,7 @@ MonoBehaviour:
   - 0.3
   - 0.7
   shakeAmount: 0.008
+  reloadTime: 3
   shotFire: {fileID: 114000012260253578}
   render: {fileID: 23000011596992866}
   particle:

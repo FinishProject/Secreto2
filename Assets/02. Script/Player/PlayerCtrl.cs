@@ -45,6 +45,7 @@ public class PlayerCtrl : MonoBehaviour
     private AnimatorStateInfo currentAnim;
     static int fallState = Animator.StringToHash("Base Layer.Jump_DownLoop");
     static int landJump = Animator.StringToHash("Base Layer.Jump_Land(43~50)");
+    static int dashJump = Animator.StringToHash("Base Layer.DoubleJump_Up(25~50)");
 
     private ScoreUI scroreUI;
 
@@ -81,7 +82,7 @@ public class PlayerCtrl : MonoBehaviour
             moveDir.y -= curGravity * Time.deltaTime;
             controller.Move(moveDir * moveSpeed * Time.deltaTime);
         }
-        currentAnim = anim.GetCurrentAnimatorStateInfo(0);
+        
         SetAnimator();
 
         //캐릭터 방향 회전
@@ -90,22 +91,16 @@ public class PlayerCtrl : MonoBehaviour
         // 오른쪽 회전
         else if (inputAxis > 0 && !isFocusRight) { TurnPlayer(); }
 
-        // 추락 애니메이션
-        anim.SetFloat("Velocity", controller.velocity.y);
     }
 
     void SetAnimator()
     {
+        currentAnim = anim.GetCurrentAnimatorStateInfo(0);
         if (controller.isGrounded && isMove)
         {
             anim.SetBool("Jump", false);
             anim.SetBool("Dash", false);
-
-            //if (currentAnim.nameHash.Equals(landJump))
-            //{
-            //    if(!source.isPlaying)
-            //        source.PlayOneShot(soundClips[6]);
-            //}
+            anim.SetBool("Fall", false);
 
             // 달리기 중
             if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
@@ -124,6 +119,12 @@ public class PlayerCtrl : MonoBehaviour
                 anim.SetBool("Run", false);
                 source.Stop();
             }
+        }
+        else if(!controller.isGrounded && dashJump != currentAnim.nameHash && controller.velocity.y < -13f
+            && !dying)
+        {
+            // 추락 애니메이션
+            anim.SetBool("Fall", true);
         }
     }
 
@@ -290,6 +291,7 @@ public class PlayerCtrl : MonoBehaviour
         anim.SetBool("Run", false);
         anim.SetBool("Jump", false);
         anim.SetBool("Dash", false);
+        anim.SetBool("Fall", false);
     }
 
     void OnEnable()

@@ -39,6 +39,8 @@ public class FallMonster : MonoBehaviour {
 
         PlayerCtrl.instance.ResetAnim();
 
+        FallStoneArea.isActive = false;
+
         float waitTime = 0f;
         while (true)
         {
@@ -56,6 +58,7 @@ public class FallMonster : MonoBehaviour {
         PlayerCtrl.instance.SetStopMove(true);
     }
 
+    // 엔딩 대사 씬 출력 및 대사 종료 후 씬 전환
     IEnumerator StartEndingScript()
     {
         worldCanvas.SetActive(false);
@@ -66,7 +69,7 @@ public class FallMonster : MonoBehaviour {
             if (!ScriptMgr.isSpeak)
             {
                 FadeInOut.instance.StartFadeInOut(1f, 3f, 1f);
-                StartCoroutine(SetVloume());
+                StartCoroutine(SetVolume());
                 yield return new WaitForSeconds(3f);
                 Application.LoadLevel("EndCutScene");
             }
@@ -75,7 +78,8 @@ public class FallMonster : MonoBehaviour {
         }
     }
 
-    IEnumerator SetVloume()
+    // 씬 넘어가면서 볼륨 낮춤
+    IEnumerator SetVolume()
     {
         float volume = source.volume;
         while (true)

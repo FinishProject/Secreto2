@@ -49,7 +49,7 @@ public class EndingScroll : MonoBehaviour {
                 FadeInOut.instance.transform.localScale = new Vector3(100, 100, 100);
                 FadeInOut.instance.StartFadeInOut(1.5f, 5f, 1.5f);
                 yield return new WaitForSeconds(2f);
-                Application.LoadLevel("LoadingScene");
+                Application.LoadLevel("MainScene 1");
                 break;
             }
             yield return null;

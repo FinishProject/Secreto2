@@ -61,7 +61,7 @@ public class CutScene : MonoBehaviour {
 
             if (imgCnt <= index + 1)
             {
-//                Application.LoadLevel("MainScene 1");
+                //Application.LoadLevel("MainScene 1");
                 yield break;
             }
 

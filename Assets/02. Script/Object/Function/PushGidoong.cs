@@ -24,7 +24,12 @@ public class PushGidoong : MonoBehaviour, Sensorable_Player
     public bool pushFirstTime;
 
     bool isPlay = false;
+
+    public AudioClip clip;
+    private AudioSource source;
+
 	void Start () {
+        source = GetComponent<AudioSource>();
         pushersRigidbody = pusher.GetComponent<Rigidbody>();
         passCount = 0;
     }
@@ -48,9 +53,8 @@ public class PushGidoong : MonoBehaviour, Sensorable_Player
     IEnumerator PlaySound()
     {
         yield return new WaitForSeconds(2f);
-        SoundMgr.instance.PlayAudio("Fall_Statue", false, 0.5f);
-        yield return new WaitForSeconds(1f);
-        SoundMgr.instance.StopAudio("Fall_Statue");
+        if (!source.isPlaying)
+            source.PlayOneShot(clip);
     }
 
     IEnumerator RemoveTag()

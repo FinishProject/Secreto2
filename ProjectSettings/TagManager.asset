@@ -17,6 +17,7 @@ TagManager:
   - Coin
   - StartPoint
   - CamArea
+  - MoveWall
   layers:
   - Default
   - TransparentFX

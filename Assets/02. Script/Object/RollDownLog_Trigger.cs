@@ -21,9 +21,13 @@ public class RollDownLog_Trigger : MonoBehaviour {
     IEnumerator roll;
     IEnumerator roll2;
 
+    public AudioClip clip;
+    private AudioSource source;
+
     bool isStarted;
     void Start()
     {
+        source = GetComponent<AudioSource>();
         roll = log.GetComponent<RollDownLog>().loopRollDown();
         roll2 = log2.GetComponent<RollDownLog>().loopRollDown();   
     }
@@ -51,13 +55,19 @@ public class RollDownLog_Trigger : MonoBehaviour {
         {
             if (isStarted)
             {
-                SoundMgr.instance.PlayAudio("Earthquake", true, 1f);
+                if (!source.isPlaying)
+                {
+                    source.clip = clip;
+                    source.Play();
+                    source.loop = true;
+                }
                 StartCoroutine(roll);
                 yield return new WaitForSeconds(3f);
                 StartCoroutine(roll2);
             }
             else
             {
+                source.Stop();
                 SoundMgr.instance.StopAudio("Earthquake");
                 StopCoroutine(roll);
                 StopCoroutine(roll2);
