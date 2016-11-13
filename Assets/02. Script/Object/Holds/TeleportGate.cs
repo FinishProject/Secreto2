@@ -69,9 +69,9 @@ public class TeleportGate : MonoBehaviour {
         }
         // 플레이어 이동
         PlayerCtrl.instance.transform.position = exitPoint;
-        PlayerCtrl.inputAxis = 0f;
-        if(!isRight)
-            PlayerCtrl.instance.TurnPlayer();
+        //PlayerCtrl.inputAxis = 0f;
+        //if(!isRight)
+        //    PlayerCtrl.instance.TurnPlayer();
 
         CameraCtrl_1.instance.EndTeleport(isRight);
         //CameraCtrl_6.instance.EndTeleport(isRight);

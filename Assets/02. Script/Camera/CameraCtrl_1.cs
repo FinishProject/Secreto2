@@ -68,9 +68,9 @@ public class CameraCtrl_1 : MonoBehaviour, Sensorable_Return
 
         // 우측에 벽이 있으면 ( else if는 좌측에 벽이 있으면 )
         if (isNeerWall_Right && wall_R_Pos_X - wallRayToCamGap < tempPos.x)
-            tempPos.x = wall_R_Pos_X - wallRayToCamGap;
+            tempPos.x = wall_R_Pos_X - wallRayToCamGap + 0.1f;
         else if (isNeerWall_Left && wall_L_Pos_X + wallRayToCamGap > tempPos.x)
-            tempPos.x = wall_L_Pos_X + wallRayToCamGap;
+            tempPos.x = wall_L_Pos_X + wallRayToCamGap - 0.1f;
 
         // 카메라의 y 좌표 움직임 ( 카메라 쉐이킹 추가 )
         tempPos.y = Mathf.Lerp(tr.position.y, playerTr.position.y + camAddPos_ViewRight.y + shakeVal.y + zoomPos.y, speed_Y * Time.deltaTime);
