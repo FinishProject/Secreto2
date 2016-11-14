@@ -151,7 +151,7 @@ public class ChaseSphere : MonoBehaviour {
             if (fadeDir == 1f && alpha >= 0.3f && isCharge)
             {
                 isCharge = false;
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds( 0.2f);
                 fadeSpeed = 2f;
             }
 
