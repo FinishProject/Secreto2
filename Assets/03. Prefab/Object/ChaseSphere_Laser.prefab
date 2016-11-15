@@ -289,7 +289,7 @@ GameObject:
   m_Layer: 0
   m_Name: Laser
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1944569537103914328, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1167,8 +1167,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000014118984762}
   m_LocalRotation: {x: 0.99997586, y: 0.0069502806, z: -0, w: 0}
-  m_LocalPosition: {x: 0.05, y: -8.17, z: -0.01999998}
-  m_LocalScale: {x: 0.6999999, y: 1.6803133, z: 1}
+  m_LocalPosition: {x: 0.311, y: -16.814611, z: 0}
+  m_LocalScale: {x: 0.70001924, y: 1.6803627, z: 1}
   m_LocalEulerAnglesHint: {x: 180, y: 0, z: -0.77301025}
   m_Children: []
   m_Father: {fileID: 4000012652149252}
@@ -1517,7 +1517,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011228615776}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.11, y: -0.33, z: 0.07}
+  m_LocalPosition: {x: 0, y: -0.01, z: 0}
   m_LocalScale: {x: 1, y: 1.3081927, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1752,7 +1752,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010323101016}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 193.86, y: -7.2, z: -1.66}
+  m_LocalPosition: {x: 195.24, y: -7.2, z: -1.66}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -2048,7 +2048,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000014118984762}
-  m_Mesh: {fileID: 4300000, guid: 79b50bc1872abba42990699fa135b2ab, type: 3}
+  m_Mesh: {fileID: 4300000, guid: f6b884f7865fbd84794af7810781cbb3, type: 3}
 --- !u!33 &33000010640547084
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -2102,7 +2102,7 @@ BoxCollider:
   m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.32, y: 10, z: 1.71}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: -5.02, z: 0}
 --- !u!65 &65000013362050468
 BoxCollider:
   m_ObjectHideFlags: 1

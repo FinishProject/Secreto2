@@ -90,7 +90,6 @@ public class PlayerCtrl : MonoBehaviour
         if (inputAxis < 0 && isFocusRight) { TurnPlayer(); }
         // 오른쪽 회전
         else if (inputAxis > 0 && !isFocusRight) { TurnPlayer(); }
-
     }
 
     void SetAnimator()
@@ -101,24 +100,6 @@ public class PlayerCtrl : MonoBehaviour
             anim.SetBool("Jump", false);
             anim.SetBool("Dash", false);
             anim.SetBool("Fall", false);
-
-            // 달리기 중
-            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
-                Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
-            {
-                anim.SetBool("Run", true);
-
-                if (!source.isPlaying)
-                {
-                    source.PlayOneShot(soundClips[3]);
-                }
-            }
-            // 달리기 멈춤
-            else
-            {
-                anim.SetBool("Run", false);
-                source.Stop();
-            }
         }
         else if(!controller.isGrounded && dashJump != currentAnim.nameHash && controller.velocity.y < -13f
             && !dying)
@@ -132,25 +113,43 @@ public class PlayerCtrl : MonoBehaviour
     {
         inputAxis = Input.GetAxis("Horizontal"); // 키 입력
 
-        // 좌우 동시 입력을 막기위함
-        if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.RightArrow) ||
-            Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
-        {
-            inputAxis = 0f;
-            anim.SetBool("Run", false);
-        }
-
         // 지상에 있을 시
         if (controller.isGrounded)
         {
             isJumping = true;
             curGravity = 35f;
+
+            // 좌우 동시 입력을 막기위함
+            if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.RightArrow) ||
+                Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+            {
+                inputAxis = 0f;
+                anim.SetBool("Run", false);
+            }
+            // 달리기 중
+            else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
+                Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+            {
+                anim.SetBool("Run", true);
+
+                if (!source.isPlaying)
+                {
+                    source.PlayOneShot(soundClips[3]);
+                }
+            }
+
+            // 달리기 멈춤
+            else
+            {
+                anim.SetBool("Run", false);
+                source.Stop();
+            }
+
             //이동
             moveDir = Vector3.right * inputAxis;
             // 점프
             if (Input.GetKeyDown(KeyCode.Space))
                 StartBasicJump();
-
         }
         // 공중에 있을 시
         else if (!controller.isGrounded)
@@ -199,10 +198,19 @@ public class PlayerCtrl : MonoBehaviour
     //캐릭터 방향 회전
     public void TurnPlayer()
     {
+        Quaternion localRot = transform.rotation;
+        if (isFocusRight)
+            localRot.w = -0.7f;
+        else 
+            localRot.w = 0.7f;
+        transform.rotation = localRot;
+        //if (isFocusRight)
+        //    transform.Rotate(new Vector3(0, 1, 0), 180);
+        //else
+        //    transform.Rotate(new Vector3(0, 1, 0), -180);
+
         isFocusRight = !isFocusRight;
         focusRight *= -1f;
-
-        transform.Rotate(new Vector3(0, 1, 0), 180);
         wahleMove.ResetSpeed();
     }
 
@@ -253,8 +261,10 @@ public class PlayerCtrl : MonoBehaviour
         if (!dying)
         {
             dying = true;
-            if (!source.isPlaying)
-                source.PlayOneShot(soundClips[0]);
+            if (source.isPlaying)
+                source.Stop();
+
+               source.PlayOneShot(soundClips[0]);
 
             controller.enabled = false;
             FadeInOut.instance.StartFadeInOut(1, 2, 3);
@@ -264,16 +274,23 @@ public class PlayerCtrl : MonoBehaviour
             clothModel.SetActive(false);
             pEffect.StartEffect(PlayerEffectList.DIE);
 
-            
+
             yield return new WaitForSeconds(1.5f);
-            
+
             //ObjectPosResetMgr.instance.ResetPos();
-            
+
             lunaModel.SetActive(true);
             clothModel.SetActive(true);
             controller.enabled = true;
-            
+
             GetPlayerData();
+
+            if (!isFocusRight)
+            {
+                Quaternion localRot = transform.rotation;
+                    localRot.w = 0.7f;
+                transform.rotation = localRot;
+            }
 
             yield return new WaitForSeconds(1.5f);
             source.PlayOneShot(soundClips[2]);
@@ -282,6 +299,7 @@ public class PlayerCtrl : MonoBehaviour
             ResetAnim();
             isMove = true;
             dying = false;
+
         }
     }
 
