@@ -3,48 +3,100 @@ using System.Collections;
 
 public class ShotRazorObj : MonoBehaviour {
 
-    private float maxLength = 150f;
+    public GameObject laserObj;
+    private AudioSource audioSource;
+    public Collider childColider;
+
     private float fadeSpeed = 1f;
-    public float upSpeed = 0.3f;
-    public float downSpeed = 2f;
-    public float chargeWaitTime = 2.5f;
-    public float fullWaitTime = 5f;
-    private float interValue = 0.06f;
+    public float upSpeed = 2f;
+    public float downSpeed = 0.5f;
 
-    public GameObject startObj;
-    public GameObject lazerObj;
-    public Transform startPoint;
+    public float waitUpValue = 0.3f;
+    public float waitingTime = 2f;
+    public float durationTime = 5f;
 
-    public GameObject lazerMat;
-    private Vector3 shotPoint;
-
-    private float fadeDir = -1f;
-    private float alpha = 0f;
-
-    public bool isLand = true;
-
+    private bool isWait = true;
     private bool isActive = false;
-    private bool isSound = false;
 
-    public AudioClip clip;
-    public AudioSource source;
+    private bool isAdjust = false;
+
+    private bool isPlayer = false;
+
+    float alpha = 1f;
 
     void Start()
     {
-        StartCoroutine(SetLazer());
+        audioSource = GetComponent<AudioSource>();
+        audioSource.volume = 0f;
+
+        StartCoroutine(ShotLaser());
     }
 
-	void Update () {
-        if(alpha >= 0.9f)
-            ShotRay();
-	}
+    IEnumerator ShotLaser()
+    {
+        Color laserColor = laserObj.GetComponent<Renderer>().material.color;
+        
+        float fadeDir = -1f;
+
+        while (true)
+        {
+            // 알파값을 0~1 사이로 조절
+            alpha += fadeDir * fadeSpeed * Time.deltaTime;
+            alpha = Mathf.Clamp01(alpha);
+            // 레이저 알파값 변경
+            laserColor.a = alpha;
+            laserObj.GetComponent<Renderer>().material.color = laserColor;
+
+            // 사운드 볼륨 점차 감소
+            if (fadeDir <= -1f && isPlayer)
+                audioSource.volume = alpha;
+
+            childColider.enabled = false;
+
+            // 0 or 1이면 알파값 방향 및 속도 변경
+            if (alpha == 0f || alpha == 1f)
+            {
+                fadeDir *= -1f;
+                isWait = true;
+
+                fadeSpeed = downSpeed;
+
+                if (alpha == 0) // 레이저가 사라지면 사운드 중지
+                    audioSource.Stop();
+                else if (alpha == 1f) // 레이저가 최대치면 컬리더 ON
+                    childColider.enabled = true;
+
+                yield return new WaitForSeconds(durationTime);
+            }
+            // 알파값 증가 중 일정값에서 대기
+            else if(alpha >= waitUpValue && isWait)
+            {
+                isWait = false;
+                fadeSpeed = upSpeed;
+                yield return new WaitForSeconds(waitingTime);
+
+                // 사운드 재생
+                if (!audioSource.isPlaying)
+                {
+                    if (!isAdjust && isPlayer)
+                        audioSource.volume = 1f;
+
+                    audioSource.Play();
+                }
+            }
+            yield return null;
+        }
+    }
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.CompareTag("Player") && !isActive)
+        if (col.CompareTag("Player"))
         {
-            source.volume = 1f;
-            isActive = true;
+            isPlayer = true;
+            if (isAdjust)
+                StopCoroutine(AdjustSound(audioSource.volume, 1));
+
+            StartCoroutine(AdjustSound(audioSource.volume, 1));
         }
     }
 
@@ -52,73 +104,29 @@ public class ShotRazorObj : MonoBehaviour {
     {
         if (col.CompareTag("Player"))
         {
-            source.volume = 0f;
-            isActive = false;
+            isPlayer = false;
+            if (isAdjust)
+                StopCoroutine(AdjustSound(audioSource.volume, 1));
+
+            StartCoroutine(AdjustSound(audioSource.volume, -1));
         }
     }
-    
 
-    IEnumerator SetLazer()
+    IEnumerator AdjustSound(float volume, float dir)
     {
-        Renderer meshRender = lazerMat.GetComponent<Renderer>();
-        Color setColor = meshRender.material.color;
-
-        bool isUp = true;
-        while (true)
+        isAdjust = true;
+        while (isAdjust)
         {
-            alpha += fadeDir * fadeSpeed * Time.deltaTime;
-            alpha = Mathf.Clamp01(alpha);
+            volume += dir * 1f * Time.deltaTime;
+            volume = Mathf.Clamp01(volume);
 
-            setColor.a = alpha;
-            meshRender.material.color = setColor;
+            audioSource.volume = volume;
 
-            if (alpha == 0f || alpha == 1f)
-            {
-                fadeDir *= -1f;
-                if (fadeDir == 1f)
-                {
-                    if (isActive)
-                        source.Stop();
-
-                    isUp = true;
-                    fadeSpeed = upSpeed;
-                }
-                else
-                    fadeSpeed = downSpeed;
-
-                yield return new WaitForSeconds(fullWaitTime);
-            }
-
-            if (isUp && fadeSpeed <= 1f && setColor.a >= 0.2f)
-            {
-                yield return new WaitForSeconds(chargeWaitTime);
-                if (!source.isPlaying)
-                    source.PlayOneShot(clip);
-
-                if (!isActive)
-                    source.volume = 0f;
-                //if (isActive)
-                //    SoundMgr.instance.PlayAudio("Laser", false, 0.8f);
-                yield return new WaitForSeconds(0.5f);
-                isUp = false;
-                fadeSpeed = 5f;
-            }
+            if (volume == 0f || volume == 1f)
+                break;
 
             yield return null;
         }
-    }
-
-    void ShotRay()
-    {
-        RaycastHit hit;
-        // 발사할 방향을 로컬 좌표에서 월드 좌표로 변환한다.
-        Vector3 forward = transform.TransformDirection(-Vector3.up);
-        if (Physics.Raycast(startPoint.position, forward, out hit, maxLength))
-        {
-            if (hit.collider.CompareTag("Player"))
-            {
-                PlayerCtrl.instance.PlayerDie();
-            }
-        }
+        isAdjust = false;
     }
 }

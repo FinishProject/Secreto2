@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*************************   정보   **************************
+ 
+    메모리 파편화을 방지하기 위해 필요한 오브젝트풀이다
+    
+*************************************************************/
+
 public class ItemPool : MonoBehaviour {
 
     private GameObject[] items = null;

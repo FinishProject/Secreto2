@@ -50,7 +50,7 @@ public class SoundMgr : MonoBehaviour {
     {
         for(int i=0; i<audioArray.Length; i++)
         {
-            if (audioArray[i].name == clipName)
+ //           if (audioArray[i].name == clipName)
                 return audioArray[i];
         }
         return null;

@@ -59,6 +59,5 @@ public class SmashLauncher : MonoBehaviour {
     {
         yield return new WaitForSeconds(1f);
         this.gameObject.SetActive(false);
-        //SkillCtrl.instance.StartReset(index);
     }
 }

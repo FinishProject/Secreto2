@@ -23,9 +23,12 @@ public class AltarCtrl : MonoBehaviour {
     public float length = 0.5f;
     public float speed = 1f;
 
+    private AudioSource source;
+
    
     void Start()
     {
+        source = GetComponent<AudioSource>();
         //originColor = new Color(0f, 0.8117652f, 1.5f);
         originColor = new Color(0.322f, 0.322f, 0.322f);
         for (int i = 0; i < render.Length; i++)
@@ -44,7 +47,10 @@ public class AltarCtrl : MonoBehaviour {
     {
         if (col.collider.CompareTag("OBJECT"))
         {
-            PlayerCtrl.instance.animReset();
+            if (!source.isPlaying)
+                source.Play();
+
+            PlayerCtrl.instance.ResetAnim();
             SoundMgr.instance.StopAudio("rock_push");
             StartCoroutine(ShowUI());
             isDraw = true;
@@ -100,7 +106,6 @@ public class AltarCtrl : MonoBehaviour {
     IEnumerator DrawColor()
     {
         drawColor = render[0].material.GetColor("_EmissionColor");
-        //SoundMgr.instance.PlayAudio("Rock_On");
         while (isDraw)
         {
             if (drawColor.r >= targetColor.r)
@@ -123,7 +128,6 @@ public class AltarCtrl : MonoBehaviour {
 
             yield return null;
         }
-        //SoundMgr.instance.StopAudio("Rock_On");
     }
 
     IEnumerator ClearColor()

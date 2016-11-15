@@ -3,7 +3,7 @@ using System.Collections;
 
 /****************************   정보   ****************************
 
-    스카이박스 매니저
+    스카이박스 체인저
 
     스카이박스와 라이팅을 바꿔 준다.
 
@@ -39,13 +39,6 @@ public class SkyBoxMgr : MonoBehaviour {
     void Start () {
         instance = this;
         
-        /*
-        RenderSettings.ambientSkyColor = AmbientSettings[0].SkyColor;
-        RenderSettings.ambientEquatorColor = AmbientSettings[0].EquatorColor;
-        RenderSettings.ambientGroundColor = AmbientSettings[0].GroundColor;
-        RenderSettings.ambientIntensity = AmbientSettings[0].Intensity;
-
-        */
         RenderSettings.skybox = skies[0];
         RenderSettings.skybox.SetFloat("_Blend", 0);
         RenderSettings.skybox.SetColor("_FogColor", RenderSettings.fogColor);
@@ -55,7 +48,6 @@ public class SkyBoxMgr : MonoBehaviour {
     // 스카이 박스와 라이팅 변경 ( 외부 호출 )
     public void SwapSkyBoxAndLight(int skyboxNumber, Dir dir)
     {
-        Debug.Log(111);
         RenderSettings.skybox = skies[skyboxNumber];
         StopAllCoroutines();
         StartCoroutine(SwapLight(skyboxNumber, dir));

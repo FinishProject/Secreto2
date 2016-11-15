@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*************************   정보   **************************
+ 
+    오브젝트들을 관리해주는 매니저
+    
+*************************************************************/
+
 public class ObjectMgr : MonoBehaviour {
 
     private ItemPool bullet_FourWay_Pool = null;

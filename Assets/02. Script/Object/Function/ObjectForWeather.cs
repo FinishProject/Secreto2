@@ -11,7 +11,6 @@ public class ObjectForWeather : MonoBehaviour, WeatherObserver
     private float weatherValue;
     private Transform tr;
 
-    // Use this for initialization
     void Start()
     {
         tr = GetComponent<Transform>();
@@ -21,7 +20,6 @@ public class ObjectForWeather : MonoBehaviour, WeatherObserver
         WeatherData.registerObserver(this);
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         // 날씨 없음

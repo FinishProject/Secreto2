@@ -67,15 +67,15 @@ public class ScriptMgr : MonoBehaviour {
     {
         
         int arrIndex = 0;
-        PlayerCtrl.instance.isMove = false;
-        PlayerCtrl.instance.animReset();
+        PlayerCtrl.instance.SetStopMove(false);
+        PlayerCtrl.instance.ResetAnim();
         while (true)
         {
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
             {
                 if (arrIndex >= ShowScript.Count - 1)
                 {
-                    PlayerCtrl.instance.isMove = true;
+                    PlayerCtrl.instance.SetStopMove(true);
                     isSpeak = false;
                     for (int i = 0; i < bgUi.Length; i++)
                         bgUi[i].SetActive(false);

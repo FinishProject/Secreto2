@@ -10,44 +10,29 @@ public class PushBox : MonoBehaviour {
 
     bool isRight = true;
     bool isActive = false;
+    bool isWall = false;
+
+    public bool isPush = true;
 
     public AudioClip clip;
-    public AudioSource source;
+    private AudioSource source;
+
+    void Start()
+    {
+        source = GetComponent<AudioSource>();
+    }
 
     // PlayerCtrl 에서 플레이어가 밀때 실행
-    public void PushObject(Transform playerTr, bool isPlayerRight)
+    public void PushObject(Transform playerTr, bool isFocusRight)
     {
-        isRight = isPlayerRight;
-
-        //PlayerCtrl.instance.SetPushAnim(true);
-
-        // 플레이어 정면으로 밀린다.
-        moveDir = playerTr.forward;
-        transform.position += moveDir * speed * Time.deltaTime;
-
-        if (!isActive)
+        isRight = isFocusRight;
+        if (!isActive && !isWall)
         {
             isActive = true;
             StartCoroutine(Pushing(playerTr));
         }
     }
 
-    void OnTriggerEnter(Collider col)
-    {
-        if (col.CompareTag("Player") && !isActive)
-        {
-            ShowUI.instanace.OnImage(true);
-            ShowUI.instanace.SetPosition(this.transform, uiPosY);
-        }
-    }
-
-    void OnTriggerExit(Collider col)
-    {
-        if (col.CompareTag("Player"))
-        {
-            ShowUI.instanace.OnImage(false);
-        }
-    }
     IEnumerator Pushing(Transform playerTr)
     {
         PlayerCtrl.instance.SetPushAnim(true);
@@ -63,55 +48,47 @@ public class PushBox : MonoBehaviour {
                 break;
             }
 
-            // 사운드 재생
-            //SoundMgr.instance.PlayAudio("rock_push", false, 1f);
-            if (!source.isPlaying)
-                source.PlayOneShot(clip);
+            if (isPush)
+            {
+                // 플레이어 정면으로 밀린다.
+                moveDir = playerTr.forward;
+                transform.position += moveDir * speed * Time.deltaTime;
+
+                // 사운드 재생
+                if (!source.isPlaying)
+                    source.PlayOneShot(clip);
+            }
 
             yield return null;
         }
         source.Stop();
         //SoundMgr.instance.StopAudio("rock_push");
-        ShowUI.instanace.OnImage(true);
         PlayerCtrl.instance.SetPushAnim(false);
+        ShowUI.instanace.OnImage(true);
         ShowUI.instanace.SetPosition(this.transform, uiPosY);
         isActive = false;
     }
 
-    // 밀기
-    IEnumerator Push(Transform playerTr)
+    void OnTriggerEnter(Collider col)
     {
-        PlayerCtrl.instance.SetPushAnim(true);
-
-        ShowUI.instanace.OnImage(false);
-        
-        // 이동 방향키 누르고 있을 동안
-        while (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
-                Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        if (col.CompareTag("Player") && !isActive)
         {
-            // Shitf 키를 누르지 않거나, 플레이어 위치가 박스보다 높으면 밀기 종료
-            if (Input.GetKeyUp(KeyCode.LeftShift) || transform.position.y < playerTr.position.y 
-                || isRight != PlayerCtrl.isFocusRight)
-            {
-                break;
-            }
-
-            // 플레이어 정면으로 밀린다.
-            moveDir = playerTr.forward;
-            transform.position += moveDir * speed * Time.deltaTime;
-
-            // 사운드 재생
-            SoundMgr.instance.PlayAudio("rock_push",false, 1f);
-
-            yield return null;
+            ShowUI.instanace.OnImage(true);
+            ShowUI.instanace.SetPosition(this.transform, uiPosY);
+        }
+        else if (col.CompareTag("MoveWall"))
+        {
+            isWall = true;
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationY;
         }
 
-        // 사운드, 애니메이션 종료
-        SoundMgr.instance.StopAudio("rock_push");
-        PlayerCtrl.instance.SetPushAnim(false);
+    }
 
-        ShowUI.instanace.OnImage(true);
-        ShowUI.instanace.SetPosition(this.transform, uiPosY);
-        isActive = false;
+    void OnTriggerExit(Collider col)
+    {
+        if (col.CompareTag("Player"))
+        {
+            ShowUI.instanace.OnImage(false);
+        }
     }
 }

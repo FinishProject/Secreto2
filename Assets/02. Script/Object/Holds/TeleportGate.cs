@@ -58,7 +58,8 @@ public class TeleportGate : MonoBehaviour {
         exitPoint += Vector3.right * focusDir * 3f;
         exitPoint -= Vector3.up * 4.5f;
         //StartCoroutine(Movement());
-        CameraCtrl_6.instance.StartTeleport();
+        //CameraCtrl_6.instance.StartTeleport();
+        CameraCtrl_1.instance.StartTeleport();
         yield return new WaitForSeconds(1f);
 
         // 오브젝트가 있을 시 오브젝트 이동
@@ -68,25 +69,13 @@ public class TeleportGate : MonoBehaviour {
         }
         // 플레이어 이동
         PlayerCtrl.instance.transform.position = exitPoint;
-        PlayerCtrl.inputAxis = 0f;
-        if(!isRight)
-            PlayerCtrl.instance.TurnPlayer();
+        //PlayerCtrl.inputAxis = 0f;
+        //if(!isRight)
+        //    PlayerCtrl.instance.TurnPlayer();
 
-        CameraCtrl_6.instance.EndTeleport(isRight);
+        CameraCtrl_1.instance.EndTeleport(isRight);
+        //CameraCtrl_6.instance.EndTeleport(isRight);
 
-    }
-
-    IEnumerator Movement()
-    {
-        int playingAnim = PlayerCtrl.instance.GetPlayingAnimation();
-
-        if(playingAnim == Animator.StringToHash("Base Layer.Jump"))
-            Debug.Log(playingAnim);
-        while (true)
-        {
-            
-            yield return null;
-        }
     }
 }
 

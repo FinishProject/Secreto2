@@ -47,10 +47,10 @@ public class BackGroundCtrl_4 : MonoBehaviour
     Vector2 bg_Offset;
     void MoveBg_X(Material material, float moveValue)
     {
-        bg_Offset = material.GetTextureOffset("_MainTex");
-        if (PlayerCtrl.instance.isMove && Mathf.Abs(PlayerCtrl.controller.velocity.x) > 0)
-            bg_Offset.x += PlayerCtrl.controller.velocity.x * moveValue;
-        material.SetTextureOffset("_MainTex", bg_Offset);
+        //bg_Offset = material.GetTextureOffset("_MainTex");
+        //if (PlayerCtrl.instance.isMove && Mathf.Abs(PlayerCtrl.controller.velocity.x) > 0)
+        //    bg_Offset.x += PlayerCtrl.controller.velocity.x * moveValue;
+        //material.SetTextureOffset("_MainTex", bg_Offset);
     }
 
 }

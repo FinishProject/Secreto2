@@ -12,14 +12,13 @@ using System;
     
 *************************************************************/
 
-
 public class PlayerWeather : MonoBehaviour, WeatherObserver
 {
     WeatherSubject WeatherData;
     WeatherState weatherState;
     private float weatherValue;
 
-    private bool isUsingLeaf = false;         // 나뭇잎 쓰고 있니?
+    private bool isUsingLeaf = false;         // 나뭇잎을 쓰고 있나?
     public float LeafTimer = 10.0f;
     private string carryItemName = null;
     private bool isLocked_WIND_UD = false;    // 데이터 한번만 보내야할때 잠금 역할

@@ -7,9 +7,15 @@ public class WayPoint : MonoBehaviour
     public delegate void SaveSystem();
     public static event SaveSystem OnSave;
 
-    public Transform saveTr;
-
     public GameObject[] effect;
+
+    public AudioClip clip;
+    private AudioSource source;
+
+    void Start()
+    {
+        source = GetComponent<AudioSource>();
+    }
 
     void OnTriggerEnter(Collider col)
     {
@@ -26,6 +32,9 @@ public class WayPoint : MonoBehaviour
 
             if(effect.Length > 0)
                 StartCoroutine(SetEffect());
+
+            if (!source.isPlaying)
+                source.PlayOneShot(clip);
         }
 
     }
