@@ -26,9 +26,6 @@ public class RepeatHold : MonoBehaviour {
             anlge = 0f;
 
         moveDir.x = Mathf.Sin(anlge * Mathf.PI / 180f) * length;
-
-        //moveDir.x = Mathf.Sin(speed * Time.time) * length;
-
         transform.position = originPos + moveDir;
 
         // 발판 방향으로 동일하게 플레이어 이동

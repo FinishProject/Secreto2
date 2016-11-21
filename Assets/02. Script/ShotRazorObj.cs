@@ -24,12 +24,29 @@ public class ShotRazorObj : MonoBehaviour {
 
     float alpha = 1f;
 
+    Vector3 originScale;
+    float scaleX = 0f;
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
         audioSource.volume = 0f;
 
+        originScale = laserObj.transform.localScale;
+
         StartCoroutine(ShotLaser());
+    }
+
+    void ScaleChange(float dir)
+    {
+        Vector3 scale = laserObj.transform.localScale;
+        scaleX += 0.2f * Time.deltaTime;
+        scaleX = Mathf.Clamp01(scaleX);
+        if (scaleX <= 0.7f)
+        {
+            scale.x = scaleX;
+            laserObj.transform.localScale = scale;
+        }
     }
 
     IEnumerator ShotLaser()
@@ -51,7 +68,10 @@ public class ShotRazorObj : MonoBehaviour {
             if (fadeDir <= -1f && isPlayer)
                 audioSource.volume = alpha;
 
-            childColider.enabled = false;
+            
+
+            if(fadeDir == 1 && isWait)
+                ScaleChange(fadeDir);
 
             // 0 or 1이면 알파값 방향 및 속도 변경
             if (alpha == 0f || alpha == 1f)
@@ -62,9 +82,15 @@ public class ShotRazorObj : MonoBehaviour {
                 fadeSpeed = downSpeed;
 
                 if (alpha == 0) // 레이저가 사라지면 사운드 중지
+                {
                     audioSource.Stop();
-                else if (alpha == 1f) // 레이저가 최대치면 컬리더 ON
-                    childColider.enabled = true;
+                    Vector3 scale = laserObj.transform.localScale;
+                    scale.x *= 0.2f;
+                    laserObj.transform.localScale = scale;
+                    scaleX = laserObj.transform.localScale.x;
+
+                    childColider.enabled = false;
+                }
 
                 yield return new WaitForSeconds(durationTime);
             }
@@ -73,8 +99,9 @@ public class ShotRazorObj : MonoBehaviour {
             {
                 isWait = false;
                 fadeSpeed = upSpeed;
-                yield return new WaitForSeconds(waitingTime);
 
+                yield return new WaitForSeconds(waitingTime);
+                laserObj.transform.localScale = originScale;
                 // 사운드 재생
                 if (!audioSource.isPlaying)
                 {
@@ -83,6 +110,8 @@ public class ShotRazorObj : MonoBehaviour {
 
                     audioSource.Play();
                 }
+
+                childColider.enabled = true;
             }
             yield return null;
         }

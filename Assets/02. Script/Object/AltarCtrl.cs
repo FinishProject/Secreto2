@@ -58,6 +58,7 @@ public class AltarCtrl : MonoBehaviour {
             StartCoroutine(DrawColor());
             altarEffect.SetActive(true);
             isOnBox = true;
+
         }
     }
 

@@ -45,8 +45,6 @@ public class CameraCtrl_1 : MonoBehaviour, Sensorable_Return
         camAddPos_ViewLeft.x = playerTr.position.x - tr.position.x;       
     }
 
-
-
     Vector3 tempPos;
     void Update()
     {
@@ -179,7 +177,7 @@ public class CameraCtrl_1 : MonoBehaviour, Sensorable_Return
     }
 
     // 진행 방향 체크
-    void FocusChecker()
+    public void FocusChecker()
     {
         isFocusRight = PlayerCtrl.isFocusRight;
         // 방향이 바뀌었으면

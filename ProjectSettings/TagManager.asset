@@ -7,7 +7,6 @@ TagManager:
   - WALL
   - MONSTER
   - Reset
-  - Land
   - OBJECT
   - DeadLine
   - WAHLE

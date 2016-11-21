@@ -197,6 +197,9 @@ public class WahleCtrl : MonoBehaviour {
         RaycastHit hit;
         Vector3 forward = transform.TransformDirection(Vector3.forward);
 
+        Debug.DrawRay(rightRayPos, forward, Color.red, 1f);
+        Debug.DrawRay(leftRayPos, forward, Color.red, 1f);
+
         // 우측 레이캐스트
         if (Physics.Raycast(rightRayPos, forward, out hit, 3f) || Physics.Raycast(leftRayPos, forward, out hit, 3f))
         {

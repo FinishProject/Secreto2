@@ -9,7 +9,7 @@ public class PushBox : MonoBehaviour {
     private Vector3 moveDir = Vector3.zero;
 
     bool isRight = true;
-    bool isActive = false;
+    public bool isActive = false;
     bool isWall = false;
 
     public bool isPush = true;
@@ -17,8 +17,11 @@ public class PushBox : MonoBehaviour {
     public AudioClip clip;
     private AudioSource source;
 
+    public static PushBox instance;
+
     void Start()
     {
+        instance = this;
         source = GetComponent<AudioSource>();
     }
 
@@ -76,12 +79,6 @@ public class PushBox : MonoBehaviour {
             ShowUI.instanace.OnImage(true);
             ShowUI.instanace.SetPosition(this.transform, uiPosY);
         }
-        else if (col.CompareTag("MoveWall"))
-        {
-            isWall = true;
-            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationY;
-        }
-
     }
 
     void OnTriggerExit(Collider col)

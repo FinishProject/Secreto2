@@ -74,6 +74,7 @@ public class Hold_Switch_Show : MonoBehaviour {
             scriptArea.SetActive(false);
             StopAllCoroutines();
             StartCoroutine(TimeAboutPlay(true));
+            PlayerCtrl.instance.SetStopMove(false);
         }
     }
 
@@ -124,8 +125,8 @@ public class Hold_Switch_Show : MonoBehaviour {
         yield return new WaitForSeconds(2f);
         int curIdx = 0;
         while (true)
-        { 
-            if(isMoveUp)
+        {
+            if (isMoveUp)
             {
                 if(curIdx == 0 ) 
                 {
@@ -180,7 +181,7 @@ public class Hold_Switch_Show : MonoBehaviour {
                 */
             }
             yield return null;
-        } 
+        }
     }
 
     // 자식 오브젝트 받아 올 때 ( 자식이 없으면 자신을 반환 )
@@ -266,6 +267,7 @@ public class Hold_Switch_Show : MonoBehaviour {
 //            tempColor.a = 0;
             while (true)
             {
+                PlayerCtrl.instance.SetStopMove(false);
                 elevators[idx].color.a += 3f * Time.deltaTime; ;
                 elevators[idx].meshRender.material.color = elevators[idx].color;
                 elevators[idx].executionLevel = elevators[idx].color.a;                   // 진행 정도를 저장하기 위해
@@ -280,11 +282,13 @@ public class Hold_Switch_Show : MonoBehaviour {
                 }
                 yield return null;
             }
+            PlayerCtrl.instance.SetStopMove(true);
         }
         else
         {
             while (true)
             {
+                PlayerCtrl.instance.SetStopMove(false);
                 elevators[idx].color.a -= 3f * Time.deltaTime;
                 elevators[idx].meshRender.material.color = elevators[idx].color;
                 elevators[idx].executionLevel = elevators[idx].color.a;                   // 진행 정도를 저장하기 위해
@@ -300,7 +304,8 @@ public class Hold_Switch_Show : MonoBehaviour {
 
                 yield return null;
             }
-            
+            PlayerCtrl.instance.SetStopMove(true);
+
         }
     }
 

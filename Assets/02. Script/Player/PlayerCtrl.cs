@@ -33,10 +33,7 @@ public class PlayerCtrl : MonoBehaviour
 
     private Vector3 saveLocation;
 
-    public GameObject lunaModel;
-    public GameObject clothModel;
-
-    private PlayerEffect pEffect;
+    public PlayerEffect pEffect;
     private WahleMove wahleMove;
 
     public AudioClip[] soundClips;
@@ -57,7 +54,6 @@ public class PlayerCtrl : MonoBehaviour
         controller = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
-        pEffect = GetComponent<PlayerEffect>();
         wahleMove = GameObject.FindGameObjectWithTag("WAHLE").GetComponent<WahleMove>();
 
     }
@@ -72,41 +68,26 @@ public class PlayerCtrl : MonoBehaviour
     void Update()
     {
         transform.position = new Vector3(transform.position.x, transform.position.y, lockPosZ);
-
+        currentAnim = anim.GetCurrentAnimatorStateInfo(0);
         // 플레이어에게 조작권한이 있다면 움직임
         if (isMove)
+        {
             Movement();
+            //캐릭터 방향 회전
+            // 왼쪽 회전
+            if (inputAxis < 0 && isFocusRight) { TurnPlayer(); }
+            // 오른쪽 회전
+            else if (inputAxis > 0 && !isFocusRight) { TurnPlayer(); }
+        }
         else if (!isMove)
         {
             moveDir.x = 0f;
             moveDir.y -= curGravity * Time.deltaTime;
             controller.Move(moveDir * moveSpeed * Time.deltaTime);
         }
-        
-        SetAnimator();
 
-        //캐릭터 방향 회전
-        // 왼쪽 회전
-        if (inputAxis < 0 && isFocusRight) { TurnPlayer(); }
-        // 오른쪽 회전
-        else if (inputAxis > 0 && !isFocusRight) { TurnPlayer(); }
-    }
-
-    void SetAnimator()
-    {
-        currentAnim = anim.GetCurrentAnimatorStateInfo(0);
-        if (controller.isGrounded && isMove)
-        {
-            anim.SetBool("Jump", false);
-            anim.SetBool("Dash", false);
-            anim.SetBool("Fall", false);
-        }
-        else if(!controller.isGrounded && dashJump != currentAnim.nameHash && controller.velocity.y < -13f
-            && !dying)
-        {
-            // 추락 애니메이션
-            anim.SetBool("Fall", true);
-        }
+        if (controller.velocity.y <= -50f)
+            Die();
     }
 
     void Movement()
@@ -116,6 +97,10 @@ public class PlayerCtrl : MonoBehaviour
         // 지상에 있을 시
         if (controller.isGrounded)
         {
+            anim.SetBool("Jump", false);
+            anim.SetBool("Dash", false);
+            anim.SetBool("Fall", false);
+
             isJumping = true;
             curGravity = 35f;
 
@@ -161,6 +146,13 @@ public class PlayerCtrl : MonoBehaviour
 
             if (controller.velocity.y <= -0.01)
                 curGravity = dropGravity;
+
+            if (!controller.isGrounded && dashJump != currentAnim.nameHash && controller.velocity.y < -13f
+            && !dying)
+            {
+                // 추락 애니메이션
+                anim.SetBool("Fall", true);
+            }
         }
 
         moveDir.y -= curGravity * Time.deltaTime;
@@ -204,10 +196,6 @@ public class PlayerCtrl : MonoBehaviour
         else 
             localRot.w = 0.7f;
         transform.rotation = localRot;
-        //if (isFocusRight)
-        //    transform.Rotate(new Vector3(0, 1, 0), 180);
-        //else
-        //    transform.Rotate(new Vector3(0, 1, 0), -180);
 
         isFocusRight = !isFocusRight;
         focusRight *= -1f;
@@ -217,15 +205,13 @@ public class PlayerCtrl : MonoBehaviour
 
     void OnTriggerEnter(Collider coll)
     {
-        if (coll.CompareTag("DeadLine"))
-            StartCoroutine(PlayerDie());
+        if (coll.CompareTag("DeadLine") && !dying)
+        {
+            dying = true;
+            Die();
+        }
         else if (coll.CompareTag("StartPoint"))
             Save();
-        else if (coll.CompareTag("Coin"))
-        {
-            coll.gameObject.SetActive(false);
-            GameManager.instance.SetScore();
-        }
         else if (coll.CompareTag("Hold"))
             WahleCtrl.curState = WahleCtrl.instance.StepHold();
         else if (coll.CompareTag("Hold2"))
@@ -250,57 +236,21 @@ public class PlayerCtrl : MonoBehaviour
                 if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) ||
                 Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
                 {
-                   hit.gameObject.GetComponent<PushBox>().PushObject(this.transform, isFocusRight);
+                        hit.gameObject.GetComponent<PushBox>().PushObject(this.transform, isFocusRight);
                 }
             }
         }
     }
 
-    public IEnumerator PlayerDie()
+    public void Die()
     {
-        if (!dying)
-        {
-            dying = true;
-            if (source.isPlaying)
-                source.Stop();
+        pEffect.StartEffect(PlayerEffectList.DIE);
+        GameManager.instance.SetPlayerDie();
+    }
 
-               source.PlayOneShot(soundClips[0]);
-
-            controller.enabled = false;
-            FadeInOut.instance.StartFadeInOut(1, 2, 3);
-            isMove = false;
-
-            lunaModel.SetActive(false);
-            clothModel.SetActive(false);
-            pEffect.StartEffect(PlayerEffectList.DIE);
-
-
-            yield return new WaitForSeconds(1.5f);
-
-            //ObjectPosResetMgr.instance.ResetPos();
-
-            lunaModel.SetActive(true);
-            clothModel.SetActive(true);
-            controller.enabled = true;
-
-            GetPlayerData();
-
-            if (!isFocusRight)
-            {
-                Quaternion localRot = transform.rotation;
-                    localRot.w = 0.7f;
-                transform.rotation = localRot;
-            }
-
-            yield return new WaitForSeconds(1.5f);
-            source.PlayOneShot(soundClips[2]);
-            yield return new WaitForSeconds(1.5f);
-
-            ResetAnim();
-            isMove = true;
-            dying = false;
-
-        }
+    public void PlaySound()
+    {
+        source.PlayOneShot(soundClips[2]);
     }
 
     public void ResetAnim()
@@ -312,18 +262,13 @@ public class PlayerCtrl : MonoBehaviour
         anim.SetBool("Fall", false);
     }
 
-    void OnEnable()
-    {
-        WayPoint.OnSave += Save;
-    }
-
     // 플레이어 데이터 저장
     public void Save()
     {
         saveLocation = this.transform.position;
     }
     // 플레이어 위치값 가져오기
-    void GetPlayerData()
+    public void GetPlayerData()
     {
         this.transform.position = saveLocation;
     }

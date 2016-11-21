@@ -20,9 +20,11 @@ public class PlayerEffect : MonoBehaviour {
 
     Queue<GameObject> effectQueue = new Queue<GameObject>();
 
-    void Start()
+    public static PlayerEffect instance;
+    
+    void Awake()
     {
-        playerTr = GetComponent<PlayerCtrl>().transform;
+        instance = this;
     }
 
     public void StartEffect(PlayerEffectList effectState)
@@ -32,7 +34,7 @@ public class PlayerEffect : MonoBehaviour {
 
     IEnumerator ShowEffected(PlayerEffectList effectState)
     {
-        Vector3 playerVec = this.transform.position;
+        Vector3 playerVec = PlayerCtrl.instance.transform.position;
         switch (effectState)
         {
             // 플레이어 죽음 이펙트

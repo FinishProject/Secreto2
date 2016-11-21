@@ -104,7 +104,9 @@ public class RollDownLog : MonoBehaviour {
 
         if(isMoving && col.CompareTag("Player"))
         {
-            StartCoroutine(PlayerCtrl.instance.PlayerDie());
+            RollDownLog_Trigger.isStarted = false;
+            PlayerCtrl.instance.Die();
+
         }
     }
 }

@@ -15,8 +15,6 @@ public class FallMonster : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.CompareTag("Player"))
-            StartCoroutine(StartEndingScript());
         if (col.CompareTag("OBJECT"))
         {   
             //PlayerCtrl.instance.SetStopMove();
@@ -25,9 +23,15 @@ public class FallMonster : MonoBehaviour {
                 isActive = true;
                 fallCount++;
                 StartCoroutine(RotateObj(col));
+                StartCoroutine(ShowScript());
             }
             
         }
+    }
+    IEnumerator ShowScript()
+    {
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(StartEndingScript());
     }
     // 보스 몬스터 석상 회전 시킴.
     IEnumerator RotateObj(Collider col)

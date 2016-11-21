@@ -24,7 +24,7 @@ public class RollDownLog_Trigger : MonoBehaviour {
     public AudioClip clip;
     private AudioSource source;
 
-    bool isStarted;
+    public static bool isStarted;
     void Start()
     {
         source = GetComponent<AudioSource>();
@@ -53,6 +53,7 @@ public class RollDownLog_Trigger : MonoBehaviour {
     {
         while(true)
         {
+            
             if (isStarted)
             {
                 if (!source.isPlaying)
