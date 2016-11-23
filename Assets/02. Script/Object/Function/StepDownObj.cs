@@ -18,6 +18,9 @@ public class StepDownObj : MonoBehaviour {
         originPos = this.transform.position;
 
         standard = Shader.Find("Standard");
+
+        if (transparent == null)
+            transparent = Shader.Find("Custom/balpan_trans");
     }
 
     void OnTriggerStay(Collider col)
