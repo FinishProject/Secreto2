@@ -511,7 +511,7 @@ GameObject:
   - 23: {fileID: 23000013106693288}
   - 65: {fileID: 65000011994507520}
   - 82: {fileID: 82000010207773550}
-  - 114: {fileID: 114000013507941608}
+  - 114: {fileID: 114000011803696636}
   m_Layer: 0
   m_Name: ChaseSphere_Fire
   m_TagString: Untagged
@@ -1696,7 +1696,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012267196478}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 849.9, y: 5.2, z: -1.66}
+  m_LocalPosition: {x: 158.2, y: -5.1, z: -1.66}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -2435,6 +2435,48 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114000011803696636
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012267196478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a526993e282084a9d76167424baab4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stones:
+  - {fileID: 4000011299755788}
+  - {fileID: 4000011457181850}
+  - {fileID: 4000012884225292}
+  - {fileID: 4000010535301598}
+  - {fileID: 4000013662365316}
+  - {fileID: 4000011470922218}
+  setFillPositions:
+  - {x: 0.41, y: -0.16, z: 0}
+  - {x: -0.371, y: -0.204, z: 0}
+  - {x: -0.2, y: 0.2, z: 0.204}
+  - {x: 0.1, y: -0.34, z: -0.53}
+  - {x: -0.269, y: -0.027, z: 1.634}
+  - {x: 0.429, y: 0.389, z: 0.864}
+  shootingSpeed: 100
+  blockSpeed:
+  - 0.3
+  - 1
+  - 0.7
+  - 0.7
+  - 0.3
+  - 0.7
+  reloadTime: 3
+  shakeAmount: 0.008
+  fireBall: {fileID: 1000010513589900}
+  shotFire: {fileID: 114000012260253578}
+  render: {fileID: 23000011596992866}
+  particle:
+  - {fileID: 198000011692401400}
+  - {fileID: 198000014254159264}
+  - {fileID: 198000010141070856}
 --- !u!114 &114000012260253578
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2446,40 +2488,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6356f5c0433ac034199d6d50f9594db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114000013507941608
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012267196478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e91e078141299274e9f2f2ab03b76f71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireBall: {fileID: 1000010513589900}
-  blocks:
-  - {fileID: 4000011299755788}
-  - {fileID: 4000011457181850}
-  - {fileID: 4000012884225292}
-  - {fileID: 4000010535301598}
-  - {fileID: 4000013662365316}
-  - {fileID: 4000011470922218}
-  blockSpeed:
-  - 0.3
-  - 1
-  - 0.7
-  - 0.7
-  - 0.3
-  - 0.7
-  shakeAmount: 0.008
-  reloadTime: 3
-  shotFire: {fileID: 114000012260253578}
-  render: {fileID: 23000011596992866}
-  particle:
-  - {fileID: 198000011692401400}
-  - {fileID: 198000014254159264}
-  - {fileID: 198000010141070856}
 --- !u!135 &135000013194058070
 SphereCollider:
   m_ObjectHideFlags: 1

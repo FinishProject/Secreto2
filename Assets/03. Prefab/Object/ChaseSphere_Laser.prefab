@@ -37,8 +37,8 @@ GameObject:
   - 33: {fileID: 33000010312250616}
   - 23: {fileID: 23000012685860496}
   - 65: {fileID: 65000013362050468}
-  - 114: {fileID: 114000012653714156}
   - 82: {fileID: 82000013502171642}
+  - 114: {fileID: 114000011188808730}
   m_Layer: 0
   m_Name: ChaseSphere_Laser
   m_TagString: Untagged
@@ -2291,7 +2291,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114000012653714156
+--- !u!114 &114000011188808730
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -2299,20 +2299,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000010323101016}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2df2ba25dc7cd5a4d8f9821781755dc0, type: 3}
+  m_Script: {fileID: 11500000, guid: 0f5af8261a7c17d4f982c5d439234e4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laser: {fileID: 4000012652149252}
-  laserRender: {fileID: 23000010920079230}
-  blocks:
+  stones:
   - {fileID: 4000010710691878}
   - {fileID: 4000010974315294}
   - {fileID: 4000011594102610}
   - {fileID: 4000013222140926}
   - {fileID: 4000011281475876}
   - {fileID: 4000010888400166}
-  finishPoint: {fileID: 4000013247458948}
-  childCol: {fileID: 65000012384149236}
+  setFillPositions:
+  - {x: 0.41, y: -0.16, z: 0}
+  - {x: -0.371, y: -0.204, z: 0}
+  - {x: -0.2, y: 0.2, z: -0.024}
+  - {x: 0.1, y: -0.34, z: -0.53}
+  - {x: -0.269, y: -0.027, z: 1.634}
+  - {x: 0.429, y: 0.389, z: 0.864}
+  shootingSpeed: 100
   blockSpeed:
   - 0.3
   - 1
@@ -2320,8 +2324,12 @@ MonoBehaviour:
   - 0.7
   - 0.3
   - 0.7
-  shakeAmount: 0.005
   reloadTime: 5
+  shakeAmount: 0.005
+  laser: {fileID: 4000012652149252}
+  laserRender: {fileID: 23000010920079230}
+  finishPoint: {fileID: 4000013247458948}
+  childCol: {fileID: 65000012384149236}
 --- !u!137 &137000010854561352
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
